@@ -1,0 +1,200 @@
+// JLM-MIS data model.
+// Local dev runs on SQLite (zero setup). Swapping to Postgres for production
+// is a one-line change: set provider = "postgresql" and DATABASE_URL to a
+// Neon/Vercel Postgres connection string — the schema below avoids
+// Postgres-only features so the swap is safe.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// --- Auth.js (NextAuth v5) ---
+
+model User {
+  id            String         @id @default(cuid())
+  name          String?
+  email         String?        @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  role          String         @default("member") // "owner" | "member"
+  accounts      Account[]
+  sessions      Session[]
+  conversations Conversation[]
+  createdAt     DateTime       @default(now())
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// --- Knowledge base ---
+
+model KnowledgeFile {
+  id             String    @id @default(cuid())
+  title          String
+  category       String    // "catalogue" | "competitor" | "company" | "other"
+  fileUrl        String?
+  extractedText  String?
+  status         String    @default("pending") // pending | processing | processed | failed
+  providerFileId String?   // Anthropic Files API id — uploaded once, reused across extraction batches
+  lastPageDone   Int?      // last catalogue page successfully extracted, for resumable batches
+  products       Product[]
+  uploadedAt     DateTime  @default(now())
+}
+
+model Product {
+  id             String         @id @default(cuid())
+  sku            String         @unique
+  nameEn         String
+  nameAr         String?
+  category       String
+  sizeMl         Int?
+  price          Float?
+  description    String?
+  usage          String?
+  commonIssues   String?
+  imageUrl       String?
+  sourceFile     KnowledgeFile? @relation(fields: [sourceFileId], references: [id])
+  sourceFileId   String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+}
+
+model Competitor {
+  id                  String   @id @default(cuid())
+  name                String   @unique
+  country             String?
+  foundedYear         Int?
+  localDistributor    String?
+  tier                Int      // 1 (strategic) .. 5 (niche)
+  pricingTier         String?  // "premium" | "mid" | "value"
+  productCategories   Json?    // string[]
+  strengths           Json?    // string[]
+  weaknesses          Json?    // string[]
+  swot                Json?    // { s, w, o, t }
+  tows                Json?    // { so, wo, st, wt }
+  threatRating        Int?     // 1-5
+  opportunitiesForJlm Json?    // string[]
+  marketingMessage    String?
+  notes               String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model BrandAsset {
+  id        String   @id @default(cuid())
+  type      String   // "logo" | "color" | "font" | "photo"
+  label     String
+  value     String   // hex code, font name, or file URL
+  notes     String?
+  createdAt DateTime @default(now())
+}
+
+// --- AI Assistant ---
+
+model Conversation {
+  id        String    @id @default(cuid())
+  title     String?
+  mode      String    // matches a Mode key, e.g. "content" | "campaign" | "critic"
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  messages  Message[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String       // "user" | "assistant"
+  content        String
+  createdAt      DateTime     @default(now())
+}
+
+// --- Marketing outputs ---
+
+model Campaign {
+  id              String          @id @default(cuid())
+  title           String
+  goal            String?
+  bigIdea         String?
+  status          String          @default("draft") // draft | active | completed
+  contentItems    ContentItem[]
+  calendarEntries CalendarEntry[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+}
+
+model ContentItem {
+  id              String          @id @default(cuid())
+  title           String?
+  type            String          // "post" | "reel" | "story" | "carousel" | "ad" | "article"
+  mode            String
+  body            String
+  hook            String?
+  cta             String?
+  hashtags        Json?           // string[]
+  campaignId      String?
+  campaign        Campaign?       @relation(fields: [campaignId], references: [id])
+  calendarEntries CalendarEntry[]
+  createdAt       DateTime        @default(now())
+}
+
+model CalendarEntry {
+  id            String       @id @default(cuid())
+  date          DateTime
+  platform      String?
+  contentType   String?
+  title         String?
+  status        String       @default("planned") // planned | scheduled | published
+  contentItemId String?
+  contentItem   ContentItem? @relation(fields: [contentItemId], references: [id])
+  campaignId    String?
+  campaign      Campaign?    @relation(fields: [campaignId], references: [id])
+  createdAt     DateTime     @default(now())
+}
+
+model PromptTemplate {
+  id        String   @id @default(cuid())
+  title     String
+  mode      String
+  prompt    String
+  createdAt DateTime @default(now())
+}
