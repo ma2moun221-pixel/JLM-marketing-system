@@ -24,6 +24,7 @@ STYLE_AR = {
     "hook": "الهوك — أعلى الثلث الأول، أكبر خط",
     "body": "الجسم — الثلث السفلي",
     "center": "وسط الشاشة",
+    "card": "بطاقة الختام — وسط الشاشة، أكبر خط",
     "cta": "دعوة للفعل — أسفل، لون مميز",
     "sub": "تعليق جانبي — صغير",
 }
@@ -66,32 +67,43 @@ def build_sheet(plan: dict, srt_name: str | None) -> str:
     icons = sorted(plan.get("icons") or [], key=lambda c: float(c.get("start", 0)))
     music = plan.get("music") or {}
     color = plan.get("color") or {}
-    total = plan.get("estimated_duration") or round(
+    total = plan.get("estimated_duration") or (round(
         sum((s["end"] - s["start"]) / float(s.get("speed", 1) or 1) for s in segments), 2)
+        if segments else plan.get("source_duration"))
 
     L: list[str] = []
     add = L.append
+    step = [0]
+
+    def section(title: str) -> None:
+        step[0] += 1
+        add(f"## {step[0]}) {title}")
+        add("")
 
     add("# ورقة تنفيذ المونتاج في CapCut (النسخة المجانية)")
     add("")
     add(f"**المصدر:** `{plan.get('input')}`  ")
     add(f"**المقاس:** {ASPECT_AR.get(aspect, aspect)}  ")
-    add(f"**المدة المستهدفة:** {total} ثانية  ")
-    add(f"**عدد المقاطع:** {len(segments)}")
+    add(f"**المدة:** {total} ثانية  " if total else "**المدة:** كما في المصدر  ")
+    add(f"**القصّ:** {len(segments)} مقطع" if segments
+        else "**القصّ:** بلا قصّ — الفيديو كامل والانتقالات الأصلية كما هي")
     add("")
-    add("> كل التوقيتات في جدول القصّ من **الفيديو الأصلي**.  ")
-    add("> توقيتات الكابشن والأيقونات من **الخط الزمني بعد القصّ**.")
+    if segments:
+        add("> توقيتات جدول القصّ من **الفيديو الأصلي**.  ")
+        add("> توقيتات الكابشن والأيقونات من **الخط الزمني بعد القصّ**.")
+    else:
+        add("> كل التوقيتات من الفيديو الأصلي — لا قصّ يزيحها.")
     add("")
 
-    add("## 1) الإعداد")
-    add("")
+    section("الإعداد")
     add("1. `New project` ← استورد الفيديو الأصلي.")
-    add(f"2. `Ratio` ← اختر **{aspect}**.")
-    add("3. `Format` ← تأكّد أن الدقّة **1080p** ومعدّل الإطارات **30**.")
+    add("2. `Ratio` ← اترك النسبة كما هي (لا تغيّر المقاس)."
+        if aspect == "keep" else f"2. `Ratio` ← اختر **{aspect}**.")
+    add("3. `Format` ← أعلى دقّة متاحة ومعدّل إطارات **30**.")
     add("")
 
     if segments:
-        add("## 2) القصّ")
+        section("القصّ")
         add("")
         add("ضع رأس التشغيل عند كل توقيت ثم `Split`، واحذف ما بين المقاطع المحتفَظ بها.")
         add("")
@@ -111,8 +123,7 @@ def build_sheet(plan: dict, srt_name: str | None) -> str:
                 f"**{max(speeds):.2f}×**. فعّل `Pitch` لتبقى نبرة الصوت طبيعية.")
             add("")
 
-    add("## 3) اللون")
-    add("")
+    section("اللون")
     if color:
         add("`Adjust` ← اضبط القيم التالية على **كل** المقاطع (وإلا اختلف لون اللقطات):")
         add("")
@@ -133,8 +144,7 @@ def build_sheet(plan: dict, srt_name: str | None) -> str:
         add("لا تعديل لون في هذه الخطة.")
     add("")
 
-    add("## 4) الكابشن")
-    add("")
+    section("الكابشن")
     if srt_name and captions:
         add(f"**الطريقة السريعة:** `Text` ← `Local subtitle` ← استورد **`{srt_name}`** "
             "(كل التوقيتات تدخل جاهزة).")
@@ -168,8 +178,7 @@ def build_sheet(plan: dict, srt_name: str | None) -> str:
         add("لا كابشن في هذه الخطة.")
     add("")
 
-    add("## 5) الأيقونات")
-    add("")
+    section("الأيقونات")
     if icons:
         add("`Stickers` ← ابحث عن الإيموجي ← ضعه على الخط الزمني بالتوقيت التالي.")
         add("")
@@ -190,8 +199,26 @@ def build_sheet(plan: dict, srt_name: str | None) -> str:
         add("لا أيقونات في هذه الخطة.")
     add("")
 
-    add("## 6) الصوت")
-    add("")
+    outro = plan.get("outro") or {}
+    if outro:
+        section("الختام — تمويه تدريجي")
+        o_start = float(outro.get("start", 0))
+        o_ramp = float(outro.get("ramp", 0.8))
+        add(f"من **{o_start:.2f}s** حتى **{o_start + o_ramp:.2f}s** تتحوّل الصورة من حادّة "
+            "إلى مموّهة تدريجيًا، وتبقى مموّهة حتى النهاية. بطاقة الختام تُقرأ فوقها.")
+        add("")
+        add("في CapCut:")
+        add("")
+        add(f"1. `Split` عند **{o_start:.2f}s** لعزل المقطع الأخير.")
+        add("2. حدّد المقطع الأخير ← `Effects` ← `Basic` ← **Blur**.")
+        add(f"3. `Keyframes` على شدّة التمويه: 0 عند **{o_start:.2f}s** ← "
+            f"الأقصى عند **{o_start + o_ramp:.2f}s**. بدون الكيفريم يظهر التمويه فجأة.")
+        if outro.get("darken"):
+            add(f"4. `Adjust` ← `Brightness` **-{round(float(outro['darken']) * 100)}** "
+                "على المقطع الأخير ليزيد تباين النص.")
+        add("")
+
+    section("الصوت")
     if music.get("path"):
         gain = float(music.get("gain_db", -18))
         add(f"1. `Audio` ← `Add music` ← استورد `{Path(str(music['path'])).name}` "
@@ -205,12 +232,15 @@ def build_sheet(plan: dict, srt_name: str | None) -> str:
         add("لا موسيقى في هذه الخطة. أضف من مكتبة CapCut المجانية "
             "(`Audio` ← `Sounds`) — مرخّصة للاستخدام داخل التطبيق.")
     add("")
+    fade = plan.get("audio_fade_out")
+    if fade:
+        add(f"- `Fade out` على مسار الصوت الأصلي: يبدأ عند **{float(fade['start']):.2f}s** "
+            f"بمدّة **{float(fade.get('duration', 1.0)):.1f}s**.")
     add("- ارفع صوت الكلام إلى **100%** وتحقّق ألا يتشوّه في القمم.")
     add("- مؤثّر صوتي (whoosh) على **أول انتقال فقط** — تكراره يجعل الفيديو صاخبًا.")
     add("")
 
-    add("## 7) التصدير")
-    add("")
+    section("التصدير")
     add("`Export` ← اضبط:")
     add("")
     add("| الإعداد | القيمة |")
@@ -223,8 +253,7 @@ def build_sheet(plan: dict, srt_name: str | None) -> str:
     add("أطفئ `Add CapCut watermark to the end` إن ظهر الخيار.")
     add("")
 
-    add("## 8) فحص أخير قبل النشر")
-    add("")
+    section("فحص أخير قبل النشر")
     for item in [
         "الثانية الأولى فيها حركة وكابشن — لا مشهد ساكن.",
         "لا لقطة تتجاوز 4 ثوانٍ بلا تغيير بصري.",
