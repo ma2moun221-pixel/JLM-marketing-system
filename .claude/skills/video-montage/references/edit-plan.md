@@ -1,0 +1,127 @@
+# صيغة `plan.json`
+
+مصدر الحقيقة الوحيد للمونتاج. يقرأه `render.py` و`capcut_sheet.py` و`icons.py` —
+فلا تتفرّق النسخ بين الفيديو المُصدَّر وورقة CapCut.
+
+## مثال كامل
+
+```json
+{
+  "input": "raw.mp4",
+  "aspect": "9:16",
+  "crop_mode": "blur",
+  "fps": 30,
+  "font": "Cairo",
+
+  "segments": [
+    {"start": 2.40, "end": 9.10, "speed": 1.05, "zoom": 1.00},
+    {"start": 11.20, "end": 18.60, "speed": 1.05, "zoom": 1.08}
+  ],
+
+  "color": {"contrast": 1.08, "saturation": 1.10, "brightness": 0.02,
+            "gamma": 1.0, "sharpen": false},
+
+  "captions": [
+    {"start": 0.0, "end": 2.6, "text": "لا تسوّق منتجك قبل ما تشوف *هذا*",
+     "style": "hook", "anim": "pop"},
+    {"start": 2.7, "end": 5.4, "text": "٩٠٪ من الإعلانات تفشل في أول *٣ ثوانٍ*",
+     "style": "body", "anim": "pop", "highlight_color": "green"}
+  ],
+
+  "icons": [
+    {"start": 0.4, "end": 2.6, "emoji": "🔥", "pos": "top-right",
+     "size": 0.16, "anim": "pop"},
+    {"start": 6.0, "end": 8.0, "image": "assets/logo.png", "pos": "bottom-left",
+     "size": 0.12, "anim": "none"}
+  ],
+
+  "music": {"path": "assets/music.mp3", "gain_db": -18, "ducking": true},
+  "audio": {"normalize": true, "target_lufs": -14},
+  "quality": {"crf": 18, "preset": "slow", "audio_bitrate": "192k"}
+}
+```
+
+## الحقول
+
+### الجذر
+
+| الحقل | النوع | الافتراضي | الشرح |
+|---|---|---|---|
+| `input` | مسار | — | **مطلوب**. ملف الفيديو المصدر |
+| `aspect` | `9:16` `16:9` `1:1` `4:5` `keep` | `9:16` | المقاس الهدف |
+| `crop_mode` | `blur` `crop` `pad` | `blur` | كيف يُملأ الفرق في النسبة |
+| `fps` | رقم | أقل من (مصدر، 30) | إطارات الثانية للمخرج |
+| `font` | نص | أول خط عربي متاح | اسم عائلة الخط للكابشن |
+
+`aspect: "keep"` يحافظ على أبعاد المصدر. لا يُكبَّر المخرج أكثر من 1.35× فوق دقّة
+المصدر — التكبير فوق ذلك يزيد الحجم بلا تفاصيل.
+
+### `segments[]` — القصّ
+
+| الحقل | الافتراضي | الشرح |
+|---|---|---|
+| `start` / `end` | — | **بالثواني من الفيديو الأصلي**، لا من المونتاج |
+| `speed` | `1.0` | `1.05–1.15` ترفع الإيقاع بلا أن تُلاحظ. الصوت يُسرَّع معه بنفس النسبة |
+| `zoom` | `1.0` | punch-in ثابت. `1.08` يخفي القطع في نفس اللقطة |
+
+المقاطع تُدمج بالترتيب المكتوب. حذف `segments` بالكامل = الفيديو كاملًا بلا قصّ.
+
+### `captions[]`
+
+| الحقل | الافتراضي | الشرح |
+|---|---|---|
+| `start` / `end` | — | **بالثواني من الفيديو النهائي**، بعد القصّ والتسريع |
+| `text` | — | `*كلمة*` بين نجمتين تُلوَّن |
+| `style` | `body` | `hook` `body` `center` `cta` `sub` |
+| `anim` | `pop` | `pop` `fade` `slide` `none` |
+| `highlight_color` | `yellow` | `yellow` أو `green` |
+
+⚠️ **توقيتات الكابشن على الخط الزمني النهائي، لا الأصلي.** بعد `autocut` تغيّرت التوقيتات:
+اقرأ `estimated_duration` في الخطة ووزّع الكابشن عليه.
+
+### `icons[]`
+
+| الحقل | الافتراضي | الشرح |
+|---|---|---|
+| `start` / `end` | — | بالثواني من الفيديو النهائي |
+| `emoji` | — | إيموجي واحد. شغّل `icons.py --plan` لاستخراجه أولًا |
+| `image` | — | مسار PNG شفّاف. يتجاوز `emoji` إن وُجد |
+| `pos` | `top-right` | 9 مواضع: `top/center/bottom` × `left/center/right` |
+| `size` | `0.16` | نسبة من عرض الإطار (0.12–0.18 مناسب) |
+| `anim` | `pop` | `pop` أو `none` |
+
+الإيموجي المركّبة (أعلام، ZWJ مثل 👨‍💻) قد لا تُستخرج من الخط — استخدم `image` لها.
+
+### `music`
+
+| الحقل | الافتراضي | الشرح |
+|---|---|---|
+| `path` | — | ملف صوتي. يُكرَّر تلقائيًا إن كان أقصر من الفيديو |
+| `gain_db` | `-18` | `-18` إلى `-22` تحت الكلام، `-12` بلا كلام |
+| `ducking` | `true` | خفض تلقائي وقت النطق. **اتركه مفعّلًا دائمًا مع الكلام** |
+
+`"music": null` أو حذف الحقل = بلا موسيقى.
+
+### `audio` و `quality`
+
+| الحقل | الافتراضي | الشرح |
+|---|---|---|
+| `audio.normalize` | `true` | تطبيع EBU R128 |
+| `audio.target_lufs` | `-14` | معيار النشر على المنصّات |
+| `quality.crf` | `18` | 16 = أعلى جودة، 23 = ملف أصغر |
+| `quality.preset` | `slow` | `slow` جودة/حجم أفضل، `fast` أسرع رندرًا |
+| `quality.audio_bitrate` | `192k` | |
+
+## سير العمل
+
+```bash
+python3 autocut.py raw.mp4 --out out/plan.json --aspect 9:16 --max-duration 35
+# ثم حرّر الخطة: أضف captions و icons و music
+python3 icons.py --plan out/plan.json --out-dir out/icons
+python3 render.py out/plan.json --out out/final.mp4 --preview   # مراجعة سريعة
+python3 render.py out/plan.json --out out/final.mp4             # الجودة الكاملة
+python3 probe.py out/final.mp4                                  # تحقّق
+python3 capcut_sheet.py out/plan.json --out out/capcut.md --srt out/captions.srt
+```
+
+`--preview` يصدّر بنصف الأبعاد و`crf 28` — استخدمه للتحقق من التوقيتات قبل الرندر الكامل.
