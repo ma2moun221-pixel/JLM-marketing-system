@@ -47,17 +47,21 @@ GREEN = ass_color("2BD47D")
 SHADOW = ass_color("000000", 0x60)
 
 # قوالب الأنماط. الأرقام مضبوطة على لوحة 1080×1920 ويُعاد قياسها تلقائيًا.
+# الأحجام معايرة على لوحة 1080×1920 ويُعاد قياسها لأي مقاس آخر في build_header.
+# لا تصغّرها: النص الذي يُقرأ مريحًا على شاشة الحاسوب يبدو صغيرًا على الجوال.
 STYLE_PRESETS = {
     # الهوك: أعلى الثلث الأول، ضخم — يجب أن يُقرأ في نصف ثانية
-    "hook":   {"size": 96, "color": WHITE,  "outline": 7, "align": 8, "margin_v": 260, "bold": -1},
+    "hook":   {"size": 104, "color": WHITE,  "outline": 8, "align": 8, "margin_v": 260, "bold": -1},
     # الجسم: الثلث السفلي، فوق شريط واجهة تيك توك/ريلز
-    "body":   {"size": 74, "color": WHITE,  "outline": 6, "align": 2, "margin_v": 420, "bold": -1},
-    # الوسط: للجمل المفصلية والأرقام
-    "center": {"size": 86, "color": WHITE,  "outline": 7, "align": 5, "margin_v": 0,   "bold": -1},
+    "body":   {"size": 88,  "color": WHITE,  "outline": 7, "align": 2, "margin_v": 420, "bold": -1},
+    # الوسط: للجمل المفصلية وبطاقات الختام
+    "center": {"size": 100, "color": WHITE,  "outline": 8, "align": 5, "margin_v": 0,   "bold": -1},
     # CTA: أسفل، لون مميز
-    "cta":    {"size": 78, "color": YELLOW, "outline": 7, "align": 2, "margin_v": 380, "bold": -1},
+    "cta":    {"size": 90,  "color": YELLOW, "outline": 8, "align": 2, "margin_v": 380, "bold": -1},
+    # بطاقة الختام: أكبر نمط — تحمل خلاصة الفيديو (الاسم، التاريخ، المكان)
+    "card":   {"size": 120, "color": WHITE,  "outline": 9, "align": 5, "margin_v": 0,   "bold": -1},
     # همسة: صغير وخفيف للتعليقات الجانبية
-    "sub":    {"size": 54, "color": WHITE,  "outline": 4, "align": 2, "margin_v": 330, "bold": 0},
+    "sub":    {"size": 60,  "color": WHITE,  "outline": 5, "align": 2, "margin_v": 330, "bold": 0},
 }
 
 # الحركة: pop سريع عند الدخول + تلاشٍ. الظهور المفاجئ يبدو رخيصًا.
@@ -72,7 +76,15 @@ MAX_WORDS_PER_LINE = 5
 
 
 def wrap_caption(text: str, max_words: int = MAX_WORDS_PER_LINE) -> str:
-    """سطران كحد أقصى، 3–5 كلمات لكل سطر. السطر الطويل لا يُقرأ في ثانيتين."""
+    """سطران كحد أقصى، 3–5 كلمات لكل سطر. السطر الطويل لا يُقرأ في ثانيتين.
+
+    فاصل `|` (أو سطر جديد فعلي) في النص يعني كسرًا صريحًا يُحترم كما هو —
+    مفيد لبطاقات الختام المكوّنة من ثلاثة أسطر، حيث العدّ الآلي يكسر في مكان خاطئ.
+    """
+    if "|" in text or "\n" in text:
+        lines = [ln.strip() for ln in text.replace("|", "\n").split("\n")]
+        return "\n".join(ln for ln in lines if ln)
+
     words = text.split()
     if len(words) <= max_words:
         return text
@@ -90,8 +102,14 @@ def apply_highlight(text: str, color: str = YELLOW) -> str:
     return "".join(out)
 
 
+def layout_scale(width: int, height: int) -> float:
+    """القياس بأصغر النسبتين: الاعتماد على الارتفاع وحده يصغّر النص في الإطارات
+    الأطول من 9:16، والاعتماد على العرض وحده يضخّمه في 16:9."""
+    return min(width / 1080.0, height / 1920.0)
+
+
 def build_header(width: int, height: int, font: str) -> str:
-    scale = height / 1920.0  # الأنماط معايرة على 1920 ارتفاعًا
+    scale = layout_scale(width, height)
     lines = [
         "[Script Info]",
         "ScriptType: v4.00+",
@@ -118,7 +136,11 @@ def build_header(width: int, height: int, font: str) -> str:
     return "\n".join(lines)
 
 
-def build_events(captions: list[dict]) -> list[str]:
+def build_events(captions: list[dict], scale: float = 1.0) -> list[str]:
+    """`margin_v` على كابشن مفرد يزيحه عن عنصر مزدحم في لقطة بعينها (لافتة، وجه).
+
+    القيمة بمقياس اللوحة المرجعية 1080×1920 مثل هوامش الأنماط، ويعاد قياسها هنا.
+    """
     events = []
     for c in sorted(captions, key=lambda x: float(x.get("start", 0))):
         start = float(c.get("start", 0))
@@ -134,7 +156,9 @@ def build_events(captions: list[dict]) -> list[str]:
             continue
         color = GREEN if c.get("highlight_color") == "green" else YELLOW
         body = apply_highlight(raw, color).replace("\n", "\\N")
-        events.append(f"Dialogue: 0,{ass_time(start)},{ass_time(end)},{style},,0,0,0,,{anim}{body}")
+        margin_v = round(float(c["margin_v"]) * scale) if c.get("margin_v") else 0
+        events.append(f"Dialogue: 0,{ass_time(start)},{ass_time(end)},{style},,"
+                      f"0,0,{margin_v},,{anim}{body}")
     return events
 
 
@@ -218,7 +242,8 @@ def main() -> None:
 
     font = args.font or pick_arabic_font()
     content = (build_header(args.width, args.height, font) + "\n"
-               + "\n".join(build_events(captions)) + "\n")
+               + "\n".join(build_events(captions, layout_scale(args.width, args.height)))
+               + "\n")
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)

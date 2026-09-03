@@ -36,13 +36,21 @@ ASPECT_AR = {
 }
 
 
+def clean_text(text: str) -> str:
+    """إزالة نجوم التمييز؛ CapCut لا يفهمها. `|` فاصل سطر صريح يصير سطرًا فعليًا."""
+    return "\n".join(
+        ln.strip() for ln in str(text).replace("*", "").replace("|", "\n").split("\n")
+        if ln.strip()
+    )
+
+
 def write_srt(captions: list[dict], path: Path) -> int:
     """SRT بنص نظيف بلا علامات التمييز — CapCut لا يفهم نجوم التلوين."""
     blocks = []
     for i, c in enumerate(sorted(captions, key=lambda x: float(x.get("start", 0))), 1):
         start = float(c.get("start", 0))
         end = float(c.get("end", start + 2))
-        text = str(c.get("text", "")).replace("*", "").strip()
+        text = clean_text(c.get("text", ""))
         if not text:
             continue
         blocks.append(f"{i}\n{srt_time(start)} --> {srt_time(end)}\n{text}\n")
@@ -147,12 +155,15 @@ def build_sheet(plan: dict, srt_name: str | None) -> str:
         for c in captions:
             start = float(c.get("start", 0))
             end = float(c.get("end", start + 2))
-            text = str(c.get("text", "")).replace("*", "**").replace("|", "\\|")
+            text = (str(c.get("text", "")).replace("*", "**")
+                    .replace("|", " ⏎ ").replace("\n", " ⏎ "))
             add(f"| {start:.2f}s | {end:.2f}s | {text} "
                 f"| {STYLE_AR.get(c.get('style', 'body'), c.get('style', 'body'))} |")
         add("")
         add("الكلمات **بين نجمتين** لوّنها بالأصفر يدويًا "
             "(حدّد الكلمة ← `Color`). كلمة واحدة في كل جملة، لا أكثر.")
+        add("")
+        add("الرمز `⏎` يعني كسر سطر داخل مربّع النص نفسه (وهو مطبَّق في ملف SRT).")
     else:
         add("لا كابشن في هذه الخطة.")
     add("")

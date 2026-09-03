@@ -122,8 +122,13 @@ def build_segments(plan: dict, has_audio: bool, src_dur: float) -> tuple[list[st
     return parts, "[vcat]", "", n
 
 
-def build_geometry(plan: dict, vin: str, w: int, h: int) -> tuple[list[str], str]:
+def build_geometry(plan: dict, vin: str, w: int, h: int,
+                   src_w: int = 0, src_h: int = 0) -> tuple[list[str], str]:
     """تحويل الأبعاد إلى المقاس الهدف: خلفية ضبابية / قصّ / أشرطة سوداء."""
+    # المصدر بالمقاس المطلوب أصلًا: أي تحجيم هنا خسارة جودة بلا مقابل.
+    if (src_w, src_h) == (w, h):
+        return [], vin
+
     mode = plan.get("crop_mode", "blur")
     if mode == "crop":
         chain = (f"scale={w}:{h}:force_original_aspect_ratio=increase:flags=lanczos,"
@@ -160,6 +165,35 @@ def build_color(plan: dict, vin: str) -> tuple[list[str], str]:
     if color.get("sharpen"):
         chain.append("unsharp=5:5:0.6:5:5:0.0")
     return [f"{vin}{','.join(chain)}[vcol]"], "[vcol]"
+
+
+def build_outro(plan: dict, vin: str, timeline: float) -> tuple[list[str], str]:
+    """تمويه تدريجي في نهاية الفيديو — خلفية هادئة لبطاقة الختام.
+
+    `gblur` لا تقبل سيغما متغيّرة بالزمن، فنمزج النسخة الحادّة بالمموّهة عبر `blend`
+    بتعبير يعتمد على الطابع الزمني `T` — فيبدأ التمويه من الصفر ويكتمل تدريجيًا.
+    و`enable` على `gblur` يجعلها تمرّ دون عمل قبل بداية الختام، فلا تُموَّه كل إطارات
+    الفيديو بلا داعٍ.
+    """
+    outro = plan.get("outro") or {}
+    if not outro:
+        return [], vin
+
+    start = float(outro.get("start", max(0.0, timeline - 2.0)))
+    ramp = max(0.1, float(outro.get("ramp", 0.8)))
+    sigma = float(outro.get("blur", 24))
+    darken = float(outro.get("darken", 0.0))
+
+    progress = f"clip((T-{start:.3f})/{ramp:.3f},0,1)"
+    blur_chain = f"gblur=sigma={sigma:g}:enable='gte(t,{max(0.0, start - 0.1):.3f})'"
+    if darken > 0:
+        blur_chain += f",eq=brightness=-{darken:g}"
+
+    return ([
+        f"{vin}split=2[osharp][oblurbase]",
+        f"[oblurbase]{blur_chain}[oblur]",
+        f"[osharp][oblur]blend=all_expr='A*(1-{progress})+B*{progress}'[voutro]",
+    ], "[voutro]")
 
 
 def build_icon_filters(icons: list[dict], vin: str, icon_dir: Path,
@@ -239,6 +273,12 @@ def build_audio(plan: dict, ain: str, music_index: int | None) -> tuple[list[str
             chain.append(f"loudnorm=I={target}:TP=-1.5:LRA=11")
         filters.append(f"{speech}{','.join(chain)}[sp]")
         speech = "[sp]"
+
+    fade = plan.get("audio_fade_out")
+    if fade:
+        filters.append(f"{speech}afade=t=out:st={float(fade['start']):.3f}"
+                       f":d={float(fade.get('duration', 1.0)):.3f}[spf]")
+        speech = "[spf]"
 
     if music_index is None:
         return filters, speech
@@ -328,10 +368,14 @@ def main() -> None:
         for s in (plan.get("segments") or [{"start": 0, "end": src_dur}])
     ) - 0.05)
 
-    geo, vcur = build_geometry(plan, vcur, w, h)
+    geo, vcur = build_geometry(plan, vcur, w, h, even(src_w), even(src_h))
     filters += geo
     col, vcur = build_color(plan, vcur)
     filters += col
+
+    # الختام قبل الكابشن والأيقونات: تُموَّه الصورة وحدها ويبقى النص حادًّا فوقها
+    outro_filters, vcur = build_outro(plan, vcur, timeline)
+    filters += outro_filters
 
     # الكابشن بعد كل عمليات الهندسة، وإلا شُوّه النص مع التحجيم.
     caption_list = plan.get("captions") or []
@@ -341,7 +385,8 @@ def main() -> None:
         font = plan.get("font") or pick_arabic_font()
         ass_path.write_text(
             capmod.build_header(w, h, font) + "\n"
-            + "\n".join(capmod.build_events(caption_list)) + "\n",
+            + "\n".join(capmod.build_events(caption_list, capmod.layout_scale(w, h)))
+            + "\n",
             encoding="utf-8")
         filters.append(f"{vcur}ass='{filter_escape(str(ass_path))}'[vsub]")
         vcur = "[vsub]"
