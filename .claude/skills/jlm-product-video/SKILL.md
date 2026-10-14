@@ -41,10 +41,12 @@ When the user sends camera footage to edit, follow `brand/jlm/VIDEO_STYLE.md`
 (the client's approved style, third reference). The style has:
 - one-line karaoke captions at 66 % height on a soft dark box: the spoken word in
   yellow, upcoming words grey, problem words red;
-- round dark badges in the top corners whose ring and line icon draw themselves,
-  red for problems and yellow for solutions, with a small label pill;
+- under the caption, one pair of round dark badges per sentence, linked by a
+  yellow dashed arrow (problem → solution, cause → result); each badge's ring and
+  line icon draw themselves, red for problems and yellow for solutions;
 - a dark-board explainer with numbered steps and a gold flow;
-- the JLM logo and a yellow jlmstore.com pill at the end.
+- a black CTA end screen: the logo, the spoken line,
+  «اطلبها الآن من خلال jlmstore.com» and «مع توفر خدمة التوصيل».
 
 Icon sounds stay very soft (about −40 dBFS); the client asked for this explicitly.
 Never change the JLM fonts. The reference implementation is

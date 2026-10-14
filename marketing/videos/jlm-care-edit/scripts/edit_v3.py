@@ -1,9 +1,9 @@
 """JLM «العناية الدورية» — v3 edit in the client's third reference style
 (brand/jlm/VIDEO_STYLE.md): one-line karaoke captions on a soft dark box at
-2/3 height, round line-icon badges that draw themselves in the top corners
-(red = problem, yellow = solution) with a small label pill, an "inside the
-engine" explainer with numbered steps, the JLM logo and a jlmstore.com pill at
-the end. Icon sounds are very soft (≈ −40 dBFS).
+2/3 height; under it, per sentence, a pair of round line-icon badges that draw
+themselves (red = problem, yellow = solution) joined by a yellow arrow; an
+"inside the engine" explainer with numbered steps; a black CTA end screen
+(اطلبها الآن من خلال jlmstore.com · مع توفر خدمة التوصيل). Icon sounds are very soft (≈ −40 dBFS).
 
     python3 edit_v3.py --src CLIENT_VIDEO --out ../out/jlm_care_edit_v3.mp4 [--stills 1,5,...]
 """
@@ -30,7 +30,7 @@ YEL, WHT, CHA = E.YEL, E.WHT, E.CHA
 RED = (240, 62, 50)
 GREY = (168, 170, 172)
 SRC_DUR = 23.9
-HOLD = 1.0
+HOLD = 1.5
 DUR = SRC_DUR + HOLD
 CAP_Y = 0.66 * H
 
@@ -241,7 +241,42 @@ def _shield():
     return [shield, drop]
 
 
-ICONS = {"heart": _heart, "car_warn": lambda: _car("!"), "car_ok": lambda: _car("v"),
+def _person():
+    head = _arc(0, -0.42, 0.24, 0.24, 0, 360, 36)
+    body = np.concatenate([_arc(0, 0.62, 0.58, 0.58, 180, 360, 36)])
+    tick = np.array([[0.30, 0.40], [0.48, 0.56], [0.86, 0.14]])
+    return [head, body * [1, 1] + [0, -0.02], tick]
+
+
+def _wrench():
+    a = math.radians(-45)
+    rot = np.array([[math.cos(a), -math.sin(a)], [math.sin(a), math.cos(a)]])
+    jaw = np.concatenate([_arc(0, -0.58, 0.30, 0.30, 120, 420, 40)[:1],
+                          np.array([[-0.08, -0.80], [-0.08, -0.56], [0.08, -0.56], [0.08, -0.80]]),
+                          _arc(0, -0.58, 0.30, 0.30, -60, 240, 40)])
+    handle = _rrect(-0.12, -0.30, 0.12, 0.86, 0.12)
+    return [jaw @ rot.T, handle @ rot.T]
+
+
+def _engine():
+    body = np.array([[-0.62, -0.30], [0.30, -0.30], [0.46, -0.14], [0.70, -0.14], [0.70, 0.40],
+                     [0.46, 0.40], [0.30, 0.56], [-0.40, 0.56], [-0.62, 0.34], [-0.62, -0.30]])
+    top = np.array([[-0.30, -0.30], [-0.30, -0.50], [0.0, -0.50], [0.0, -0.30]])
+    cap = np.array([[-0.46, -0.62], [0.16, -0.62]])
+    side = np.array([[-0.62, 0.0], [-0.86, 0.0], [-0.86, 0.26], [-0.62, 0.26]])
+    tick = np.array([[-0.24, 0.12], [-0.06, 0.30], [0.28, -0.04]])
+    return [body, top, cap, side, tick]
+
+
+def _truck():
+    box = _rrect(-0.15, -0.46, 0.86, 0.30, 0.06)
+    cab = np.array([[-0.15, -0.22], [-0.52, -0.22], [-0.82, 0.04], [-0.82, 0.30], [-0.15, 0.30]])
+    w1, w2 = _arc(-0.50, 0.42, 0.14, 0.14, 0, 360, 24), _arc(0.52, 0.42, 0.14, 0.14, 0, 360, 24)
+    speed = [np.array([[0.98, -0.30], [1.18, -0.30]]), np.array([[1.00, -0.08], [1.26, -0.08]])]
+    return [box, cab, w1, w2] + speed
+
+
+ICONS = {"person": _person, "wrench": _wrench, "engine": _engine, "truck": _truck, "heart": _heart, "car_warn": lambda: _car("!"), "car_ok": lambda: _car("v"),
          "calendar": _calendar, "coins": _coins, "shield": _shield}
 
 
@@ -266,7 +301,7 @@ def partial_strokes(strokes, p):
 
 
 # ---------------------------------------------------------------- badges ---
-BADGE = 232            # disc diameter, px
+BADGE = 196            # disc diameter, px
 
 
 @lru_cache(maxsize=None)
@@ -332,28 +367,65 @@ def badge_layer(icon, color, lt):
     return out
 
 
-class Badges:
-    """(t_in, t_out, icon, colour, label, side) — side: 'L' / 'R' top corner."""
+class Pairs:
+    """Two linked badges per sentence, in a row under the caption.
+
+    Each item: (t_a, t_b, t_out, (icon, colour, label), (icon, colour, label)).
+    Arabic reads right to left, so badge A sits on the right, B on the left,
+    and a yellow arrow draws from A to B when B appears (problem → solution,
+    cause → result)."""
+
+    Y = 0.755 * H
+    XA, XB = 0.735 * W, 0.265 * W
 
     def __init__(self, items):
         self.items = items
 
+    def _badge(self, f, cx, lt, out, icon, color, label):
+        layer = badge_layer(icon, color, lt)
+        sc = (0.35 + 0.65 * back(lt / 0.32)) * (0.92 + 0.08 * out)
+        lay, x, y = R.warp_premul(layer, sc, cx, self.Y, (layer.shape[1] / 2, layer.shape[0] / 2))
+        R.over(f, lay, x, y, min(1.0, lt / 0.08) * out)
+        q = ease_io((lt - 0.45) / 0.25)
+        if q > 0:
+            lab = label_layer(label, color)
+            R.over(f, lab, cx - lab.shape[1] / 2, self.Y + BADGE / 2 + 6 + 10 * (1 - q), q * out)
+
+    def _arrow(self, f, p, out, ca, cb):
+        """Dashed arrow from A (right) to B (left), colour fading ca → cb."""
+        x0, x1 = self.XA - BADGE / 2 - 16, self.XB + BADGE / 2 + 16
+        y = int(self.Y)
+        xe = x0 + (x1 - x0) * p
+        layer = np.zeros((60, W), np.float32)
+        x = x0
+        while x > xe:
+            xd = max(x - 22, xe)
+            cv2.line(layer, (int(x), 30), (int(xd), 30), 1.0, 5, cv2.LINE_AA)
+            x -= 34
+        if p > 0.9:
+            k = ease_io((p - 0.9) / 0.1)
+            tip = int(xe)
+            cv2.line(layer, (tip, 30), (int(tip + 22 * k), int(30 - 18 * k)), 1.0, 5, cv2.LINE_AA)
+            cv2.line(layer, (tip, 30), (int(tip + 22 * k), int(30 + 18 * k)), 1.0, 5, cv2.LINE_AA)
+        glow = cv2.GaussianBlur(layer, (0, 0), 6) * 0.8
+        u = np.clip((x0 - np.arange(W, dtype=np.float32)) / max(x0 - x1, 1), 0, 1)[None, :, None]
+        col = (np.array(ca, np.float32) / 255) * (1 - u) + (np.array(cb, np.float32) / 255) * u
+        a = np.clip(layer + glow * 0.5, 0, 1)[..., None] * out
+        reg = f[y - 30:y + 30]
+        reg *= 1 - a
+        reg += a * col
+
     def draw(self, f, t):
-        for t0, t1, icon, color, label, side in self.items:
-            if not (t0 <= t < t1 + 0.25):
+        for ta, tb, t1, A, B in self.items:
+            if not (ta <= t < t1 + 0.25):
                 continue
-            lt = t - t0
             out = 1 - ease_io((t - t1) / 0.25)
-            cx = 0.17 * W if side == "L" else 0.83 * W
-            cy = 0.165 * H
-            layer = badge_layer(icon, color, lt)
-            sc = (0.35 + 0.65 * back(lt / 0.32)) * (0.92 + 0.08 * out)
-            lay, x, y = R.warp_premul(layer, sc, cx, cy, (layer.shape[1] / 2, layer.shape[0] / 2))
-            R.over(f, lay, x, y, min(1.0, lt / 0.08) * out)
-            q = ease_io((lt - 0.45) / 0.25)
-            if q > 0:
-                lab = label_layer(label, color)
-                R.over(f, lab, cx - lab.shape[1] / 2, cy + BADGE / 2 + 4 + 10 * (1 - q), q * out)
+            p = ease_io((t - tb + 0.25) / 0.40)
+            if p > 0:
+                self._arrow(f, p, out, A[1], B[1])
+            self._badge(f, self.XA, t - ta, out, *A)
+            if t >= tb:
+                self._badge(f, self.XB, t - tb, out, *B)
 
 
 # ------------------------------------------------------------- explainer ---
@@ -586,9 +658,9 @@ class Explainer:
 
 
 # ------------------------------------------------------------ end assets ---
-def url_pill():
-    txt = R.latin_layer("jlmstore.com", 40, CHA, 800, 0.01)
-    h, w = 66, txt.shape[1] + 30
+def url_pill(size=40):
+    txt = R.latin_layer("jlmstore.com", size, CHA, 800, 0.01)
+    h, w = int(size * 1.65), txt.shape[1] + int(size * 0.75)
     s = 3
     img = np.zeros((h * s, w * s, 4), np.uint8)
     r = h * s // 2
@@ -629,6 +701,59 @@ def logo_layer(width):
     out[pad + 4:pad + 4 + lay.shape[0], pad:pad + lay.shape[1], 3] = a
     R.paste_into(out, lay, pad, pad)
     return out
+
+
+class EndCard:
+    """Black CTA screen over the closing line: JLM logo, the spoken line,
+    «اطلبها الآن من خلال» + jlmstore.com pill + delivery row with a truck."""
+
+    def __init__(self, t0):
+        self.t0 = t0
+        self.logo = logo_layer(440)
+        self.cta = E.T.line([("اطلبها الآن", YEL), ("من خلال", WHT)], 74, bold=True, shadow=False, pad=10)
+        self.pill = url_pill(70)
+        self.deliv = E.T.line([("مع توفر", WHT), ("خدمة التوصيل", YEL)], 56, bold=True, shadow=False, pad=8)
+
+    def truck(self, p, size=120):
+        ss = 3
+        c = np.zeros((size * ss, int(size * 1.4) * ss), np.float32)
+        sc = size * 0.36 * ss
+        for st in partial_strokes(ICONS["truck"](), p):
+            pts = np.round((st * sc + [c.shape[1] / 2 - 0.2 * sc, c.shape[0] / 2]) * 4).astype(np.int32)
+            cv2.polylines(c, [pts], False, 1.0, 5 * ss, cv2.LINE_AA, shift=2)
+        c = cv2.resize(c, (c.shape[1] // ss, c.shape[0] // ss), interpolation=cv2.INTER_AREA)
+        g = cv2.GaussianBlur(c, (0, 0), 6) * 0.7
+        a = np.clip(c + g, 0, 1)
+        col = np.array(YEL, np.float32) / 255
+        return np.dstack([a[..., None] * col, a]).astype(np.float32)
+
+    def draw(self, f, t, caps):
+        b = ease_io((t - self.t0 + 0.25) / 0.35)
+        if b <= 0:
+            return False
+        f *= 1 - b
+        f += b * np.array([0.03, 0.032, 0.035], np.float32)
+        t0 = self.t0
+        q = ease_io((t - t0) / 0.4)
+        R.over(f, self.logo, (W - self.logo.shape[1]) / 2, 0.20 * H - self.logo.shape[0] / 2 + 12 * (1 - q), q)
+        caps.draw(f, t, 0.37 * H)
+        q = ease_io((t - t0 - 0.6) / 0.35)
+        R.over(f, self.cta, (W - self.cta.shape[1]) / 2, 0.52 * H - self.cta.shape[0] / 2 + 12 * (1 - q), q)
+        q = back((t - t0 - 0.9) / 0.4, 1.0)
+        if q > 0:
+            lay, x, y = R.warp_premul(self.pill, 0.6 + 0.4 * q, W / 2, 0.605 * H,
+                                      (self.pill.shape[1] / 2, self.pill.shape[0] / 2))
+            R.over(f, lay, x, y, min(1.0, q))
+        q = ease_io((t - t0 - 1.3) / 0.3)
+        if q > 0:
+            tr = self.truck(ease_io((t - t0 - 1.3) / 0.8), 150)
+            gap = 0
+            row = self.deliv.shape[1] + gap + tr.shape[1]
+            x0 = (W - row) / 2
+            y = 0.70 * H
+            R.over(f, tr, x0, y - tr.shape[0] / 2, q)
+            R.over(f, self.deliv, x0 + tr.shape[1] + gap, y - self.deliv.shape[0] / 2 + 4, q)
+        return True
 
 
 # ----------------------------------------------------------------- audio ---
@@ -700,18 +825,19 @@ def main():
     anim = (at("على", 0) - 0.12, SEGMENTS[7][1] + 0.12)
     expl = Explainer(anim[0], t_engine, t_fuel, t_perf, anim[1])
     end_t = at("JLM", 1)
-    badges = Badges([
-        (at("المرض"), at("وسيارتك") + 0.2, "heart", RED, "صحّتك أولًا", "L"),
-        (at("العطل"), at("العناية") - 0.1, "car_warn", RED, "لا تنتظر العطل", "R"),
-        (at("العناية"), anim[0] - 0.05, "calendar", YEL, "عناية دورية", "L"),
-        (at("اهتم"), end_t - 0.2, "car_ok", YEL, "اهتم اليوم", "R"),
-        (at("ووفّر"), end_t - 0.2, "coins", YEL, "وفّر بكرا", "L"),
-        (at("عناية"), DUR + 1, "shield", YEL, "حماية من الداخل", "L"),
+    pairs = Pairs([
+        (at("المرض"), at("عشان", 0), at("وسيارتك") - 0.05,
+         ("heart", RED, "لا تنتظر المرض"), ("person", YEL, "اهتم بنفسك")),
+        (at("لازم"), at("عشان", 1), at("العناية") - 0.1,
+         ("car_warn", RED, "لا تنتظر العطل"), ("wrench", YEL, "اهتم فيها")),
+        (at("العناية"), at("بتساعد"), anim[0] - 0.05,
+         ("calendar", YEL, "عناية دورية"), ("engine", YEL, "محرّك نظيف")),
+        (at("اهتم"), at("ووفّر"), end_t - 0.25,
+         ("car_ok", YEL, "اهتم اليوم"), ("coins", YEL, "وفّر بكرا")),
     ])
     prod = chip([("منتجات", WHT), ("JLM", YEL), ("للعناية الدورية", WHT)])
     prod_t = (at("JLM", 0), anim[0] - 0.05)
-    logo = logo_layer(330)
-    pill = url_pill()
+    endcard = EndCard(end_t)
     print(f"anim {anim[0]:.2f}–{anim[1]:.2f}  steps {t_engine:.2f} {t_fuel:.2f} {t_perf:.2f}  end {end_t:.2f}")
     for p in caps.phrases:
         print(f"  {p['t0']:5.2f}–{p['t1']:5.2f} {'#' if p['hidden'] else ' '} " + " ".join(w for w, *_ in p["items"]))
@@ -744,15 +870,9 @@ def main():
         if prod_t[0] <= t < prod_t[1]:
             p = ease_io((t - prod_t[0]) / 0.25) * (1 - ease_io((t - prod_t[1] + 0.2) / 0.2))
             R.over(f, prod, (W - prod.shape[1]) / 2, 0.075 * H + 10 * (1 - p), p)
-        badges.draw(f, t)
-        caps.draw(f, t)
-        if t >= end_t:
-            q = ease_io((t - end_t) / 0.35)
-            R.over(f, logo, (W - logo.shape[1]) / 2, 0.045 * H + 10 * (1 - q), q)
-            q2 = back((t - end_t - 0.25) / 0.35, 1.0)
-            if q2 > 0:
-                lay, x, y = R.warp_premul(pill, 0.6 + 0.4 * q2, W / 2, CAP_Y + 105, (pill.shape[1] / 2, pill.shape[0] / 2))
-                R.over(f, lay, x, y, min(1.0, q2))
+        pairs.draw(f, t)
+        if not endcard.draw(f, t, caps):
+            caps.draw(f, t)
         img = (np.clip(f, 0, 1) * 255 + 0.5).astype(np.uint8)
         if want is not None:
             if n in want:
@@ -765,9 +885,9 @@ def main():
         return
     enc.stdin.close()
     enc.wait()
-    ticks = [(b[0] + 0.05, 480.0) for b in badges.items]
+    ticks = [(x + 0.05, 480.0) for it in pairs.items for x in it[:2]]
     ticks += [(s, 400.0) for s in (t_engine, t_fuel, t_perf)]
-    ticks += [(end_t + 0.25, 440.0)]
+    ticks += [(end_t + 0.95, 440.0), (end_t + 1.35, 440.0)]
     sfx = out.with_name(out.stem + "_sfx.wav")
     sfx_track(sfx, ticks, [anim[0], anim[1]])
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(tmp_v), "-i", a.src, "-i", str(sfx),
