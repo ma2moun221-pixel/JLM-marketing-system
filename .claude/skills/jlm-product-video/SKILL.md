@@ -38,13 +38,18 @@ for a new film, then change only `scripts/storyboard.py` and `assets/`.
 ## Footage edits (real video with a presenter)
 
 When the user sends camera footage to edit, follow `brand/jlm/VIDEO_STYLE.md`
-(the client's approved style). It is a talking-head style: word-synced chest
-captions with no box, in white with the keyword in yellow; numbered points;
-dashed-yellow icon tiles above or beside the head, never on the face;
-minimal motion; soft clicks; and a JLM end card. Never change the JLM fonts.
-The reference implementation is `marketing/videos/jlm-care-edit/scripts/edit_v2.py`,
-which uses a face track. Its icons come from
-`marketing/videos/jlm-care-icons/scripts/icons.py`.
+(the client's approved style, third reference). The style has:
+- one-line karaoke captions at 66 % height on a soft dark box: the spoken word in
+  yellow, upcoming words grey, problem words red;
+- round dark badges in the top corners whose ring and line icon draw themselves,
+  red for problems and yellow for solutions, with a small label pill;
+- a dark-board explainer with numbered steps and a gold flow;
+- the JLM logo and a yellow jlmstore.com pill at the end.
+
+Icon sounds stay very soft (about −40 dBFS); the client asked for this explicitly.
+Never change the JLM fonts. The reference implementation is
+`marketing/videos/jlm-care-edit/scripts/edit_v3.py`. The client rejected v2
+(`edit_v2.py`, with 3D tiles); do not reuse its look.
 Transcribe the voice first. Whisper turbo via sherpa-onnx works offline; the
 model comes from the k2-fsa GitHub releases. Then time every caption to the
 spoken words.
