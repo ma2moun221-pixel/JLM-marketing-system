@@ -1,4 +1,4 @@
-# JLM — فيديو إعلاني ٢٠ ثانية
+# JLM — فيديو إعلاني ٢٠ ثانية (النسخة الثانية: هوية JLM Liquid Tools الرسمية)
 
 | | |
 |---|---|
@@ -55,7 +55,7 @@ python3 scripts/render.py --assets assets --fonts assets/fonts --out out/jlm_pro
 python3 scripts/render.py ... --stills 1.0,4.6,17.5    # صور فحص فقط
 ```
 
-ضعوا ملفّي Helvetica Neue LT Arabic (Bold + Roman) في `assets/fonts/`. الخطوط مرخّصة،
-لذلك لا تُرفع إلى git (المجلد مستثنى في `.gitignore`).
+الخطوط والشعارات والأيقونات المعتمدة في `brand/jlm/` (راجع `brand/jlm/BRAND.md`).
+عند الرندر استخدموا `--fonts ../../../brand/jlm/fonts`، وجهّزوا أصول الهوية بـ `scripts/prepare_brand.py`.
 
 الموسيقى مولّدة برمجيًا في `scripts/soundtrack.py`، فهي خالية من أي حقوق.

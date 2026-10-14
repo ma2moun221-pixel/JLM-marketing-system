@@ -9,14 +9,14 @@ FPS = 30
 DURATION = 20.0
 SIZE = (1080, 1920)  # 9:16 — Reels / TikTok / Shorts / Stories
 
-# JLM palette: graphite + steel carry the frame, gold (the bronze printed on
-# the "Premium Grade" label) marks the one thing to read first.
-GRAPHITE = (13, 14, 16)
-STEEL = (35, 38, 43)
-SILVER = (201, 205, 210)
-WHITE = (244, 244, 242)
-GOLD = (200, 161, 101)
-GOLD_HI = (236, 205, 150)
+# JLM Liquid Tools palette (from the ATL templates and official logo files)
+CHARCOAL = (37, 39, 41)
+CHARCOAL_2 = (48, 50, 53)
+YELLOW = (250, 184, 23)
+SILVER = (192, 196, 199)
+WHITE = (241, 240, 236)
+# aliases kept so the copy below reads naturally
+GOLD = YELLOW
 
 HOOK_END = 3.2
 SCENE_LEN = 3.0
@@ -34,23 +34,23 @@ HOOK = {
 PRODUCTS = [
     {
         "asset": "oil_5w30.png",
-        "height": 800,
-        "tag": "ENDURADRIVE C3  ·  5W-30",
+        "height": 760,
+        "tag": "ENDURADRIVE C3 · 5W-30",
         "watermark": "5W-30",
         "headline": [[("حماية", WHITE), ("تدوم", GOLD), ("طويلًا", WHITE)]],
         "chips": ["زيت اصطناعي", "متوافق مع فلاتر DPF"],
     },
     {
         "asset": "oil_5w40.png",
-        "height": 800,
-        "tag": "APEXDRIVE  ·  5W-40",
+        "height": 760,
+        "tag": "APEXDRIVE · 5W-40",
         "watermark": "5W-40",
         "headline": [[("أداء", WHITE), ("في", WHITE), ("القمّة", GOLD)]],
         "chips": ["زيت اصطناعي", "حماية فائقة للمحرّك"],
     },
     {
         "asset": "turbo_prelube.png",
-        "height": 880,
+        "height": 720,
         "tag": "TURBO PRE LUBE",
         "watermark": "TURBO",
         "headline": [[("حماية", WHITE), ("التيربو", WHITE)], [("من", GOLD), ("أول", GOLD), ("تشغيل", GOLD)]],
@@ -58,8 +58,8 @@ PRODUCTS = [
     },
     {
         "asset": "stop_smoke.png",
-        "height": 900,
-        "tag": "STOP SMOKE  ·  OIL TREATMENT",
+        "height": 850,
+        "tag": "STOP SMOKE",
         "watermark": "SMOKE",
         "headline": [[("قلّل", WHITE), ("دخان", GOLD), ("العادم", GOLD)]],
         "chips": ["يحسّن أداء المحرّك", "بنزين · ديزل · غاز"],
@@ -75,14 +75,14 @@ END = {
     "badge": "مع توفر خدمة التوصيل",
 }
 
-# Layout (px, 1080x1920). Bottom 12 % is left clear for the Reels/TikTok UI.
-LOGO_Y = 150
-TAG_Y = 312
-PRODUCT_BOTTOM = 1225
-HEADLINE_Y = 1370
-CHIPS_Y = 1540
+# Layout (px, 1080x1920), mirroring the JLM ATL vertical template:
+# headline box on top, product in the middle, yellow footer with the drop.
+HEADLINE_Y = 250       # centre of the headline box
+PRODUCT_BOTTOM = 1320
+CHIPS_Y = 1440
+FOOTER_Y = 1565        # top edge of the yellow footer band
 
 
 def transitions():
-    """Times at which the gold pulse wipes from one scene to the next."""
+    """Times at which the oil drop lands and the scene changes."""
     return [HOOK_END + SCENE_LEN * i for i in range(len(PRODUCTS) + 1)]

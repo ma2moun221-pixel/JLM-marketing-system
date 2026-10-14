@@ -22,6 +22,7 @@ import storyboard as sb
 W, H = sb.SIZE
 FPS = sb.FPS
 N_FRAMES = int(sb.DURATION * FPS)
+ALBERT_PATH = None  # set in main() from --fonts
 
 
 # ---------------------------------------------------------------- easing ----
@@ -189,29 +190,133 @@ class Type:
         return out
 
 
+def albert(size, weight=900):
+    """Albert Sans (the JLM template typeface) at a given weight."""
+    f = ImageFont.truetype(str(ALBERT_PATH), size)
+    try:
+        f.set_variation_by_axes([weight])
+    except Exception:
+        pass
+    return f
+
+
+def latin_layer(text, size, color, weight=900, tracking=0.04):
+    f = albert(size, weight)
+    advs = [f.getlength(ch) for ch in text]
+    ascent, descent = f.getmetrics()
+    pad = 6
+    w = int(sum(advs) + tracking * size * (len(text) - 1)) + 2 * pad
+    img = Image.new("RGBA", (w, ascent + descent + 2 * pad), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    x = pad
+    for ch, adv in zip(text, advs):
+        d.text((x, pad), ch, font=f, fill=tuple(color) + (255,))
+        x += adv + tracking * size
+    arr = np.array(img)
+    ys = np.nonzero(arr[..., 3].max(axis=1) > 0)[0]
+    return to_premul(arr[max(ys.min() - 2, 0): ys.max() + 3])
+
+
+def drop_points(cx, cy, R, n=90):
+    """JLM drop: pointed tip on top, round base. (cx, cy) = centre of the base
+    circle, R its radius; the tip sits 1.9 R above the centre."""
+    pts = []
+    tip = np.array([0.0, -1.9 * R])
+    side = np.array([R, 0.0])
+    c1, c2 = np.array([0.30 * R, -1.50 * R]), np.array([R, -0.80 * R])
+    for t in np.linspace(0, 1, n):  # right flank, tip → side
+        p = (1 - t) ** 3 * tip + 3 * (1 - t) ** 2 * t * c1 + 3 * (1 - t) * t ** 2 * c2 + t ** 3 * side
+        pts.append(p)
+    for a in np.linspace(0, math.pi, n):  # base circle, right → left
+        pts.append(np.array([R * math.cos(a), R * math.sin(a)]))
+    for t in np.linspace(1, 0, n):  # left flank, side → tip
+        p = (1 - t) ** 3 * tip + 3 * (1 - t) ** 2 * t * (c1 * [-1, 1]) + 3 * (1 - t) * t ** 2 * (c2 * [-1, 1]) + t ** 3 * (side * [-1, 1])
+        pts.append(p)
+    return [(cx + x, cy + y) for x, y in pts]
+
+
+def drop_layer(R, color, stretch=1.0):
+    """Anti-aliased drop sprite. Returns (premul, anchor) where anchor is the
+    base-circle centre inside the sprite."""
+    S = 4
+    w, h = int(2 * R + 8), int(2.9 * R * stretch + 8)
+    img = Image.new("L", (w * S, h * S), 0)
+    cx, cy = w / 2 * S, (h - R - 4) * S
+    pts = [(x, cy + (y - cy) * stretch) for x, y in drop_points(cx, cy, R * S)]
+    ImageDraw.Draw(img).polygon(pts, fill=255)
+    a = np.array(img.resize((w, h), Image.LANCZOS)).astype(np.float32)[..., None] / 255.0
+    return np.concatenate([rgb01(color)[None, None, :] * a, a], axis=2), (w / 2, h - R - 4)
+
+
+def box_frame(w, h, color, stroke=5):
+    a = np.zeros((h, w), np.float32)
+    a[:stroke], a[-stroke:], a[:, :stroke], a[:, -stroke:] = 1, 1, 1, 1
+    return np.concatenate([rgb01(color)[None, None, :] * a[..., None], a[..., None]], axis=2)
+
+
+def solid(w, h, color, alpha=1.0):
+    out = np.zeros((h, w, 4), np.float32)
+    out[..., :3] = rgb01(color) * alpha
+    out[..., 3] = alpha
+    return out
+
+
+def paste_into(dst, src, x, y):
+    """Premultiplied over, inside a premultiplied layer."""
+    h, w = src.shape[:2]
+    region = dst[y: y + h, x: x + w]
+    region *= 1 - src[..., 3:4]
+    region += src
+
+
+def headline_box(typer, lines, tag):
+    """ATL headline: yellow 5 px frame, Arabic headline inside, and a solid
+    yellow tag with the product name hanging off its bottom-left corner
+    (the template's bottom-right, mirrored for right-to-left reading)."""
+    rendered = [typer.line(runs, 84, shadow=False, pad=0) for runs in lines]
+    tw = max(r.shape[1] for r in rendered)
+    line_h = 104
+    padx, pady = 46, 26
+    bw = min(tw + 2 * padx, W - 80)
+    bh = line_h * len(rendered) + 2 * pady
+    tag_layer = None
+    th = 0
+    if tag:
+        txt = latin_layer(tag, 34, sb.CHARCOAL, 800, 0.06)
+        th = txt.shape[0] + 24
+        tag_layer = solid(txt.shape[1] + 40, th, sb.YELLOW)
+        paste_into(tag_layer, txt, 20, 12)
+    total_h = bh + (th - 6 if tag else 0)
+    out = np.zeros((total_h, bw, 4), np.float32)
+    paste_into(out, box_frame(bw, bh, sb.YELLOW), 0, 0)
+    y = pady
+    for r in rendered:
+        paste_into(out, r, (bw - r.shape[1]) // 2, y + (line_h - r.shape[0]) // 2)
+        y += line_h
+    if tag_layer is not None:
+        tw2 = min(tag_layer.shape[1], bw)
+        paste_into(out, tag_layer[:, :tw2], 0, bh - 6)
+    return out, bh
+
+
 def chip(typer, text, size=40):
-    """Outlined gold pill with silver text."""
-    txt = typer.line([(text, sb.SILVER)], size, bold=False, shadow=False, pad=0)
+    """Dark pill, thin yellow outline, light Arabic text."""
+    txt = typer.line([(text, sb.WHITE)], size, bold=False, shadow=False, pad=0)
     th, tw = txt.shape[:2]
     padx, pady = 34, 16
     w, h = tw + 2 * padx, th + 2 * pady - 10
-    S = 3  # supersample the pill outline
+    S = 3
     img = Image.new("RGBA", (w * S, h * S), (0, 0, 0, 0))
-    d = ImageDraw.Draw(img)
-    d.rounded_rectangle([S, S, w * S - S, h * S - S], radius=h * S // 2,
-                        fill=sb.GRAPHITE + (150,), outline=sb.GOLD + (235,), width=2 * S)
-    img = img.resize((w, h), Image.LANCZOS)
-    pill = to_premul(np.array(img))
-    y = (h - th) // 2 - 3
-    region = pill[y: y + th, padx: padx + tw]
-    region *= 1 - txt[..., 3:4]
-    region += txt
+    ImageDraw.Draw(img).rounded_rectangle([S, S, w * S - S, h * S - S], radius=h * S // 2,
+                                          fill=sb.CHARCOAL_2 + (235,), outline=sb.YELLOW + (255,), width=2 * S)
+    pill = to_premul(np.array(img.resize((w, h), Image.LANCZOS)))
+    paste_into(pill, txt, padx, (h - th) // 2 - 3)
     return pill
 
 
-def badge(typer, text, size=46):
-    """Solid gold pill with a drawn delivery-truck icon (dark ink)."""
-    ink = sb.GRAPHITE
+def badge(typer, text, size=44):
+    """Solid charcoal pill with yellow text and a delivery truck (facing left)."""
+    ink = sb.YELLOW
     txt = typer.line([(text, ink)], size, bold=True, shadow=False, pad=0)
     th, tw = txt.shape[:2]
     S = 4
@@ -219,133 +324,73 @@ def badge(typer, text, size=46):
     w, h = tw + icon_w + gap + 2 * padx, th + 2 * pady - 8
     img = Image.new("RGBA", (w * S, h * S), (0, 0, 0, 0))
     d = ImageDraw.Draw(img)
-    d.rounded_rectangle([0, 0, w * S - 1, h * S - 1], radius=h * S // 2, fill=sb.GOLD + (255,))
-    # truck, facing left (RTL reading direction), at the right end of the pill
-    ix, iy = (w - padx - icon_w) * S, (h // 2 - 22) * S
-    u = S
+    d.rounded_rectangle([0, 0, w * S - 1, h * S - 1], radius=h * S // 2, fill=sb.CHARCOAL + (255,),
+                        outline=sb.YELLOW + (255,), width=2 * S)
+    ix, iy, u = (w - padx - icon_w) * S, (h // 2 - 22) * S, S
+    bg = sb.CHARCOAL
     d.rounded_rectangle([ix + 26 * u, iy + 2 * u, ix + 72 * u, iy + 32 * u], radius=4 * u, fill=ink + (255,))
     d.polygon([(ix + 26 * u, iy + 10 * u), (ix + 10 * u, iy + 10 * u), (ix + 2 * u, iy + 21 * u),
                (ix + 2 * u, iy + 32 * u), (ix + 26 * u, iy + 32 * u)], fill=ink + (255,))
     d.polygon([(ix + 22 * u, iy + 14 * u), (ix + 12 * u, iy + 14 * u), (ix + 7 * u, iy + 21 * u),
-               (ix + 22 * u, iy + 21 * u)], fill=sb.GOLD + (255,))
+               (ix + 22 * u, iy + 21 * u)], fill=bg + (255,))
     for wx in (14, 56):
         d.ellipse([ix + (wx - 8) * u, iy + 26 * u, ix + (wx + 8) * u, iy + 42 * u], fill=ink + (255,))
-        d.ellipse([ix + (wx - 3) * u, iy + 31 * u, ix + (wx + 3) * u, iy + 37 * u], fill=sb.GOLD + (255,))
-    img = img.resize((w, h), Image.LANCZOS)
-    pill = to_premul(np.array(img))
-    y = (h - th) // 2 - 4
-    region = pill[y: y + th, padx: padx + tw]
-    region *= 1 - txt[..., 3:4]
-    region += txt
+        d.ellipse([ix + (wx - 3) * u, iy + 31 * u, ix + (wx + 3) * u, iy + 37 * u], fill=bg + (255,))
+    pill = to_premul(np.array(img.resize((w, h), Image.LANCZOS)))
+    paste_into(pill, txt, padx, (h - th) // 2 - 4)
     return pill
 
 
-def logo_layer(mask_path, width, color):
-    m = Image.open(mask_path)
-    m = m.resize((width, int(m.height * width / m.width)), Image.LANCZOS)
-    a = np.array(m).astype(np.float32)[..., None] / 255.0
-    return np.concatenate([rgb01(color)[None, None, :] * a, a], axis=2)
+def image_layer(path, width):
+    im = Image.open(path).convert("RGBA")
+    im = im.resize((width, int(im.height * width / im.width)), Image.LANCZOS)
+    return to_premul(np.array(im))
 
 
-# ------------------------------------------------------------- background ---
-def build_background():
-    rng = np.random.default_rng(7)
-    y = np.linspace(0, 1, H, dtype=np.float32)[:, None]
-    x = np.linspace(0, 1, W, dtype=np.float32)[None, :]
-    base = rgb01(sb.GRAPHITE)[None, None, :] * np.ones((H, W, 1), np.float32)
-    # soft overhead light behind the product zone
-    d = np.sqrt(((x - 0.5) / 0.62) ** 2 + ((y - 0.42) / 0.36) ** 2)
-    spot = np.exp(-d ** 2 * 1.6)[..., None]
-    base += (rgb01(sb.STEEL) - rgb01(sb.GRAPHITE)) * spot * 1.25
-    # brushed-metal grain: noise smeared horizontally
-    n = rng.standard_normal((H, W)).astype(np.float32)
-    n = cv2.GaussianBlur(n, (0, 0), sigmaX=40, sigmaY=0.6)
-    base += (n / (n.std() + 1e-6) * 0.006)[..., None]
-    # vignette
-    v = np.sqrt((x - 0.5) ** 2 * 1.4 + (y - 0.5) ** 2)
-    base *= (1 - 0.55 * np.clip(v - 0.25, 0, 1) ** 1.5)[..., None]
-    return np.clip(base, 0, 1)
+# ---------------------------------------------------------- background ------
+class Backdrop:
+    """Charcoal with the JLM gear pattern, drifting slowly (parallax pan)."""
+
+    def __init__(self, gears_path):
+        g = np.array(Image.open(gears_path)).astype(np.float32) / 255.0
+        scale = H * 1.08 / g.shape[0]
+        g = cv2.resize(g, (int(g.shape[1] * scale), int(g.shape[0] * scale)), interpolation=cv2.INTER_AREA)
+        self.g = g
+        base = rgb01(sb.CHARCOAL)
+        lift = rgb01((58, 60, 63)) - base
+        self.base = base[None, None, :]
+        self.lift = lift[None, None, :]
+        y = np.linspace(0, 1, H, dtype=np.float32)[:, None]
+        x = np.linspace(0, 1, W, dtype=np.float32)[None, :]
+        v = np.sqrt((x - 0.5) ** 2 * 1.2 + (y - 0.42) ** 2)
+        self.vig = (1 - 0.35 * np.clip(v - 0.2, 0, 1))[..., None]
+        d = np.sqrt(((x - 0.5) / 0.55) ** 2 + ((y - 0.45) / 0.32) ** 2)
+        self.spot = (np.exp(-d ** 2 * 1.8) * 0.05)[..., None]
+
+    def frame(self, t):
+        span = self.g.shape[1] - W
+        x0 = int(span * 0.25 + t * 9)
+        y0 = int((self.g.shape[0] - H) / 2 + math.sin(t * 0.3) * 8)
+        gm = self.g[y0: y0 + H, x0: x0 + W][..., None]
+        f = self.base + self.lift * gm * 0.9
+        f = f + self.spot
+        return f * self.vig
 
 
-def build_glow(radius, color, strength):
-    s = int(radius * 2)
-    yy, xx = np.mgrid[0:s, 0:s].astype(np.float32)
-    d = np.hypot(xx - s / 2, yy - s / 2) / radius
-    g = np.exp(-(d ** 2) * 3.2) * strength
-    return g[..., None] * rgb01(color)[None, None, :]
-
-
-def build_floor():
-    """A thin silver horizon line the products stand on."""
-    x = np.linspace(-1, 1, W, dtype=np.float32)
-    fade = np.exp(-(x ** 2) * 2.2)
-    line = np.zeros((9, W, 3), np.float32)
-    prof = np.exp(-((np.arange(9) - 4) ** 2) / 2.5)[:, None]
-    line += (prof * fade[None, :])[..., None] * rgb01(sb.SILVER)[None, None, :] * 0.16
-    return line
-
-
-# ---------------------------------------------- algorithmic-art flow field ---
-class OilFlow:
-    """Seeded flow field of fine gold particles leaving fading trails.
-    Runs at half resolution; a surge parameter pushes the flow right-to-left
-    during scene transitions so the oil 'carries' the cut."""
-
-    def __init__(self, n=1500, seed=11):
-        self.rng = np.random.default_rng(seed)
-        self.w, self.h = W // 2, H // 2
-        self.p = self.rng.random((n, 2)).astype(np.float32) * [self.w, self.h]
-        self.buf = np.zeros((self.h, self.w), np.float32)
-
-    def field(self, p, t):
-        x, y = p[:, 0], p[:, 1]
-        a = (np.sin(x * 0.011 + t * 0.35) + np.cos(y * 0.009 - t * 0.27)
-             + 0.6 * np.sin((x + y) * 0.006 + 1.7)) * math.pi * 0.55 + math.pi
-        return np.stack([np.cos(a), np.sin(a)], axis=1)
-
-    def step(self, t, surge):
-        v = self.field(self.p, t) * (0.9 + 0.4 * surge)
-        v[:, 0] -= surge * 9.0  # right-to-left rush
-        p0 = self.p.copy()
-        self.p += v
-        self.buf *= 0.88 if surge < 0.05 else 0.8
-        steps = 3
-        for k in range(1, steps + 1):  # splat along the segment for streaks
-            q = p0 + (self.p - p0) * (k / steps)
-            xi = np.clip(q[:, 0].astype(int), 0, self.w - 1)
-            yi = np.clip(q[:, 1].astype(int), 0, self.h - 1)
-            np.add.at(self.buf, (yi, xi), 0.32 / steps * (1 + surge * 2))
-        out = (self.p[:, 0] < -4) | (self.p[:, 0] > self.w + 4) | (self.p[:, 1] < -4) | (self.p[:, 1] > self.h + 4)
-        respawn = out | (self.rng.random(len(self.p)) < 0.004)
-        k = int(respawn.sum())
-        if k:
-            self.p[respawn] = self.rng.random((k, 2)).astype(np.float32) * [self.w, self.h]
-            if surge > 0.05:  # during a rush new particles enter from the right
-                self.p[respawn, 0] = self.w + self.rng.random(k) * 20
-
-    def light(self):
-        b = cv2.GaussianBlur(self.buf, (0, 0), 0.9)
-        b = cv2.resize(b, (W, H), interpolation=cv2.INTER_LINEAR)
-        return np.clip(b, 0, 1.2)[..., None] * rgb01(sb.GOLD)[None, None, :]
-
-
-# ------------------------------------------------------------ pulse line ----
 def ecg_y(x, base_y, spikes, amp=1.0):
-    """Heartbeat trace: flat line with a P-QRS-T complex at each spike x.
-    Drawn right-to-left, so each complex is mirrored in x."""
+    """Heartbeat trace (P-QRS-T per spike), drawn right-to-left."""
     y = np.full_like(x, base_y, dtype=np.float32)
     for sx in spikes:
-        u = (sx - x) / 46.0  # positive to the left of the spike
-        y -= 16 * amp * np.exp(-((u + 1.9) ** 2) / 0.12)   # P
-        y += 22 * amp * np.exp(-((u - 0.0) ** 2) / 0.012)  # Q
-        y -= 150 * amp * np.exp(-((u - 0.32) ** 2) / 0.018)  # R
-        y += 60 * amp * np.exp(-((u - 0.68) ** 2) / 0.02)   # S
-        y -= 30 * amp * np.exp(-((u - 2.0) ** 2) / 0.22)   # T
+        u = (sx - x) / 46.0
+        y -= 16 * amp * np.exp(-((u + 1.9) ** 2) / 0.12)
+        y += 22 * amp * np.exp(-((u - 0.0) ** 2) / 0.012)
+        y -= 150 * amp * np.exp(-((u - 0.32) ** 2) / 0.018)
+        y += 60 * amp * np.exp(-((u - 0.68) ** 2) / 0.02)
+        y -= 30 * amp * np.exp(-((u - 2.0) ** 2) / 0.22)
     return y
 
 
-def draw_trace(frame, xs, ys, alpha_along, width=3.0, glow=1.0):
-    """Draw a glowing gold polyline whose opacity varies along its length."""
+def draw_trace(frame, xs, ys, alpha_along, width=4.0, glow=1.0):
     if len(xs) < 2:
         return
     x0, x1 = int(max(xs.min() - 60, 0)), int(min(xs.max() + 60, W))
@@ -358,45 +403,53 @@ def draw_trace(frame, xs, ys, alpha_along, width=3.0, glow=1.0):
         a = float(alpha_along[i])
         if a > 0.01:
             cv2.line(canvas, tuple(pts[i]), tuple(pts[i + 1]), a, int(width), cv2.LINE_AA, shift=2)
-    core = canvas[..., None] * rgb01(sb.GOLD_HI)[None, None, :]
-    halo = cv2.GaussianBlur(canvas, (0, 0), 10)[..., None] * rgb01(sb.GOLD)[None, None, :] * 1.6 * glow
-    frame[y0:y1, x0:x1] += core + halo
+    yellow = rgb01(sb.YELLOW)[None, None, :]
+    core = canvas[..., None]
+    halo = cv2.GaussianBlur(canvas, (0, 0), 9)[..., None] * 0.9 * glow
+    region = frame[y0:y1, x0:x1]
+    region *= 1 - np.clip(core, 0, 1)
+    region += core * yellow + halo * yellow * 0.6
+
+
+def build_glow(radius, color, strength):
+    s = int(radius * 2)
+    yy, xx = np.mgrid[0:s, 0:s].astype(np.float32)
+    d = np.hypot(xx - s / 2, yy - s / 2) / radius
+    return (np.exp(-(d ** 2) * 3.2) * strength)[..., None] * rgb01(color)[None, None, :]
 
 
 # ------------------------------------------------------------------ film ----
 class Film:
     def __init__(self, assets, fonts):
         self.assets = Path(assets)
+        brand = self.assets / "brand"
         self.T = Type(fonts)
-        self.bg = build_background()
-        self.floor = build_floor()
-        self.glow = build_glow(430, sb.SILVER, 0.10)
-        self.glow_gold = build_glow(380, sb.GOLD, 0.07)
-        self.flow = OilFlow()
-        self.logo = logo_layer(self.assets / "jlm_logo_mask.png", 230, sb.WHITE)
+        self.bg = Backdrop(brand / "gears.png")
         self.trans = sb.transitions()
+        self.logo_footer = image_layer(brand / "logo_on_yellow.png", 360)
+        self.logo_dark = image_layer(brand / "logo_on_dark.png", 520)
+        self.nl = image_layer(brand / "made_in_nl.png", 360)
+        self.url_footer = latin_layer("jlmstore.com", 30, sb.CHARCOAL, 700, 0.03)
+        self.drop_big, self.drop_big_anchor = drop_layer(52, sb.YELLOW)
+        self.drop_fall, self.drop_fall_anchor = drop_layer(30, sb.YELLOW, stretch=1.25)
+        self.glow = build_glow(420, sb.WHITE, 0.07)
         self._build_text()
         self._build_products()
 
-    # ---- assets
     def _build_text(self):
         T = self.T
-        self.hook_head = T.line(sb.HOOK["headline"], 108)
-        self.hook_sub = T.line([(sb.HOOK["sub"], sb.SILVER)], 58, bold=False)
+        self.hook_box, self.hook_bh = headline_box(T, [sb.HOOK["headline"]], None)
+        self.hook_sub = T.line([(sb.HOOK["sub"], sb.WHITE)], 58, bold=False)
         self.scenes = []
         for p in sb.PRODUCTS:
-            self.scenes.append({
-                "tag": T.latin(p["tag"], 32, sb.SILVER, tracking=0.16),
-                "watermark": T.outline(p["watermark"], 330, sb.SILVER, stroke=3),
-                "headline": [T.line(runs, 96) for runs in p["headline"]],
-                "chips": [chip(T, c) for c in p["chips"]],
-            })
+            box, bh = headline_box(T, p["headline"], p["tag"])
+            self.scenes.append({"box": box, "chips": [chip(T, c) for c in p["chips"]]})
         e = sb.END
+        self.end_box, _ = headline_box(T, [[(e["line1"], sb.WHITE)]], None)
         self.end = {
-            "line1": T.line([(e["line1"], sb.WHITE)], 70),
-            "url": T.latin(e["url"], 104, sb.GOLD_HI, tracking=0.01),
-            "line2": T.line([(e["line2"], sb.SILVER)], 52, bold=False),
-            "line3": T.line([(e["line3"], sb.SILVER)], 52, bold=False),
+            "url": latin_layer(e["url"], 112, sb.YELLOW, 900, 0.0),
+            "line2": T.line([(e["line2"], sb.WHITE)], 52, bold=False),
+            "line3": T.line([(e["line3"], sb.WHITE)], 52, bold=False),
             "badge": badge(T, e["badge"]),
         }
 
@@ -404,134 +457,142 @@ class Film:
         self.products = []
         for p in sb.PRODUCTS:
             im = Image.open(self.assets / p["asset"]).convert("RGBA")
-            hi = int(p["height"] * 1.12)  # headroom for the slow push-in
+            hi = int(p["height"] * 1.1)
             im = im.resize((int(im.width * hi / im.height), hi), Image.LANCZOS)
             arr = to_premul(np.array(im))
-            # reflection: flipped, blurred, fading out over 170 px
             ref = arr[::-1].copy()
-            fade = np.clip(1 - np.arange(ref.shape[0]) / (170 * 1.12), 0, 1) ** 1.6 * 0.20
-            ref *= fade[:, None, None]
-            ref = cv2.GaussianBlur(ref, (0, 0), 2.2)
+            fade = np.clip(1 - np.arange(ref.shape[0]) / (130 * 1.1), 0, 1) ** 1.6 * 0.16
+            ref = cv2.GaussianBlur(ref * fade[:, None, None], (0, 0), 2.0)
             self.products.append({"img": arr, "ref": ref, "base_scale": p["height"] / hi})
-        # end-card lineup (smaller copies)
         self.lineup = []
-        for p, h in zip(sb.PRODUCTS, (450, 450, 490, 510)):
+        for p, h in zip(sb.PRODUCTS, (380, 380, 410, 430)):
             im = Image.open(self.assets / p["asset"]).convert("RGBA")
             im = im.resize((int(im.width * h / im.height), h), Image.LANCZOS)
             arr = to_premul(np.array(im))
-            ref = arr[::-1].copy() * (np.clip(1 - np.arange(h) / 90, 0, 1) ** 1.6 * 0.18)[:, None, None]
-            self.lineup.append((arr, cv2.GaussianBlur(ref, (0, 0), 1.6)))
+            ref = arr[::-1].copy() * (np.clip(1 - np.arange(h) / 70, 0, 1) ** 1.6 * 0.14)[:, None, None]
+            self.lineup.append((arr, cv2.GaussianBlur(ref, (0, 0), 1.4)))
 
     # ---- helpers
-    def surge(self, t):
-        return max(math.exp(-((t - tt + 0.05) / 0.16) ** 2) for tt in self.trans)
-
-    def centered(self, frame, layer, cy, alpha=1.0, dx=0.0, dy=0.0):
+    def centered(self, f, layer, cy, alpha=1.0, dx=0.0, dy=0.0):
         h, w = layer.shape[:2]
-        over(frame, layer, (W - w) / 2 + dx, cy - h / 2 + dy, alpha)
+        over(f, layer, (W - w) / 2 + dx, cy - h / 2 + dy, alpha)
 
-    def sweep_streak(self, frame, t):
-        """Gold pulse racing right-to-left across the frame at each cut."""
-        for tt in self.trans:
-            p = (t - (tt - 0.32)) / 0.5
-            if not 0 <= p <= 1:
-                continue
-            head = 1180 - ease_in_out(p) * 1380
-            xs = np.arange(int(max(head, -100)), W + 140, 6, dtype=np.float32)
-            ys = ecg_y(xs, 860, [head + 70], amp=0.55)
-            dist = xs - head
-            alpha = np.exp(-dist / 380) * (1 - p ** 3)
-            draw_trace(frame, xs, ys, alpha, width=3.2, glow=1.2)
-            # flash at the head
-            fl = build_glow(90, sb.GOLD_HI, 0.55 * (1 - p))
-            add_light(frame, fl, int(head - 90), 860 - 90)
+    def box_in(self, f, box, top, p_in, p_out):
+        """Headline box: frame grows from the centre line, text wipes RTL."""
+        if p_in <= 0 or p_out >= 1:
+            return
+        h, w = box.shape[:2]
+        layer = rtl_reveal(box, ease_out(p_in), soft=140)
+        over(f, layer, (W - w) / 2, top - (1 - p_in) * 24 - p_out * 30, 1 - p_out)
 
     def light_sweep(self, layer, p):
-        """Diagonal specular band crossing a product (masked by its alpha)."""
         if not 0 < p < 1:
             return layer
         h, w = layer.shape[:2]
         yy, xx = np.mgrid[0:h, 0:w].astype(np.float32)
-        pos = (1 - p) * (w + h) * 1.0 - h * 0.3  # right-to-left
-        band = np.exp(-(((xx + yy * 0.45) - pos) / (w * 0.10)) ** 2) * 0.45
+        pos = (1 - p) * (w + h) - h * 0.3
+        band = np.exp(-(((xx + yy * 0.45) - pos) / (w * 0.10)) ** 2) * 0.40
         out = layer.copy()
         out[..., :3] += band[..., None] * layer[..., 3:4]
         return out
+
+    # ---- footer + drop
+    def draw_footer(self, f, t):
+        rise = ease_out((t - 0.05) / 0.55)
+        top = int(sb.FOOTER_Y + (1 - rise) * (H - sb.FOOTER_Y + 120))
+        # landing pulse: the footer's drop swells for a moment at every cut
+        pulse = max([math.exp(-((t - tt) / 0.09) ** 2) for tt in self.trans] + [0.0])
+        if top < H:
+            f[top:H] = rgb01(sb.YELLOW)
+            # drop sitting on the band's top edge
+            R = 52 * (1 + 0.18 * pulse)
+            d, (ax, ay) = (self.drop_big, self.drop_big_anchor) if pulse < 0.02 else drop_layer(R, sb.YELLOW)
+            over(f, d, W / 2 - ax, top + 18 - ay)
+            ly = top + 58
+            over(f, self.logo_footer, (W - self.logo_footer.shape[1]) / 2, ly)
+            over(f, self.url_footer, (W - self.url_footer.shape[1]) / 2, ly + self.logo_footer.shape[0] + 18)
+            # ripple rings on the band edge after a landing
+            for tt in self.trans:
+                lt = t - tt
+                if 0 <= lt < 0.6:
+                    r = 60 + lt * 520
+                    a = (1 - lt / 0.6) ** 2 * 0.8
+                    canvas = np.zeros((90, W), np.float32)
+                    cv2.ellipse(canvas, (W // 2, 45), (int(r), int(r * 0.12)), 0, 180, 360, a, 3, cv2.LINE_AA)
+                    y0 = top - 45
+                    if 0 <= y0 < H - 90:
+                        f[y0:y0 + 90] += canvas[..., None] * rgb01(sb.YELLOW)[None, None, :] * 0.9
+
+    def draw_falling_drop(self, f, t):
+        for tt in self.trans:
+            p = (t - (tt - 0.42)) / 0.42
+            if 0 <= p < 1:
+                y = -120 + (sb.FOOTER_Y + 10 + 120) * p * p   # gravity
+                d, (ax, ay) = self.drop_fall, self.drop_fall_anchor
+                # short motion trail
+                for k, a in ((3, 0.18), (2, 0.3), (1, 0.5)):
+                    yk = -120 + (sb.FOOTER_Y + 130) * max(p - k * 0.035, 0) ** 2
+                    over(f, d, W / 2 - ax, yk - ay, a)
+                over(f, d, W / 2 - ax, y - ay)
 
     # ---- scenes
     def draw_hook(self, f, t):
         if t > sb.HOOK_END + 0.1:
             return
-        out = ease_in_out((t - (sb.HOOK_END - 0.3)) / 0.3)
+        out = ease_in_out((t - (sb.HOOK_END - 0.35)) / 0.3)
         vis = 1 - out
-        # heartbeat trace drawn right-to-left, beats at 0.49 s and 1.11 s
-        # constant-speed monitor sweep: the R peaks pass at 0.49 s and 1.11 s,
-        # exactly on the heartbeat sounds (soundtrack.write)
         head = 1100 - (t / 1.6) * 1120 if t < 1.6 else -20
         breath = 0.8 + 0.5 * sum(math.exp(-((t - tb) / 0.12) ** 2) for tb in (0.49, 1.11, 2.09))
         xs = np.arange(max(int(head), -20), W + 20, 4, dtype=np.float32)
         ys = ecg_y(xs, 860, [760, 320], amp=1.0)
-        alpha = np.clip((xs - head) / 40, 0, 1) * vis * breath
-        draw_trace(f, xs, ys, alpha, width=3.4, glow=1.0)
+        alpha = np.clip((xs - head) / 40, 0, 1) * vis * min(breath, 1.0)
+        draw_trace(f, xs, ys, alpha, width=4.5, glow=breath)
         if t < 1.7:
-            add_light(f, build_glow(70, sb.GOLD_HI, 0.6), int(head - 70), int(ecg_y(np.array([head], np.float32), 860, [760, 320])[0]) - 70)
-        pin, _ = window(t, 0.25, sb.HOOK_END, d_in=0.55)
-        self.centered(f, rtl_reveal(self.hook_head, pin), 650, vis, dy=(1 - pin) * 24)
-        pin2, _ = window(t, 1.15, sb.HOOK_END, d_in=0.5)
-        self.centered(f, rtl_reveal(self.hook_sub, pin2), 1090, vis, dy=(1 - pin2) * 18)
+            hy = int(ecg_y(np.array([head], np.float32), 860, [760, 320])[0])
+            gl = build_glow(60, sb.YELLOW, 0.8)
+            f[max(hy - 60, 0):hy + 60, max(int(head) - 60, 0):int(head) + 60] += gl[:min(120, H), :][
+                max(60 - hy, 0):, max(60 - int(head), 0):][:f[max(hy - 60, 0):hy + 60, max(int(head) - 60, 0):int(head) + 60].shape[0],
+                :f[max(hy - 60, 0):hy + 60, max(int(head) - 60, 0):int(head) + 60].shape[1]]
+        pin = clamp01((t - 0.2) / 0.6)
+        self.box_in(f, self.hook_box, sb.HEADLINE_Y - self.hook_box.shape[0] / 2, pin, out)
+        p2 = ease_out((t - 1.15) / 0.5)
+        self.centered(f, rtl_reveal(self.hook_sub, p2), 1150, vis, dy=(1 - p2) * 18)
 
     def draw_product_scene(self, f, t, i):
         s0 = sb.HOOK_END + i * sb.SCENE_LEN
         s1 = s0 + sb.SCENE_LEN
-        if not (s0 - 0.05 <= t <= s1 + 0.15):
+        if not (s0 - 0.05 <= t <= s1 + 0.05):
             return
         sc, pr = self.scenes[i], self.products[i]
         lt = t - s0
-        pin, pout = window(t, s0, s1 + 0.1, d_in=0.6, d_out=0.35)
+        pin = ease_out(lt / 0.55)
+        pout = ease_in_out((t - (s1 - 0.3)) / 0.3)
         vis = pin * (1 - pout)
 
-        # watermark drifting slowly behind the product
-        wm = sc["watermark"]
-        self.centered(f, wm, 760, 0.075 * vis, dx=60 - lt * 40 - pout * 120)
+        add = self.glow
+        f[820 - add.shape[0] // 2: 820 + add.shape[0] // 2, W // 2 - add.shape[1] // 2: W // 2 + add.shape[1] // 2] += add * vis
 
-        # glow + floor
-        g = self.glow
-        add_light(f, g, W // 2 - g.shape[1] // 2, 820 - g.shape[0] // 2, vis)
-        gg = self.glow_gold
-        add_light(f, gg, W // 2 - gg.shape[1] // 2, sb.PRODUCT_BOTTOM - gg.shape[0] // 2 + 40, vis * 0.8)
-        add_light(f, self.floor, 0, sb.PRODUCT_BOTTOM - 4, vis)
-
-        # product: rise in, slow push-in, slide out left with the pulse
-        scale = pr["base_scale"] * (0.94 + 0.06 * pin + 0.035 * clamp01(lt / sb.SCENE_LEN))
-        img = pr["img"]
-        img = self.light_sweep(img, (lt - 0.55) / 0.8)
+        scale = pr["base_scale"] * (0.92 + 0.08 * pin + 0.03 * clamp01(lt / sb.SCENE_LEN))
+        img = self.light_sweep(pr["img"], (lt - 0.6) / 0.8)
         h, w = img.shape[:2]
-        cx = W / 2 - pout * 160
-        cy = sb.PRODUCT_BOTTOM + (1 - pin) * 70
+        cx = W / 2
+        cy = sb.PRODUCT_BOTTOM + (1 - pin) * 90 + pout * 60
         layer, x, y = warp_premul(img, scale, cx, cy, (w / 2, h))
         over(f, layer, x, y, vis)
-        rlayer, rx, ry = warp_premul(pr["ref"], scale, cx, cy, (w / 2, 0))
-        over(f, rlayer, rx, ry + 2, vis)
+        rl, rx, ry = warp_premul(pr["ref"], scale, cx, cy, (w / 2, 0))
+        over(f, rl, rx, ry + 2, vis)
 
-        # tag (Latin, above the product)
-        tin, tout = window(t, s0 + 0.15, s1, d_in=0.5)
-        self.centered(f, ltr_reveal(sc["tag"], tin), sb.TAG_Y, (1 - tout), dy=(1 - tin) * 12)
+        bin_ = clamp01((lt - 0.15) / 0.6)
+        self.box_in(f, sc["box"], sb.HEADLINE_Y - 90, bin_, pout)
 
-        # headline lines + chips (Arabic, lower third)
-        y = sb.HEADLINE_Y
-        for k, line in enumerate(sc["headline"]):
-            hin, hout = window(t, s0 + 0.3 + 0.18 * k, s1, d_in=0.5)
-            self.centered(f, rtl_reveal(line, hin), y, 1 - hout, dy=(1 - hin) * 26 - hout * 14)
-            y += 112
         chips = sc["chips"]
         gap = 22
         total = sum(c.shape[1] for c in chips) + gap * (len(chips) - 1)
-        x = (W + total) / 2  # RTL: first chip on the right
-        cy = sb.CHIPS_Y + (len(sc["headline"]) - 1) * 70
+        x = (W + total) / 2
         for k, c in enumerate(chips):
-            cin, cout = window(t, s0 + 0.7 + 0.18 * k, s1, d_in=0.45)
+            cin = ease_out((lt - 0.75 - 0.18 * k) / 0.45)
             x -= c.shape[1]
-            over(f, c, x, cy - c.shape[0] / 2 + (1 - cin) * 20, cin * (1 - cout))
+            over(f, c, x, sb.CHIPS_Y - c.shape[0] / 2 + (1 - cin) * 20, cin * (1 - pout))
             x -= gap
 
     def draw_end(self, f, t):
@@ -539,66 +600,46 @@ class Film:
         if t < s0 - 0.05:
             return
         lt = t - s0
-        # lineup of all four products, rising in one after another
+        self.box_in(f, self.end_box, 130, clamp01((lt - 0.05) / 0.5), 0)
+        p = ease_out((lt - 0.35) / 0.5)
+        url = self.end["url"]
+        if p > 0:
+            layer, ux, uy = warp_premul(url, 0.94 + 0.06 * p + 0.01 * math.sin(max(lt - 1, 0) * 4),
+                                        W / 2, 370, (url.shape[1] / 2, url.shape[0] / 2))
+            over(f, layer, ux, uy, p)
+
         arrs = self.lineup
-        gap = 26
+        gap = 30
         total = sum(a.shape[1] for a, _ in arrs) + gap * (len(arrs) - 1)
         x = (W - total) / 2
-        base = 1030
-        add_light(f, self.floor, 0, base - 4, ease_out(lt / 0.6))
-        add_light(f, self.glow, W // 2 - self.glow.shape[1] // 2, 780 - self.glow.shape[0] // 2,
-                  ease_out(lt / 0.6))
+        base = 900
         for k, (a, ref) in enumerate(arrs):
-            p = ease_out((lt - 0.08 * k) / 0.6)
-            over(f, a, x, base - a.shape[0] + (1 - p) * 60, p)
-            over(f, ref, x, base + 2 + (1 - p) * 60, p)
+            pk = ease_out((lt - 0.1 - 0.08 * k) / 0.55)
+            over(f, a, x, base - a.shape[0] + (1 - pk) * 60, pk)
+            over(f, ref, x, base + 2 + (1 - pk) * 60, pk)
             x += a.shape[1] + gap
 
-        e = self.end
-        p1 = ease_out((lt - 0.30) / 0.5)
-        self.centered(f, rtl_reveal(e["line1"], p1), 1140, 1, dy=(1 - p1) * 20)
-        p2 = ease_out((lt - 0.55) / 0.6)
-        pulse = 1 + 0.012 * math.sin(max(lt - 1.2, 0) * 4.2)
-        url = e["url"]
-        if p2 > 0:
-            layer, ux, uy = warp_premul(url, pulse * (0.96 + 0.04 * p2), W / 2, 1258,
-                                        (url.shape[1] / 2, url.shape[0] / 2))
-            over(f, layer, ux, uy, p2)
-            # gold underline drawing out from the centre
-            uw = int(560 * ease_in_out((lt - 0.8) / 0.5))
-            if uw > 2:
-                f[1326:1329, W // 2 - uw // 2: W // 2 + uw // 2] = rgb01(sb.GOLD)
-        p3 = ease_out((lt - 1.0) / 0.5)
-        self.centered(f, rtl_reveal(e["line2"], p3), 1410, 1, dy=(1 - p3) * 18)
-        p4 = ease_out((lt - 1.25) / 0.5)
-        self.centered(f, rtl_reveal(e["line3"], p4), 1480, 1, dy=(1 - p4) * 18)
-        p5 = ease_out((lt - 1.6) / 0.45)
-        b = e["badge"]
+        p3 = ease_out((lt - 0.9) / 0.5)
+        self.centered(f, rtl_reveal(self.end["line2"], p3), 1010, 1, dy=(1 - p3) * 18)
+        p4 = ease_out((lt - 1.15) / 0.5)
+        self.centered(f, rtl_reveal(self.end["line3"], p4), 1080, 1, dy=(1 - p4) * 18)
+        p5 = ease_out((lt - 1.5) / 0.45)
+        b = self.end["badge"]
         if p5 > 0:
-            layer, bx, by = warp_premul(b, 0.85 + 0.15 * p5, W / 2, 1605, (b.shape[1] / 2, b.shape[0] / 2))
+            layer, bx, by = warp_premul(b, 0.85 + 0.15 * p5, W / 2, 1210, (b.shape[1] / 2, b.shape[0] / 2))
             over(f, layer, bx, by, p5)
+        p6 = ease_out((lt - 1.9) / 0.45)
+        self.centered(f, self.nl, 1350, p6, dy=(1 - p6) * 16)
 
     def frame(self, t):
-        f = self.bg.copy()
-        surge = self.surge(t)
-        self.flow.step(t, surge)
-        fl = self.flow.light()
-        f += fl * 0.33
+        f = self.bg.frame(t).astype(np.float32)
         self.draw_hook(f, t)
         for i in range(len(sb.PRODUCTS)):
             self.draw_product_scene(f, t, i)
         self.draw_end(f, t)
-        self.sweep_streak(f, t)
-        # persistent logo (moves into the end card at the same place)
-        lp = ease_out((t - 0.1) / 0.6)
-        self.centered(f, self.logo, sb.LOGO_Y + 40, lp * 0.95)
-        # flash on each cut
-        for tt in self.trans:
-            fl_a = math.exp(-((t - tt) / 0.06) ** 2) * 0.10
-            if fl_a > 0.003:
-                f += fl_a * rgb01(sb.GOLD_HI)
-        # opening fade from black
-        f *= ease_out(t / 0.35)
+        self.draw_falling_drop(f, t)
+        self.draw_footer(f, t)
+        f *= ease_out(t / 0.3)
         return np.clip(f, 0, 1)
 
 
@@ -612,6 +653,8 @@ def main():
 
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
+    global ALBERT_PATH
+    ALBERT_PATH = Path(args.fonts) / "AlbertSans.ttf"
     film = Film(args.assets, args.fonts)
 
     if args.stills:

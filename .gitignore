@@ -55,6 +55,6 @@ next-env.d.ts
 __pycache__/
 *.py[cod]
 
-# licensed brand fonts — keep local, never commit
+# fonts are kept once in brand/jlm/fonts
 /marketing/videos/*/assets/fonts/
 /marketing/videos/*/out/*.wav

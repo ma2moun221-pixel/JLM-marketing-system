@@ -1,5 +1,9 @@
 # Engine Pulse — نبض المحرّك
 
+> **v2:** The colours below (gold/graphite) belonged to the first version. The film now uses
+> the official JLM Liquid Tools identity in `brand/jlm/BRAND.md`: charcoal + yellow, a gear
+> pattern, and a falling drop as the transition. The heartbeat concept is unchanged.
+
 Design philosophy for the JLM 20-second product film, written with the
 `canvas-design` skill (philosophy first, then canvas) and extended to motion with
 the `algorithmic-art` skill (a seeded flow field instead of a static pattern).

@@ -1,6 +1,6 @@
 ---
 name: jlm-product-video
-description: This skill should be used when the user asks for a JLM promo / product video, Reel, TikTok or Story built from product photos (not from existing footage) — فيديو إعلاني لمنتجات JLM من صور المنتجات. It renders a branded 9:16 motion film (graphite + silver + JLM gold, Helvetica Neue LT Arabic, "Engine Pulse" heartbeat concept) with readable Arabic captions, products shown one after another, a jlmstore.com end card and a synthesized soundtrack.
+description: This skill should be used for ANY JLM design or video — promo / product video, Reel, TikTok, Story, post, banner — تصميم أو فيديو لـ JLM. It applies the approved JLM Liquid Tools brand kit in brand/jlm/ (charcoal + JLM yellow, official logos, Helvetica Neue LT Arabic + Albert Sans, drop icon, gear pattern, ATL template layout) and renders 9:16 motion films with readable Arabic captions, products one after another, a jlmstore.com end card and a synthesized soundtrack.
 ---
 
 # JLM product video
@@ -37,19 +37,24 @@ for a new film, then change only `scripts/storyboard.py` and `assets/`.
 
 ## Brand rules
 
-- Palette: graphite `#0D0E10`, steel `#23262B`, silver `#C9CDD2`, white,
-  and JLM gold `#C8A165` (the "Premium Grade" bronze) for one emphasis
-  per scene only.
-- Type: Helvetica Neue LT Arabic Bold for headlines, Roman for chips and
-  body text. Lay out Arabic word by word right-to-left with Pillow + raqm.
+**Read `brand/jlm/BRAND.md` first. It is the approved kit (logos, fonts, icons,
+templates) and it overrides anything below.** Pick the logo variant by
+background: `logo_on_dark.png` on charcoal, `logo_on_yellow.png` on yellow.
+
+- Palette: charcoal `#252729`, JLM yellow `#FAB817`, silver `#C0C4C7`,
+  off-white `#F1F0EC`.
+- Type: Helvetica Neue LT Arabic Bold for Arabic headlines and Roman for
+  Arabic body text; Albert Sans for Latin product names and URLs. Lay out Arabic word by word right-to-left with Pillow + raqm.
   Never use ffmpeg `drawtext` for Arabic.
-- The JLM logo stays at the top centre all the way through.
+- Layout follows the ATL vertical template: headline in a yellow 5 px frame
+  with a solid yellow tag, the product in the middle on the gear pattern,
+  and a yellow footer with the drop, the logo and jlmstore.com.
+- The transition is a yellow drop that falls into the footer.
 - End card: all products in a row, then
   "زوروا موقعنا / jlmstore.com / لاكتشاف العديد من المنتجات / التي يمكنكم طلبها"
-  and a gold badge "مع توفر خدمة التوصيل".
+  and a charcoal badge with yellow text "مع توفر خدمة التوصيل", then the Made in The Netherlands label.
 - Leave the bottom 12 % of the frame clear for the platform UI.
 
 ## Fonts
 
-Helvetica Neue LT Arabic is licensed. Keep it in `assets/fonts/`
-(gitignored) and ask the user for the files if they are missing.
+All fonts live in `brand/jlm/fonts/`. Pass that folder as `--fonts`.
