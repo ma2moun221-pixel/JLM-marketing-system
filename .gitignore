@@ -54,3 +54,7 @@ next-env.d.ts
 # Python
 __pycache__/
 *.py[cod]
+
+# licensed brand fonts — keep local, never commit
+/marketing/videos/*/assets/fonts/
+/marketing/videos/*/out/*.wav
