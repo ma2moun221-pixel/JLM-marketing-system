@@ -70,6 +70,17 @@
 | `ATL_HORIZONTAL_YELLOW_FOOTER` | أفقي A3. صورة سيارة أو حدث تملأ الإطار، والعنوان أصفر فوقها، والمنتج في الزاوية، وتحته الشريط الأصفر. يناسب البانرات واللوحات الإعلانية. |
 | `BTL_VERTICAL_YELLOW_FOOTER_DOUBLE_PRODUCT` | تخطيط المنتجين نفسه، لكن بالشريط الأصفر. |
 | `BTL_VERTICAL_YELLOW_FOOTER_PDS` | ورقة بيانات المنتج (Product Data Sheet). اسم المنتج كبير بالأصفر، والسعة تحته، ثم نص الوصف والفوائد وطريقة الاستخدام، والمنتج على الجانب، وجدول «PRODUCT INFORMATION» داخل الشريط الأصفر. |
+| `BTL_VERTICAL_YELLOW_FOOTER_SINGLE_PRODUCT` | منتج واحد بالشريط الأصفر. |
+| `BTL_VERTICAL_YELLOW_FOOTER_SINGLE_PRODUCT_CONVINCE_YOURSELF` | حملة الشعار. فيها العنوان «CONVINCE YOURSELF»، وتحته الوسم «YOUR SUCCESS IS OUR PROMISE». نص الشريط: «DISCOVER THE POWER OF JLM LUBRICANTS» ثم دعوة للتجربة مع ضمان استرجاع المال. |
+
+### شعارات الشركة (من القوالب)
+| الإنجليزية | عربي مقترح (للمراجعة) |
+|---|---|
+| CONVINCE YOURSELF | **جرّب واقتنع بنفسك** |
+| YOUR SUCCESS IS OUR PROMISE | **نجاحك هو وعدنا** |
+| DISCOVER THE POWER OF JLM LUBRICANTS | **اكتشف قوة زيوت JLM** |
+
+لا تكتب وعد «ضمان استرجاع المال» الموجود في القالب الأصلي إلا إذا أكّدته الشركة لسوق الإعلان.
 
 **الشريط الأصفر أم الداكن؟**
 - الأصفر للحملات والإعلانات (ATL) ولأوراق البيانات.
@@ -85,6 +96,7 @@
 | منتج وملحق له (مثل زيت + Turbo Pre Lube) | `BTL PRIORITY` |
 | بانر أفقي أو لوحة إعلانية | `ATL_HORIZONTAL` (الأصفر أو الداكن) مع صورة سيارة |
 | ورقة بيانات أو كتالوج لمنتج | `BTL_VERTICAL_YELLOW_FOOTER_PDS` |
+| حملة ثقة أو تجربة المنتج | `SINGLE_PRODUCT_CONVINCE_YOURSELF` مع شعار «جرّب واقتنع بنفسك» |
 | تصميم أقوى للسوشيال | `BTL BOXED_TEXT` مع القطرة الكبيرة |
 | الفيديو | أبقِ الشريط الأصفر، أو الداكن إذا كانت الحملة BTL |
 
