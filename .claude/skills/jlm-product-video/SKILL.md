@@ -38,11 +38,12 @@ for a new film, then change only `scripts/storyboard.py` and `assets/`.
 ## Footage edits (real video with a presenter)
 
 When the user sends camera footage to edit, follow `brand/jlm/VIDEO_STYLE.md`
-(the client's approved Reels style). It covers caption box styles, the badge
-icon with a red or yellow ring, numbered steps over a golden "how it works
-inside" animation, the white logo top-left, and the «اطلبه الآن ←» CTA with
-the dark dealer footer. The reference implementation is
-`marketing/videos/jlm-care-edit/scripts/edit.py`. It reuses the 3D icons in
+(the client's approved style). It is a talking-head style: word-synced chest
+captions with no box, in white with the keyword in yellow; numbered points;
+dashed-yellow icon tiles above or beside the head, never on the face;
+minimal motion; soft clicks; and a JLM end card. Never change the JLM fonts.
+The reference implementation is `marketing/videos/jlm-care-edit/scripts/edit_v2.py`,
+which uses a face track. Its icons come from
 `marketing/videos/jlm-care-icons/scripts/icons.py`.
 Transcribe the voice first. Whisper turbo via sherpa-onnx works offline; the
 model comes from the k2-fsa GitHub releases. Then time every caption to the
