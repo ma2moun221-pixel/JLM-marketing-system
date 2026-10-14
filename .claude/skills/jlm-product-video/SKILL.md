@@ -35,6 +35,19 @@ for a new film, then change only `scripts/storyboard.py` and `assets/`.
    true peak < −1 dBFS). Pull frames at each transition and read them.
    Then send the mp4 with `SendUserFile`.
 
+## Footage edits (real video with a presenter)
+
+When the user sends camera footage to edit, follow `brand/jlm/VIDEO_STYLE.md`
+(the client's approved Reels style). It covers caption box styles, the badge
+icon with a red or yellow ring, numbered steps over a golden "how it works
+inside" animation, the white logo top-left, and the «اطلبه الآن ←» CTA with
+the dark dealer footer. The reference implementation is
+`marketing/videos/jlm-care-edit/scripts/edit.py`. It reuses the 3D icons in
+`marketing/videos/jlm-care-icons/scripts/icons.py`.
+Transcribe the voice first. Whisper turbo via sherpa-onnx works offline; the
+model comes from the k2-fsa GitHub releases. Then time every caption to the
+spoken words.
+
 ## Brand rules
 
 **Read `brand/jlm/BRAND.md` first. It is the approved kit (logos, fonts, icons,
