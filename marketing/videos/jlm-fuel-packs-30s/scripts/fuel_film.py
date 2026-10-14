@@ -348,7 +348,7 @@ def main():
     cmd = ["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
            "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-i", str(wav),
            "-c:v", "libx264", "-preset", "slow", "-crf", "16", "-pix_fmt", "yuv420p",
-           "-af", "loudnorm=I=-14:TP=-2:LRA=9,alimiter=limit=0.75:level=false",
+           "-af", "loudnorm=I=-14:TP=-2:LRA=9,alimiter=limit=0.66:level=false",
            "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", "-shortest", str(tmp)]
     proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
     for n in range(int(DURATION * FPS)):
