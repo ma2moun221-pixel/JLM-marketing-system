@@ -58,3 +58,6 @@ __pycache__/
 # fonts are kept once in brand/jlm/fonts
 /marketing/videos/*/assets/fonts/
 /marketing/videos/*/out/*.wav
+
+# review stills (regenerated)
+/marketing/videos/*/review/
