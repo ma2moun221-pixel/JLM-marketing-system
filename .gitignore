@@ -61,3 +61,4 @@ __pycache__/
 
 # review stills (regenerated)
 /marketing/videos/*/review/
+/marketing/videos/*/out/*_tmp.mp4
