@@ -1,0 +1,586 @@
+<template>
+  <style>
+    @font-face{font-family:"Albert Sans";font-weight:100 900;font-style:normal;font-display:block;src:url("assets/fonts/AlbertSans-Regular.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:700;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Bold.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:400;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Regular.ttf") format("truetype");}
+
+    #root {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+    }
+    [id="04-mechanism-bg"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+      background: #141516;
+    }
+    [id="04-mechanism-stage"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+    [class~="04-mechanism-layer"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+    [class~="04-mechanism-svg"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: visible;
+    }
+    /* blueprint line-art */
+    [class~="04-mechanism-line"] {
+      fill: none;
+      stroke: #c0c4c7;
+      stroke-width: 2.5;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    [class~="04-mechanism-thin"] {
+      fill: none;
+      stroke: #c0c4c7;
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      opacity: 0.55;
+    }
+    [class~="04-mechanism-oil"] {
+      fill: none;
+      stroke: #fab817;
+      stroke-width: 7;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    [class~="04-mechanism-oil-glow"] {
+      fill: none;
+      stroke: #fab817;
+      stroke-width: 20;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      opacity: 0.4;
+    }
+    [class~="04-mechanism-film"] {
+      fill: none;
+      stroke: #fab817;
+      stroke-width: 3.5;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    [class~="04-mechanism-film-glow"] {
+      fill: none;
+      stroke: #fab817;
+      stroke-width: 12;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    /* step list (RTL) */
+    [id="04-mechanism-steps"] {
+      position: absolute;
+      left: 100px;
+      top: 300px;
+      width: 880px;
+      direction: rtl;
+    }
+    [class~="04-mechanism-step"] {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 28px;
+      height: 72px;
+      margin-bottom: 24px;
+    }
+    [class~="04-mechanism-disc"] {
+      flex: 0 0 72px;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #fab817;
+      color: #141516;
+      font-family: "Albert Sans", sans-serif;
+      font-weight: 800;
+      font-size: 40px;
+      line-height: 72px;
+      text-align: center;
+      direction: ltr;
+    }
+    [class~="04-mechanism-text"] {
+      font-family: "Helvetica Neue LT Arabic", sans-serif;
+      font-weight: 700;
+      font-size: 52px;
+      line-height: 72px;
+      color: #f1f0ec;
+      white-space: nowrap;
+    }
+    [id="04-mechanism-shield"] {
+      flex: 0 0 110px;
+      width: 110px;
+      height: 110px;
+      overflow: visible;
+    }
+    [id="04-mechanism-shield"] path {
+      fill: none;
+      stroke: #c0c4c7;
+      stroke-width: 4;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+    }
+    [id="04-mechanism-iris"] {
+      position: absolute;
+      left: -980px;
+      top: -978px;
+      width: 3040px;
+      height: 3040px;
+      border-radius: 50%;
+      background: #3c6999;
+    }
+  </style>
+
+  <div id="root" data-composition-id="04-mechanism" data-width="1080" data-height="1920">
+    <!-- full-bleed ink ground -->
+    <div id="04-mechanism-bg" class="clip" data-start="0" data-duration="12.3" data-track-index="0"></div>
+
+    <!-- everything else lives on one full-duration content clip -->
+    <div id="04-mechanism-stage" class="clip" data-start="0" data-duration="12.3" data-track-index="1">
+      <!-- faint blueprint grid -->
+      <svg id="04-mechanism-grid" class="04-mechanism-svg" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="04-mechanism-gridpat" width="60" height="60" patternUnits="userSpaceOnUse" x="0" y="40">
+            <path d="M60 0 L0 0 0 60" fill="none" stroke="#c0c4c7" stroke-width="1" />
+          </pattern>
+        </defs>
+        <rect x="0" y="0" width="1080" height="1920" fill="url(#04-mechanism-gridpat)" opacity="0.07" />
+      </svg>
+
+      <!-- cutaway: outer = camera tilt, inner = slow push -->
+      <div id="04-mechanism-tilt" class="04-mechanism-layer">
+        <div id="04-mechanism-push" class="04-mechanism-layer">
+          <svg id="04-mechanism-cut" class="04-mechanism-svg" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="04-mechanism-hatch-a" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                <line x1="0" y1="0" x2="0" y2="14" stroke="#c0c4c7" stroke-width="1.2" />
+              </pattern>
+              <pattern id="04-mechanism-hatch-b" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+                <line x1="0" y1="0" x2="0" y2="14" stroke="#c0c4c7" stroke-width="1.2" />
+              </pattern>
+              <filter id="04-mechanism-blur" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="6" />
+              </filter>
+              <filter id="04-mechanism-blur-sm" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur stdDeviation="3" />
+              </filter>
+            </defs>
+            <!-- section hatching (fades in after outlines draw) -->
+            <g id="04-mechanism-hatch" opacity="0"></g>
+            <!-- outlines (svg-path-draw) -->
+            <g id="04-mechanism-outlines"></g>
+            <!-- rust granules + moisture droplets in the thread gaps -->
+            <g id="04-mechanism-rust"></g>
+            <g id="04-mechanism-wet"></g>
+            <!-- oil creep -->
+            <g id="04-mechanism-oilg"></g>
+            <!-- protective film -->
+            <g id="04-mechanism-filmg"></g>
+            <!-- sparkles -->
+            <g id="04-mechanism-sparks"></g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- the falling drop + landing ripple (screen space) -->
+      <svg id="04-mechanism-dropsvg" class="04-mechanism-svg" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+        <ellipse id="04-mechanism-ripple" cx="540" cy="760" rx="10" ry="3" fill="none" stroke="#fab817" stroke-width="3" opacity="0" />
+        <g id="04-mechanism-drop" opacity="0" transform="translate(540 520)">
+          <path d="M0 -72 C 14 -46 46 -14 46 22 A 46 46 0 0 1 -46 22 C -46 -14 -14 -46 0 -72 Z" fill="#fab817" />
+          <path d="M-24 18 C -24 4 -18 -8 -10 -18" fill="none" stroke="#f1f0ec" stroke-width="5" stroke-linecap="round" opacity="0.55" />
+        </g>
+      </svg>
+
+      <!-- numbered steps, RTL -->
+      <div id="04-mechanism-steps" dir="rtl" lang="ar">
+        <div id="04-mechanism-step1" class="04-mechanism-step">
+          <div class="04-mechanism-disc">1</div>
+          <div class="04-mechanism-text" dir="rtl" lang="ar">يخترق بعمق</div>
+        </div>
+        <div id="04-mechanism-step2" class="04-mechanism-step">
+          <div class="04-mechanism-disc">2</div>
+          <div class="04-mechanism-text" dir="rtl" lang="ar">يذيب الصدأ</div>
+        </div>
+        <div id="04-mechanism-step3" class="04-mechanism-step">
+          <div class="04-mechanism-disc">3</div>
+          <div class="04-mechanism-text" dir="rtl" lang="ar">يطرد الرطوبة</div>
+        </div>
+        <div id="04-mechanism-step4" class="04-mechanism-step">
+          <div class="04-mechanism-disc">4</div>
+          <div class="04-mechanism-text" dir="rtl" lang="ar">يزيّت ويحمي</div>
+          <svg id="04-mechanism-shield" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+            <path id="04-mechanism-shield-body" d="M55 8 L94 22 L94 54 C94 78 76 95 55 104 C34 95 16 78 16 54 L16 22 Z" />
+            <path id="04-mechanism-shield-check" d="M37 56 L50 69 L74 43" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- top-down bolt head: the handoff hexagon -->
+      <svg id="04-mechanism-hexsvg" class="04-mechanism-svg" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+        <g id="04-mechanism-hexg" opacity="0">
+          <polygon id="04-mechanism-hex" points="690,760 615,889.904 465,889.904 390,760 465,630.096 615,630.096" fill="none" stroke="#fab817" stroke-width="10" />
+        </g>
+      </svg>
+
+      <!-- blue field from frame 3, irises down into the drop -->
+      <div id="04-mechanism-iris"></div>
+    </div>
+  </div>
+
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      var FID = "04-mechanism";
+      var DUR = 12.3;
+      var SVGNS = "http://www.w3.org/2000/svg";
+      var root = document.querySelector('[data-composition-id="' + FID + '"] [id="' + FID + '-stage"]').parentNode;
+      function $(id) {
+        return root.querySelector('[id="' + FID + "-" + id + '"]');
+      }
+      function el(tag, attrs, parent) {
+        var n = document.createElementNS(SVGNS, tag);
+        for (var k in attrs) n.setAttribute(k, attrs[k]);
+        if (parent) parent.appendChild(n);
+        return n;
+      }
+      function cls(name) {
+        return FID + "-" + name;
+      }
+
+      // ---------- deterministic LCG ----------
+      var seed = 0x04a11ce5 >>> 0;
+      function rnd() {
+        seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+        return seed / 4294967296;
+      }
+
+      // ---------- geometry (frame px) ----------
+      var P = 44; // thread pitch
+      var NUT_TOP = 864, NUT_BOT = 1304; // 10 pitches
+      function mx(x) { return 1080 - x; }
+      // zigzag: crest at y0 + kP, root at y0 + (k+.5)P
+      function zig(xc, xr, y0, n) {
+        var pts = [];
+        for (var k = 0; k < n; k++) {
+          pts.push([xc, y0 + k * P]);
+          pts.push([xr, y0 + (k + 0.5) * P]);
+        }
+        pts.push([xc, y0 + n * P]);
+        return pts;
+      }
+      function mirror(pts) {
+        return pts.map(function (p) { return [mx(p[0]), p[1]]; });
+      }
+      function d(pts, close) {
+        return pts.map(function (p, i) { return (i ? "L" : "M") + p[0].toFixed(2) + " " + p[1].toFixed(2); }).join(" ") + (close ? " Z" : "");
+      }
+
+      // bolt flank (left): top chamfer then threads 776 → 1392, then to head top 1400
+      var boltL = [[446, 760], [430, 776]].concat(zig(430, 456, 776, 14).slice(1)).concat([[430, 1400]]);
+      var boltR = mirror(boltL);
+      var nutThreadL = zig(406, 432, NUT_TOP, 10);
+      var nutL = [[320, NUT_TOP]].concat(nutThreadL).concat([[320, NUT_BOT]]);
+      var nutR = mirror(nutL);
+      var plateL = [[300, NUT_BOT], [420, NUT_BOT], [420, 1400], [300, 1400]];
+      var plateR = mirror(plateL);
+      var head = [[330, 1400], [750, 1400], [750, 1478], [736, 1492], [344, 1492], [330, 1478]];
+
+      // ---------- hatching ----------
+      var hatch = $("hatch");
+      [nutL, nutR].forEach(function (pts) {
+        el("path", { d: d(pts, true), fill: "url(#" + FID + "-hatch-a)", opacity: "0.32" }, hatch);
+      });
+      [plateL, plateR].forEach(function (pts) {
+        el("path", { d: d(pts, true), fill: "url(#" + FID + "-hatch-b)", opacity: "0.32" }, hatch);
+      });
+
+      // ---------- outlines ----------
+      var outl = $("outlines");
+      var draws = []; // [path, start, dur]
+      function line(pts, close, start, dur, klass) {
+        var p = el("path", { d: d(pts, close), class: cls(klass || "line") }, outl);
+        draws.push([p, start, dur]);
+        return p;
+      }
+      line([[446, 760], [634, 760]], false, 0.45, 0.3);
+      line(boltL, false, 0.5, 0.75);
+      line(boltR, false, 0.5, 0.75);
+      line(nutL, true, 0.62, 0.8);
+      line(nutR, true, 0.62, 0.8);
+      line(plateL, true, 0.82, 0.55);
+      line(plateR, true, 0.82, 0.55);
+      line(head, true, 0.92, 0.55);
+      line([[470, 1400], [470, 1492]], false, 1.2, 0.25, "thin");
+      line([[610, 1400], [610, 1492]], false, 1.2, 0.25, "thin");
+      // centre line (blueprint convention)
+      line([[540, 730], [540, 1530]], false, 1.0, 0.5, "thin");
+
+      // ---------- rust granules + moisture ----------
+      var rustG = $("rust"), wetG = $("wet");
+      var rust = [], wet = [];
+      // channel centre (left): crest 418, root 444
+      function chanPoint(side, k, segB, u) {
+        var y0 = NUT_TOP + k * P;
+        var a, b;
+        if (!segB) { a = [418, y0]; b = [444, y0 + P / 2]; }
+        else { a = [444, y0 + P / 2]; b = [418, y0 + P]; }
+        var x = a[0] + (b[0] - a[0]) * u, y = a[1] + (b[1] - a[1]) * u;
+        return [side < 0 ? x : mx(x), y];
+      }
+      [-1, 1].forEach(function (side) {
+        for (var k = 0; k < 10; k++) {
+          // two rust granules per pitch
+          for (var j = 0; j < 2; j++) {
+            var c = chanPoint(side, k, j === 1, 0.25 + rnd() * 0.5);
+            var r = 4.5 + rnd() * 2.8;
+            var nv = 6 + Math.floor(rnd() * 3);
+            var pts = [];
+            for (var v = 0; v < nv; v++) {
+              var ang = (v / nv) * Math.PI * 2 + rnd() * 0.4;
+              var rr = r * (0.7 + rnd() * 0.45);
+              pts.push([Math.cos(ang) * rr, Math.sin(ang) * rr]);
+            }
+            var outer = el("g", { transform: "translate(" + c[0].toFixed(2) + " " + c[1].toFixed(2) + ")" }, rustG);
+            var inner = el("g", {}, outer);
+            el("path", { d: d(pts, true), fill: (k + j) % 2 ? "#8A4B22" : "#B5652A" }, inner);
+            rust.push({ el: inner, x: c[0], y: c[1], yf: (c[1] - NUT_TOP) / (NUT_BOT - NUT_TOP) });
+          }
+          // one moisture droplet per pitch, near the root tip
+          var w = chanPoint(side, k, rnd() < 0.5, 0.85 + rnd() * 0.1);
+          var wr = 5 + rnd() * 2;
+          var wo = el("g", { transform: "translate(" + w[0].toFixed(2) + " " + w[1].toFixed(2) + ")" }, wetG);
+          var wi = el("g", {}, wo);
+          el("circle", { cx: 0, cy: 0, r: wr.toFixed(2), fill: "rgba(60,105,153,0.75)", stroke: "#c0c4c7", "stroke-width": 1.6 }, wi);
+          el("circle", { cx: (-wr * 0.35).toFixed(2), cy: (-wr * 0.35).toFixed(2), r: (wr * 0.28).toFixed(2), fill: "#f1f0ec", opacity: 0.8 }, wi);
+          wet.push({ el: wi, x: w[0], y: w[1], side: side, yf: (w[1] - NUT_TOP) / (NUT_BOT - NUT_TOP) });
+        }
+      });
+
+      // ---------- oil creep paths ----------
+      var oilG = $("oilg");
+      var oilL = [[540, 760], [446, 760], [430, 776]]
+        .concat(zig(424, 450, 776, 2).slice(1))
+        .concat(zig(418, 444, NUT_TOP, 10))
+        .concat([[425, NUT_BOT + 6], [425, 1396]]);
+      var oilR = mirror(oilL);
+      var oils = [];
+      [oilL, oilR].forEach(function (pts) {
+        var glow = el("path", { d: d(pts), class: cls("oil-glow"), filter: "url(#" + FID + "-blur)" }, oilG);
+        var core = el("path", { d: d(pts), class: cls("oil") }, oilG);
+        var len = core.getTotalLength() * 1.01;
+        [glow, core].forEach(function (p) {
+          p.style.strokeDasharray = len + " " + (len + 40);
+          p.style.strokeDashoffset = String(len);
+        });
+        var headGlow = el("circle", { cx: 540, cy: 760, r: 16, fill: "#fab817", opacity: 0, filter: "url(#" + FID + "-blur-sm)" }, oilG);
+        var headDot = el("circle", { cx: 540, cy: 760, r: 7, fill: "#fff3c4", opacity: 0 }, oilG);
+        oils.push({ glow: glow, core: core, len: len, hg: headGlow, hd: headDot });
+      });
+
+      // ---------- protective film ----------
+      var filmG = $("filmg");
+      var filmPaths = [];
+      var filmGlowGroup = el("g", { opacity: 0.45 }, filmG);
+      [boltL.slice(1), mirror(boltL.slice(1)), nutThreadL, mirror(nutThreadL)].forEach(function (pts) {
+        var g = el("path", { d: d(pts), class: cls("film-glow"), filter: "url(#" + FID + "-blur-sm)" }, filmGlowGroup);
+        var c = el("path", { d: d(pts), class: cls("film") }, filmG);
+        filmPaths.push(g, c);
+      });
+
+      // ---------- sparkles (particle-burst, small, one per rust granule) ----------
+      var sparkG = $("sparks");
+      var sparks = rust.map(function (g, i) {
+        var size = 2.2 + rnd() * 2.6;
+        var dot = el("circle", { cx: 0, cy: 0, r: size.toFixed(2), fill: i % 3 === 0 ? "#fff3c4" : "#fab817", opacity: 0 }, sparkG);
+        var ang = rnd() * Math.PI * 2;
+        var spd = 70 + rnd() * 110;
+        return { el: dot, ox: g.x, oy: g.y, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd, at: 5.35 + 0.45 * g.yf };
+      });
+      var SPARK_LIFE = 0.5, SPARK_G = -90;
+
+      // ---------- path-draw setup ----------
+      function prepDraw(p) {
+        var len = p.getTotalLength() * 1.02;
+        p.style.strokeDasharray = len + " " + (len + 10);
+        p.style.strokeDashoffset = String(len);
+        return len;
+      }
+
+      var tl = gsap.timeline({ paused: true });
+
+      // ===== Scene 1 (0.0–1.4): iris into the drop, ground + grid, cutaway draws =====
+      tl.fromTo($("iris"), { scale: 1, opacity: 1 }, { scale: 46 / 1520, duration: 0.85, ease: "power3.inOut" }, 0);
+      tl.fromTo($("iris"), { opacity: 1 }, { opacity: 0, duration: 0.22, ease: "power1.out", immediateRender: false }, 0.72);
+      tl.fromTo($("grid"), { opacity: 0 }, { opacity: 1, duration: 1.0, ease: "power1.out" }, 0.3);
+
+      draws.forEach(function (dr) {
+        var len = prepDraw(dr[0]);
+        tl.fromTo(dr[0], { strokeDashoffset: len }, { strokeDashoffset: 0, duration: dr[2], ease: "power2.out" }, dr[1]);
+      });
+      tl.fromTo($("hatch"), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 1.2);
+
+      rust.forEach(function (g, i) {
+        tl.fromTo(g.el, { scale: 0.3, opacity: 0, svgOrigin: "0 0" }, { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" }, 1.05 + g.yf * 0.45 + (i % 2) * 0.05);
+      });
+      wet.forEach(function (w) {
+        tl.fromTo(w.el, { scale: 0.3, opacity: 0, svgOrigin: "0 0" }, { scale: 1, opacity: 1, duration: 0.3, ease: "power2.out" }, 1.15 + w.yf * 0.45);
+      });
+
+      // slow push underneath the whole demo
+      tl.fromTo($("push"), { scale: 1, transformOrigin: "540px 760px" }, { scale: 1.05, duration: 9.1, ease: "sine.inOut" }, 1.5);
+
+      // ===== steps (RTL list) =====
+      function stepIn(n, at) {
+        var row = $("step" + n);
+        var disc = row.children[0], txt = row.children[1];
+        tl.fromTo(disc, { scale: 0.4, rotation: -120, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, at);
+        tl.fromTo(txt, { x: 46, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, at + 0.08);
+      }
+      function stepDim(n, at) {
+        tl.fromTo($("step" + n), { opacity: 1 }, { opacity: 0.45, duration: 0.4, ease: "power2.out", immediateRender: false }, at);
+      }
+      stepIn(1, 1.7);
+      stepIn(2, 5.3); stepDim(1, 5.3);
+      stepIn(3, 6.2); stepDim(2, 6.2);
+      stepIn(4, 7.9); stepDim(3, 7.9);
+
+      // ===== Scene 3 (5.3–6.2): rust dissolves =====
+      rust.forEach(function (g) {
+        var at = 5.35 + 0.45 * g.yf;
+        tl.to(g.el, { scale: 0, opacity: 0, duration: 0.35, ease: "power2.in", svgOrigin: "0 0" }, at);
+      });
+
+      // ===== Scene 4 (6.2–7.8): moisture pushed outward + up, out of frame =====
+      wet.forEach(function (w) {
+        var at = 6.25 + 0.35 * w.yf;
+        tl.fromTo(w.el, { x: 0 }, { x: w.side * (720 + w.yf * 120), duration: 1.1, ease: "power2.in" }, at);
+        tl.fromTo(w.el, { y: 0 }, { y: -(260 + w.yf * 240), duration: 1.1, ease: "power1.out" }, at);
+      });
+
+      // ===== Scene 5 (7.9–10.6): film coats every flank + shield =====
+      filmPaths.forEach(function (p, i) {
+        var len = prepDraw(p);
+        tl.fromTo(p, { strokeDashoffset: len }, { strokeDashoffset: 0, duration: 1.1, ease: "power1.inOut" }, 7.95 + (i >> 1) * 0.06);
+      });
+      tl.fromTo(filmGlowGroup, { opacity: 0.45 }, { opacity: 0.8, duration: 1.2, ease: "sine.inOut", immediateRender: false }, 9.1);
+      var shB = $("shield-body"), shC = $("shield-check");
+      var lb = prepDraw(shB), lc = prepDraw(shC);
+      tl.fromTo(shB, { strokeDashoffset: lb }, { strokeDashoffset: 0, duration: 0.8, ease: "power2.out" }, 8.15);
+      tl.fromTo(shC, { strokeDashoffset: lc }, { strokeDashoffset: 0, duration: 0.35, ease: "power2.out" }, 8.8);
+
+      // ===== Scene 6 (10.7–12.3): tilt to top-down, hexagon spins free =====
+      tl.fromTo($("steps"), { opacity: 1 }, { opacity: 0, duration: 0.5, ease: "power2.inOut", immediateRender: false }, 10.7);
+      tl.fromTo($("tilt"), { rotationX: 0, transformPerspective: 1400, transformOrigin: "540px 760px" }, { rotationX: -80, duration: 0.9, ease: "power2.inOut" }, 10.7);
+      tl.fromTo($("tilt"), { opacity: 1 }, { opacity: 0.2, duration: 0.5, ease: "power1.out", immediateRender: false }, 10.7);
+      tl.fromTo($("tilt"), { opacity: 0.2 }, { opacity: 0, duration: 0.45, ease: "power1.in", immediateRender: false }, 11.6);
+      tl.fromTo($("grid"), { opacity: 1 }, { opacity: 0, duration: 0.75, ease: "power1.inOut", immediateRender: false }, 11.3);
+      tl.fromTo($("hexg"), { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power1.out" }, 10.75);
+
+      // ---------- clock-driven pure functions (drop, ripple, oil, sparks, hexagon) ----------
+      var drop = $("drop"), ripple = $("ripple"), hex = $("hex");
+      var easeIO = gsap.parseEase("power2.inOut");
+      var easeOut = gsap.parseEase("power2.out");
+      var easeOil = gsap.parseEase("sine.inOut");
+      var TA = 10.7, TB = 11.5, TEND = DUR, W = 90; // spin ramp, deg/s
+      function hexAngle(t) {
+        var thB = W * (TB - TEND); // -72
+        if (t >= TB) return W * (t - TEND);
+        var tc = Math.max(t, TA);
+        return thB - (W / (2 * (TB - TA))) * ((TB - TA) * (TB - TA) - (tc - TA) * (tc - TA));
+      }
+      function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+      function render(t) {
+        // drop
+        var op = 0, x = 540, y = 520, rot = 0, sx = 1, sy = 1;
+        if (t >= 0.55 && t < 0.9) {
+          var e = easeOut((t - 0.55) / 0.35);
+          op = e; sx = sy = 0.6 + 0.4 * e;
+        } else if (t >= 0.9 && t < 1.4) {
+          var p = (t - 0.9) / 0.5;
+          op = 1;
+          y = 520 + 172 * p * p;
+          x = 540 - 46 * Math.sin(Math.PI * p);
+          rot = 9 * Math.cos(Math.PI * p) * (1 - p * p);
+        } else if (t >= 1.4 && t < 1.65) {
+          var q = (t - 1.4) / 0.25;
+          op = 1 - q; y = 692; sx = 1 + 0.7 * q; sy = 1 - 0.75 * q;
+        }
+        drop.setAttribute("opacity", op.toFixed(3));
+        // scale about the drop's bottom point (0, 68) so the squash sits on the shank top
+        drop.setAttribute("transform", "translate(" + x.toFixed(2) + " " + y.toFixed(2) + ") rotate(" + rot.toFixed(2) + ") translate(0 68) scale(" + sx.toFixed(3) + " " + sy.toFixed(3) + ") translate(0 -68)");
+
+        // ripple
+        var rq = clamp01((t - 1.4) / 0.55);
+        var re = easeOut(rq);
+        ripple.setAttribute("rx", (10 + 120 * re).toFixed(2));
+        ripple.setAttribute("ry", (3 + 16 * re).toFixed(2));
+        ripple.setAttribute("opacity", (rq > 0 && rq < 1 ? 0.85 * (1 - rq) : 0).toFixed(3));
+
+        // oil creep (1.45 → 4.5)
+        var op2 = clamp01((t - 1.45) / (4.5 - 1.45));
+        var pe = easeOil(op2);
+        oils.forEach(function (o) {
+          var off = o.len * (1 - pe);
+          o.core.style.strokeDashoffset = String(off);
+          o.glow.style.strokeDashoffset = String(off);
+          var hv = op2 > 0 && op2 < 1 ? Math.min(1, op2 / 0.05) * Math.min(1, (1 - op2) / 0.08) : 0;
+          var pt = o.core.getPointAtLength(Math.min(o.len / 1.01, o.len * pe));
+          o.hd.setAttribute("cx", pt.x.toFixed(2)); o.hd.setAttribute("cy", pt.y.toFixed(2));
+          o.hg.setAttribute("cx", pt.x.toFixed(2)); o.hg.setAttribute("cy", pt.y.toFixed(2));
+          o.hd.setAttribute("opacity", hv.toFixed(3));
+          o.hg.setAttribute("opacity", (hv * 0.9).toFixed(3));
+        });
+
+        // sparkles: pure ballistic function of time since each granule's dissolve
+        sparks.forEach(function (s) {
+          var lt = t - s.at;
+          if (lt <= 0 || lt >= SPARK_LIFE) {
+            s.el.setAttribute("opacity", "0");
+            return;
+          }
+          var sxp = s.ox + s.vx * lt;
+          var syp = s.oy + s.vy * lt + 0.5 * SPARK_G * lt * lt;
+          var fade = Math.min(1, lt / 0.06) * (1 - lt / SPARK_LIFE);
+          s.el.setAttribute("transform", "translate(" + sxp.toFixed(2) + " " + syp.toFixed(2) + ")");
+          s.el.setAttribute("opacity", fade.toFixed(3));
+        });
+
+        // hexagon: tilt up from edge-on (orthographic foreshortening) + clockwise spin
+        var tq = clamp01((t - 10.7) / 0.9);
+        var tiltDeg = 88 * (1 - easeIO(tq));
+        var s = tq >= 1 ? 1 : Math.cos((tiltDeg * Math.PI) / 180);
+        var th = hexAngle(t);
+        if (s === 1) {
+          hex.setAttribute("transform", "rotate(" + th.toFixed(4) + " 540 760)");
+        } else {
+          hex.setAttribute("transform", "translate(540 760) scale(1 " + s.toFixed(4) + ") rotate(" + th.toFixed(4) + ") translate(-540 -760)");
+        }
+      }
+
+      var clock = { t: 0 };
+      render(0);
+      tl.fromTo(clock, { t: 0 }, { t: DUR, duration: DUR, ease: "none", onUpdate: function () { render(clock.t); } }, 0);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines[FID] = tl;
+    })();
+  </script>
+</template>
