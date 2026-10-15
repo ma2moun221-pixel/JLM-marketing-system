@@ -1,0 +1,268 @@
+<template>
+  <style>
+    @font-face{font-family:"Albert Sans";font-weight:100 900;font-style:normal;font-display:block;src:url("assets/fonts/AlbertSans-Regular.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:700;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Bold.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:400;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Regular.ttf") format("truetype");}
+
+    #root {
+      position: relative;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: "Helvetica Neue LT Arabic", "Albert Sans";
+      color: #F1F0EC;
+    }
+    #\30 3-product-bg { position: absolute; inset: 0; background: #141516; }
+    #\30 3-product-stage { position: absolute; inset: 0; overflow: hidden; }
+    #\30 3-product-stage svg { position: absolute; left: 0; top: 0; overflow: visible; }
+
+    /* floor shadow under CAN@HERO (can base at y=1535) */
+    #\30 3-product-shadow {
+      position: absolute; left: 290px; top: 1500px; width: 500px; height: 74px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.45) 45%, rgba(0,0,0,0) 72%);
+    }
+
+    /* camera: E0 (arc offset) > E1 (screen anchor, rotate, scale) > E2 (native anchor) > imgs */
+    #\30 3-product-blur { position: absolute; inset: 0; overflow: hidden; }
+    #\30 3-product-mask {
+      position: absolute; inset: 0; overflow: hidden;
+      clip-path: circle(470px at 540px 900px);
+    }
+    #\30 3-product-cam0, #\30 3-product-cam1, #\30 3-product-cam2 {
+      position: absolute; left: 0; top: 0; width: 0; height: 0;
+      transform-origin: 0 0;
+    }
+    #\30 3-product-cam2 img {
+      position: absolute; left: 0; top: 0; width: 842px; height: 2400px; max-width: none; display: block;
+    }
+    #\30 3-product-glow { filter: drop-shadow(0 0 5px rgba(250,184,23,0.9)); }
+
+    /* title */
+    #\30 3-product-title {
+      position: absolute; left: 0; right: 0; top: 150px; text-align: center;
+      font-weight: 700; font-size: 84px; line-height: 110px; color: #F1F0EC;
+    }
+    #\30 3-product-title span, .p3w { display: inline-block; }
+    #\30 3-product-latin {
+      position: absolute; left: 0; right: 0; top: 256px; text-align: center;
+      font-family: "Albert Sans"; font-weight: 800; font-size: 40px; line-height: 48px;
+      color: #FAB817; letter-spacing: 0.06em;
+    }
+
+    /* lower lines */
+    .p3line {
+      position: absolute; left: 30px; right: 30px; text-align: center;
+      font-weight: 400; font-size: 44px; line-height: 56px; white-space: nowrap;
+    }
+    #\30 3-product-lineA { top: 1590px; color: #F1F0EC; }
+    #\30 3-product-lineB { top: 1640px; color: #C0C4C7; }
+    #\30 3-product-lineC { top: 1590px; color: #F1F0EC; font-size: 42px; }
+    #\30 3-product-easy { color: #FAB817; font-weight: 700; }
+
+    /* +MoS2 tag */
+    #\30 3-product-tagtext {
+      position: absolute; left: 846px; top: 896px; white-space: nowrap;
+      font-family: "Albert Sans"; font-weight: 800; font-size: 36px; line-height: 44px; color: #FAB817;
+    }
+
+    /* benefit chips */
+    .p3piv, .p3arm, .p3ctr { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
+    .p3chip {
+      position: absolute; left: 0; top: 0; white-space: nowrap;
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 30px 12px 26px;
+      background: #252729; border: 2px solid #FAB817; border-radius: 999px;
+      font-weight: 700; font-size: 38px; line-height: 50px; color: #F1F0EC;
+    }
+    .p3chip svg { position: static !important; width: 46px; height: 46px; flex: none; }
+    .p3chip.p3L { transform: translate(0, -50%); }
+    .p3chip.p3R { transform: translate(-100%, -50%); }
+
+    #\30 3-product-blue { position: absolute; inset: 0; background: #3C6999; }
+  </style>
+
+  <div id="root" data-composition-id="03-product" data-start="0" data-duration="11.95" data-width="1080" data-height="1920">
+    <div id="03-product-bg" class="clip" data-start="0" data-duration="11.95" data-track-index="0"></div>
+
+    <div id="03-product-stage" class="clip" data-start="0" data-duration="11.95" data-track-index="1">
+      <div id="03-product-shadow"></div>
+
+      <!-- orbit ring, back half (behind the can) -->
+      <svg id="03-product-orbitback" width="1080" height="1920" viewBox="0 0 1080 1920" aria-hidden="true">
+        <path id="03-product-ob-line" d="M210 1500 A330 90 0 0 1 870 1500" pathLength="1000" fill="none" stroke="#FAB817" stroke-width="2.5" stroke-dasharray="1000 1000" stroke-dashoffset="1000" />
+        <path id="03-product-ob-dash" d="M210 1500 A330 90 0 0 1 870 1500" pathLength="1000" fill="none" stroke="#FAB817" stroke-width="6" stroke-linecap="round" stroke-dasharray="14 111" stroke-dashoffset="0" opacity="0" />
+      </svg>
+
+      <!-- the can (camera rig) -->
+      <div id="03-product-blur">
+        <div id="03-product-mask">
+          <div id="03-product-cam0">
+            <div id="03-product-cam1">
+              <div id="03-product-cam2">
+                <img id="03-product-glow" src="assets/penetrating-oil-can.png" alt="" />
+                <img id="03-product-can" src="assets/penetrating-oil-can.png" alt="JLM Penetrating Oil" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- orbit ring, front half -->
+      <svg id="03-product-orbitfront" width="1080" height="1920" viewBox="0 0 1080 1920" aria-hidden="true">
+        <path id="03-product-of-line" d="M870 1500 A330 90 0 0 1 210 1500" pathLength="1000" fill="none" stroke="#FAB817" stroke-width="2.5" stroke-dasharray="1000 1000" stroke-dashoffset="1000" />
+        <path id="03-product-of-dash" d="M870 1500 A330 90 0 0 1 210 1500" pathLength="1000" fill="none" stroke="#FAB817" stroke-width="6" stroke-linecap="round" stroke-dasharray="14 111" stroke-dashoffset="0" opacity="0" />
+      </svg>
+
+      <!-- master ring C -->
+      <svg id="03-product-ringsvg" width="1080" height="1920" viewBox="0 0 1080 1920" aria-hidden="true">
+        <circle id="03-product-ring" cx="540" cy="900" r="470" fill="none" stroke="#FAB817" stroke-width="8" />
+      </svg>
+
+      <!-- title -->
+      <div id="03-product-title" dir="rtl" lang="ar"><span id="03-product-t1">زيت</span> <span id="03-product-t2">الاختراق</span></div>
+      <div id="03-product-latin">Penetrating Oil</div>
+
+      <!-- +MoS2 tag -->
+      <svg id="03-product-tagsvg" width="1080" height="1920" viewBox="0 0 1080 1920" aria-hidden="true">
+        <path id="03-product-tagline" d="M716 972 L792 918 L834 918" pathLength="100" fill="none" stroke="#FAB817" stroke-width="2.5" stroke-dasharray="100 100" stroke-dashoffset="100" />
+        <circle id="03-product-tagdot" cx="716" cy="972" r="6" fill="#FAB817" />
+      </svg>
+      <div id="03-product-tagtext">+ MoS2</div>
+
+      <!-- benefit chips: pivot (orbit) > arm (radius) > counter-rotation > chip -->
+      <div class="p3piv" id="03-product-piv1" style="left:540px;top:960px"><div class="p3arm" id="03-product-arm1"><div class="p3ctr" id="03-product-ctr1">
+        <div class="p3chip p3L" dir="rtl" lang="ar">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#C0C4C7" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M24 6 L39.6 15 L39.6 33 L24 42 L8.4 33 L8.4 15 Z"/><circle cx="24" cy="24" r="7.5"/><circle cx="14.5" cy="17" r="1.2" fill="#C0C4C7"/><circle cx="33" cy="30.5" r="1.4" fill="#C0C4C7"/><circle cx="31" cy="15" r="1" fill="#C0C4C7"/><circle cx="16" cy="32" r="1" fill="#C0C4C7"/></svg>
+          <span>الصدأ</span>
+        </div>
+      </div></div></div>
+
+      <div class="p3piv" id="03-product-piv2" style="left:540px;top:960px"><div class="p3arm" id="03-product-arm2"><div class="p3ctr" id="03-product-ctr2">
+        <div class="p3chip p3R" dir="rtl" lang="ar">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#C0C4C7" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M8 12 H40 V30 L36 33 L32 30 L27 36 L22 31 L17 37 L12 32 L8 35 Z"/><circle cx="17" cy="20" r="2.2"/><circle cx="29" cy="18" r="1.6"/><circle cx="33" cy="24.5" r="2"/><circle cx="22" cy="25" r="1.3"/></svg>
+          <span>التآكل</span>
+        </div>
+      </div></div></div>
+
+      <div class="p3piv" id="03-product-piv3" style="left:540px;top:960px"><div class="p3arm" id="03-product-arm3"><div class="p3ctr" id="03-product-ctr3">
+        <div class="p3chip p3R" dir="rtl" lang="ar">
+          <svg viewBox="0 0 48 48" fill="none" stroke="#C0C4C7" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><rect x="5" y="17" width="24" height="14" rx="7" transform="rotate(-35 17 24)"/><rect x="19" y="17" width="24" height="14" rx="7" transform="rotate(-35 31 24)"/><path d="M6 41 L11 36 M42 7 L37 12"/></svg>
+          <span>الأجزاء الملتصقة</span>
+        </div>
+      </div></div></div>
+
+      <!-- lower copy (user's copy, verbatim) -->
+      <div id="03-product-lineA" class="p3line" dir="rtl" lang="ar"><span class="p3w" id="03-product-a1">بخاخ</span> <span class="p3w" id="03-product-a2">اختراق</span> <span class="p3w" id="03-product-a3">عالي</span> <span class="p3w" id="03-product-a4">الأداء</span></div>
+      <div id="03-product-lineB" class="p3line" dir="rtl" lang="ar"><span class="p3w" id="03-product-b1">ومتعدد</span> <span class="p3w" id="03-product-b2">الاستخدامات</span></div>
+      <div id="03-product-lineC" class="p3line" dir="rtl" lang="ar"><span class="p3w" id="03-product-c1">لمعالجة</span> <span class="p3w" id="03-product-c2">الصدأ</span> <span class="p3w" id="03-product-c3">والتآكل</span> <span class="p3w" id="03-product-c4">والأجزاء</span> <span class="p3w" id="03-product-c5">الملتصقة</span> <span class="p3w" id="03-product-easy">بسهولة</span></div>
+
+      <!-- zoom-through: blue of the +MoS2 drop -->
+      <svg id="03-product-discsvg" width="1080" height="1920" viewBox="0 0 1080 1920" aria-hidden="true">
+        <circle id="03-product-disc" cx="540" cy="900" r="0" fill="#3C6999" />
+      </svg>
+      <div id="03-product-blue"></div>
+    </div>
+  </div>
+
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      var $ = function (id) { return document.getElementById("03-product-" + id); };
+      var tl = gsap.timeline({ paused: true });
+
+      // ---- ease helpers (pure functions of progress — seek-safe) ----
+      var e3io = function (p) { return p < 0.5 ? 8 * p * p * p * p : 1 - Math.pow(-2 * p + 2, 4) / 2; }; // power3.inOut
+      var e2in = function (p) { return p * p * p; };                                                     // power2.in
+      var arcE = function (base) { return function (p) { return Math.sin(Math.PI * base(p)); }; };      // out-and-back
+      var logE = function (a, b, base) {                                                                 // exponential scale interp
+        return function (p) { return (a * Math.pow(b / a, base(p)) - a) / (b - a); };
+      };
+
+      // ---- shared geometry ----
+      var S_CROP = 1.42424, S_HERO = 1150 / 2400, S_DIVE_END = 12;
+      var A_CROP = { x: 470, y: 1585 }, A_HERO = { x: 421, y: 1200 }, A_DROP = { x: 715, y: 1285 };
+
+      // ===== handoff_in: CAN@CROP inside circle C, ring C stroke 8 yellow =====
+      tl.set($("cam0"), { x: 0, y: 0 }, 0);
+      tl.set($("cam1"), { x: 540, y: 900, rotation: 0, scale: S_CROP, transformOrigin: "0 0" }, 0);
+      tl.set($("cam2"), { x: -A_CROP.x, y: -A_CROP.y }, 0);
+
+      // ===== Scene 1 (0.0–2.4): cut-out reveal + spiral pull-back =====
+      var D1 = 2.4;
+      tl.fromTo($("mask"), { clipPath: "circle(470px at 540px 900px)" },
+        { clipPath: "circle(1400px at 540px 900px)", duration: 2.0, ease: "power3.inOut" }, 0);
+      tl.fromTo($("ring"), { attr: { r: 470 }, opacity: 1 },
+        { attr: { r: 840 }, opacity: 0, duration: 1.5, ease: "power2.inOut" }, 0);
+      tl.to($("cam1"), { scale: S_HERO, duration: D1, ease: logE(S_CROP, S_HERO, e3io) }, 0);
+      tl.to($("cam1"), { x: 540, y: 960, duration: D1, ease: e3io }, 0);
+      tl.to($("cam1"), { rotation: -8, duration: D1, ease: arcE(e3io) }, 0);
+      tl.to($("cam0"), { x: -150, y: -70, duration: D1, ease: arcE(e3io) }, 0);
+      tl.to($("cam2"), { x: -A_HERO.x, y: -A_HERO.y, duration: D1, ease: e3io }, 0);
+      tl.fromTo($("shadow"), { opacity: 0, scaleX: 0.6 }, { opacity: 1, scaleX: 1, duration: 1.0, ease: "power2.out" }, 1.4);
+      tl.fromTo($("glow"), { opacity: 0 }, { opacity: 0.45, duration: 0.8, ease: "power2.out" }, 1.9);
+
+      // title on "JLM" (1.6s)
+      tl.fromTo([$("t1"), $("t2")], { y: 46, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.16 }, 1.6);
+      tl.fromTo($("latin"), { opacity: 0, letterSpacing: "0.42em", y: 10 },
+        { opacity: 1, letterSpacing: "0.06em", y: 0, duration: 0.8, ease: "power3.out" }, 1.95);
+
+      // ===== Scene 2 (2.6–6.6): orbit ring + role line =====
+      tl.fromTo($("ob-line"), { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.55, ease: "power2.in" }, 2.6);
+      tl.fromTo($("of-line"), { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.55, ease: "power2.out" }, 3.15);
+      tl.fromTo([$("ob-dash"), $("of-dash")], { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power1.out" }, 3.5);
+      // slow turntable rotation (dash pattern flows around the loop; both halves share the offset)
+      tl.fromTo([$("ob-dash"), $("of-dash")], { strokeDashoffset: 0 }, { strokeDashoffset: -1500, duration: 11.25 - 3.5, ease: "none" }, 3.5);
+
+      var word = function (el, at) {
+        tl.fromTo(el, { y: 26, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" }, at);
+      };
+      word($("a1"), 2.6); word($("a2"), 3.15); word($("a3"), 3.9); word($("a4"), 4.25);
+      word($("b1"), 4.9); word($("b2"), 5.3);
+
+      // + MoS2 tag pointing at the drop on the label
+      tl.fromTo($("tagdot"), { opacity: 0, scale: 0, transformOrigin: "50% 50%" }, { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" }, 5.8);
+      tl.fromTo($("tagline"), { strokeDashoffset: 100 }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.inOut" }, 5.9);
+      tl.fromTo($("tagtext"), { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" }, 6.2);
+
+      // ===== Scene 3 (7.0–11.0): benefits orbit in; benefit line assembles =====
+      tl.to([$("lineA"), $("lineB")], { opacity: 0, y: -14, duration: 0.3, ease: "power2.in" }, 7.0);
+      word($("c1"), 7.05); word($("c2"), 7.6); word($("c3"), 8.3); word($("c4"), 9.1); word($("c5"), 9.35);
+      tl.fromTo($("easy"), { y: 26, opacity: 0, scale: 0.9 }, { y: 0, opacity: 1, scale: 1, duration: 0.5, ease: "power3.out" }, 10.9);
+
+      var O = { x: 540, y: 960 };
+      var orbitIn = function (n, fx, fy, at) {
+        var dx = fx - O.x, dy = fy - O.y, K = 1.55, SWEEP = 75, DUR = 1.1;
+        tl.fromTo($("piv" + n), { rotation: -SWEEP }, { rotation: 0, duration: DUR, ease: "power3.out" }, at);
+        tl.fromTo($("arm" + n), { x: dx * K, y: dy * K }, { x: dx, y: dy, duration: DUR, ease: "power3.out" }, at);
+        tl.fromTo($("ctr" + n), { rotation: SWEEP, scale: 0.8 }, { rotation: 0, scale: 1, duration: DUR, ease: "power3.out" }, at);
+        tl.fromTo($("ctr" + n), { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power1.out" }, at);
+      };
+      orbitIn(1, 768, 700, 7.6);   // الصدأ — right
+      orbitIn(2, 312, 980, 8.3);   // التآكل — left
+      orbitIn(3, 1046, 1262, 9.1); // الأجزاء الملتصقة — right
+
+      // ===== Scene 4 (11.0–11.95): zoom-through into the +MoS2 drop =====
+      var T4 = 11.0, D4 = 0.75;
+      tl.to([$("title"), $("latin"), $("lineC"), $("tagsvg"), $("tagtext"), $("orbitback"), $("orbitfront"),
+             $("ctr1"), $("ctr2"), $("ctr3"), $("shadow"), $("glow")],
+        { opacity: 0, duration: 0.25, ease: "power1.in" }, T4);
+      tl.to($("cam1"), { scale: S_DIVE_END, duration: D4, ease: logE(S_HERO, S_DIVE_END, e2in) }, T4);
+      tl.to($("cam1"), { x: 540, y: 900, duration: D4, ease: e2in }, T4);
+      tl.to($("cam1"), { rotation: 6, duration: D4, ease: e2in }, T4);
+      tl.to($("cam0"), { x: 90, y: -50, duration: D4, ease: arcE(function (p) { return p * p; }) }, T4);
+      tl.to($("cam2"), { x: -A_DROP.x, y: -A_DROP.y, duration: D4, ease: e2in }, T4);
+      // motion-blur streak at wrapper level (depth push: symmetric blur), peaks with speed at the end of the dive
+      tl.set($("blur"), { filter: "blur(0px)" }, T4 + 0.1);
+      tl.fromTo($("blur"), { filter: "blur(0px)" }, { filter: "blur(16px)", duration: D4 - 0.1, ease: "power2.in", immediateRender: false }, T4 + 0.1);
+      tl.fromTo($("disc"), { attr: { r: 0 } }, { attr: { r: 1200 }, duration: 0.38, ease: "power2.in" }, T4 + 0.37);
+      // handoff_out: solid label blue for the last 0.2s
+      tl.fromTo($("blue"), { opacity: 0 }, { opacity: 1, duration: 0.001, ease: "none" }, 11.749);
+      tl.set({}, {}, 11.95);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["03-product"] = tl;
+    })();
+  </script>
+</template>
