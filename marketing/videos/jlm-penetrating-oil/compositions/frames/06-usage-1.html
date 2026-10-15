@@ -138,11 +138,11 @@
       background:
         linear-gradient(
           135deg,
-          rgba(250, 184, 23, 0.26) 0%,
-          rgba(250, 184, 23, 0.16) 44%,
-          rgba(255, 222, 130, 0.3) 56%,
-          rgba(250, 184, 23, 0.18) 70%,
-          rgba(250, 184, 23, 0.24) 100%
+          rgba(250, 184, 23, 0.16) 0%,
+          rgba(250, 184, 23, 0.08) 44%,
+          rgba(255, 222, 130, 0.2) 56%,
+          rgba(250, 184, 23, 0.09) 70%,
+          rgba(250, 184, 23, 0.14) 100%
         );
     }
     [id="06-usage-1-glint"] {
@@ -336,7 +336,7 @@
       // band: right edge slanted 14deg; covers x 0–1080 at t=0, leaves past the left edge by 0.55s
       tl.fromTo(
         band,
-        { x: -1681, skewX: 14, transformOrigin: "50% 50%" },
+        { x: -1672, skewX: 14, transformOrigin: "50% 50%" },
         { x: -3239, skewX: 14, duration: 0.55, ease: "none" },
         0
       );
@@ -380,9 +380,9 @@
       tl.to(shake, { rotation: 0, y: 0, duration: HALF / 2 + 0.05, ease: "sine.out" }, tt);
 
       // =========== Scene 3 (3.7–7.0s): step 2, tilt, lens, spray, sheen ===========
-      stepOut(step1, 3.7);
+      stepOut(step1, 3.7, 0.28);
       gsap.set(step2, { opacity: 1 });
-      stepIn(step2, 3.8);
+      stepIn(step2, 3.95);
 
       tl.fromTo(arm1, { rotation: 0 }, { rotation: TILT, duration: 0.65, ease: "power2.inOut" }, 3.7);
 
@@ -407,10 +407,10 @@
       tl.set(glint, { opacity: 0 }, 7.2);
 
       // spray mist (seeded): from the nozzle onto the bolt, 4.15–6.75s
-      var PN = 150, TGT = [772, 1158];
+      var PN = 260, TGT = [772, 1158];
       for (var i = 0; i < PN; i++) {
-        var sz = 2 + rnd() * 4.2;
-        if (rnd() < 0.06) sz = 7;
+        var sz = 3 + rnd() * 5;
+        if (rnd() < 0.07) sz = 9;
         var p = document.createElement("div");
         p.className = "06-usage-1-p";
         p.style.width = sz.toFixed(2) + "px";
@@ -424,23 +424,23 @@
         var ang = rnd() * Math.PI * 2, rad = Math.sqrt(rnd()) * 165;
         var tx = TGT[0] + Math.cos(ang) * rad, ty = TGT[1] + Math.sin(ang) * rad;
         var sx = N1[0] + (rnd() - 0.5) * 6, sy = N1[1] + (rnd() - 0.5) * 6;
-        var peak = 0.55 + rnd() * 0.4;
+        var peak = 0.7 + rnd() * 0.3;
 
         tl.fromTo(p, { x: sx }, { x: tx, duration: d, ease: "power4.out" }, t0);
         tl.fromTo(p, { y: sy }, { y: ty, duration: d, ease: "none" }, t0);
-        tl.fromTo(p, { scale: 0.45 }, { scale: 1.5, duration: d, ease: "none" }, t0);
+        tl.fromTo(p, { scale: 0.5 }, { scale: 1.6, duration: d, ease: "none" }, t0);
         tl.fromTo(p, { opacity: 0 }, { opacity: peak, duration: 0.06, ease: "none" }, t0);
         tl.fromTo(p, { opacity: peak }, { opacity: 0, duration: 0.2, ease: "power1.in", immediateRender: false }, t0 + d - 0.2);
       }
 
       // =========== Scene 4 (7.4–10.18s): soak timer ===========
-      stepOut(step2, 7.4);
+      stepOut(step2, 7.4, 0.3);
       gsap.set(step3, { opacity: 1 });
-      stepIn(step3, 7.55);
+      stepIn(step3, 7.85);
 
       // can arcs out to the left and fades
-      tl.fromTo(arm2, { rotation: 0 }, { rotation: -30, duration: 1.0, ease: "power2.in" }, 7.4);
-      tl.fromTo(can, { opacity: 1 }, { opacity: 0, duration: 0.75, ease: "power1.in" }, 7.6);
+      tl.fromTo(arm2, { rotation: 0 }, { rotation: -30, duration: 0.85, ease: "sine.in" }, 7.4);
+      tl.fromTo(can, { opacity: 1 }, { opacity: 0, duration: 0.6, ease: "power1.in" }, 7.5);
 
       // lens arcs to centre and grows to r 292
       tl.fromTo(bolt, { x: 250 }, { x: 0, duration: 1.0, ease: "power2.inOut", immediateRender: false }, 7.4);
