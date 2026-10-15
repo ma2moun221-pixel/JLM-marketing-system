@@ -1,9 +1,9 @@
 {
   "bgm": {
     "path": "assets/bgm/bed.wav",
-    "volume": 0.16,
+    "volume": 0.18,
     "source": "host",
-    "duration_s": 71.69
+    "duration_s": 74.89
   },
   "sfx": [
     {
@@ -11,79 +11,151 @@
       "file": "assets/sfx/riser.wav",
       "offset_s": 0.0,
       "duration_s": 1.2,
-      "volume": 0.6,
+      "volume": 0.55,
       "source": "host"
     },
     {
       "frame": 1,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 1.1,
-      "duration_s": 0.16,
+      "file": "assets/sfx/impact.wav",
+      "offset_s": 1.0,
+      "duration_s": 0.9,
+      "volume": 0.55,
+      "source": "host"
+    },
+    {
+      "frame": 1,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 1.05,
+      "duration_s": 1.1,
+      "volume": 0.45,
+      "source": "host"
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/thump.wav",
+      "offset_s": 0.15,
+      "duration_s": 0.6,
       "volume": 0.6,
       "source": "host"
     },
     {
       "frame": 2,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 1.6,
-      "duration_s": 0.16,
-      "volume": 0.5,
-      "source": "host"
-    },
-    {
-      "frame": 2,
-      "file": "assets/sfx/strain.wav",
-      "offset_s": 2.4,
-      "duration_s": 1.4,
-      "volume": 0.7,
-      "source": "host"
-    },
-    {
-      "frame": 2,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 4.2,
-      "duration_s": 0.16,
-      "volume": 0.5,
-      "source": "host"
-    },
-    {
-      "frame": 3,
-      "file": "assets/sfx/whoosh.wav",
-      "offset_s": 0.05,
+      "file": "assets/sfx/thump.wav",
+      "offset_s": 1.55,
       "duration_s": 0.6,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/clank.wav",
+      "offset_s": 2.55,
+      "duration_s": 0.45,
+      "volume": 0.8,
+      "source": "host"
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/clank.wav",
+      "offset_s": 2.85,
+      "duration_s": 0.45,
       "volume": 0.7,
       "source": "host"
     },
     {
+      "frame": 2,
+      "file": "assets/sfx/crack.wav",
+      "offset_s": 3.0,
+      "duration_s": 0.25,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/clank.wav",
+      "offset_s": 3.15,
+      "duration_s": 0.45,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/riser_long.wav",
+      "offset_s": 3.3,
+      "duration_s": 1.3,
+      "volume": 0.55,
+      "source": "host"
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 4.2,
+      "duration_s": 1.1,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
       "frame": 3,
-      "file": "assets/sfx/tick.wav",
+      "file": "assets/sfx/impact.wav",
+      "offset_s": 0.05,
+      "duration_s": 0.9,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/swoosh.wav",
+      "offset_s": 0.4,
+      "duration_s": 0.55,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 1.6,
+      "duration_s": 1.1,
+      "volume": 0.45,
+      "source": "host"
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/pop.wav",
       "offset_s": 7.6,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "duration_s": 0.22,
+      "volume": 0.6,
       "source": "host"
     },
     {
       "frame": 3,
-      "file": "assets/sfx/tick.wav",
+      "file": "assets/sfx/pop.wav",
       "offset_s": 8.3,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "duration_s": 0.22,
+      "volume": 0.6,
       "source": "host"
     },
     {
       "frame": 3,
-      "file": "assets/sfx/tick.wav",
+      "file": "assets/sfx/pop.wav",
       "offset_s": 9.1,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "duration_s": 0.22,
+      "volume": 0.6,
       "source": "host"
     },
     {
       "frame": 3,
-      "file": "assets/sfx/riser.wav",
-      "offset_s": 10.6,
-      "duration_s": 1.2,
-      "volume": 0.5,
+      "file": "assets/sfx/riser_long.wav",
+      "offset_s": 9.75,
+      "duration_s": 1.3,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/swoosh.wav",
+      "offset_s": 0.0,
+      "duration_s": 0.55,
+      "volume": 0.7,
       "source": "host"
     },
     {
@@ -96,130 +168,210 @@
     },
     {
       "frame": 4,
-      "file": "assets/sfx/tick.wav",
+      "file": "assets/sfx/ding.wav",
       "offset_s": 1.7,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "duration_s": 1.1,
+      "volume": 0.45,
       "source": "host"
     },
     {
       "frame": 4,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 5.3,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 5.15,
+      "duration_s": 1.1,
+      "volume": 0.45,
       "source": "host"
     },
     {
       "frame": 4,
-      "file": "assets/sfx/tick.wav",
+      "file": "assets/sfx/ding.wav",
       "offset_s": 6.2,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "duration_s": 1.1,
+      "volume": 0.45,
       "source": "host"
     },
     {
       "frame": 4,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 7.9,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 7.8,
+      "duration_s": 1.1,
+      "volume": 0.45,
+      "source": "host"
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/swoosh.wav",
+      "offset_s": 10.8,
+      "duration_s": 0.55,
+      "volume": 0.55,
       "source": "host"
     },
     {
       "frame": 5,
-      "file": "assets/sfx/tick.wav",
+      "file": "assets/sfx/pop.wav",
       "offset_s": 1.6,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "duration_s": 0.22,
+      "volume": 0.6,
       "source": "host"
     },
     {
       "frame": 5,
-      "file": "assets/sfx/tick.wav",
+      "file": "assets/sfx/pop.wav",
       "offset_s": 2.8,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "duration_s": 0.22,
+      "volume": 0.6,
       "source": "host"
     },
     {
       "frame": 5,
-      "file": "assets/sfx/tick.wav",
+      "file": "assets/sfx/pop.wav",
       "offset_s": 3.9,
-      "duration_s": 0.16,
+      "duration_s": 0.22,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/pop.wav",
+      "offset_s": 7.4,
+      "duration_s": 0.22,
+      "volume": 0.55,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/pop.wav",
+      "offset_s": 8.0,
+      "duration_s": 0.22,
+      "volume": 0.55,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/pop.wav",
+      "offset_s": 9.0,
+      "duration_s": 0.22,
+      "volume": 0.55,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/swoosh.wav",
+      "offset_s": 10.4,
+      "duration_s": 0.55,
+      "volume": 0.8,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/swoosh.wav",
+      "offset_s": 0.0,
+      "duration_s": 0.55,
       "volume": 0.5,
       "source": "host"
     },
     {
-      "frame": 5,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 7.4,
-      "duration_s": 0.16,
+      "frame": 6,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 1.8,
+      "duration_s": 1.1,
       "volume": 0.45,
-      "source": "host"
-    },
-    {
-      "frame": 5,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 8.0,
-      "duration_s": 0.16,
-      "volume": 0.45,
-      "source": "host"
-    },
-    {
-      "frame": 5,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 9.0,
-      "duration_s": 0.16,
-      "volume": 0.45,
-      "source": "host"
-    },
-    {
-      "frame": 5,
-      "file": "assets/sfx/whoosh.wav",
-      "offset_s": 10.3,
-      "duration_s": 0.6,
-      "volume": 0.7,
       "source": "host"
     },
     {
       "frame": 6,
       "file": "assets/sfx/rattle.wav",
-      "offset_s": 1.9,
+      "offset_s": 1.95,
       "duration_s": 0.9,
-      "volume": 0.7,
+      "volume": 0.8,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 3.7,
+      "duration_s": 1.1,
+      "volume": 0.45,
       "source": "host"
     },
     {
       "frame": 6,
       "file": "assets/sfx/spray.wav",
-      "offset_s": 3.9,
+      "offset_s": 4.15,
       "duration_s": 2.4,
-      "volume": 0.7,
+      "volume": 0.8,
       "source": "host"
     },
     {
       "frame": 6,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 7.6,
-      "duration_s": 0.16,
-      "volume": 0.35,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 7.3,
+      "duration_s": 1.1,
+      "volume": 0.45,
       "source": "host"
     },
     {
       "frame": 6,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 8.3,
-      "duration_s": 0.16,
-      "volume": 0.35,
+      "file": "assets/sfx/clock.wav",
+      "offset_s": 7.9,
+      "duration_s": 0.09,
+      "volume": 0.6,
       "source": "host"
     },
     {
       "frame": 6,
-      "file": "assets/sfx/tick.wav",
-      "offset_s": 9.0,
-      "duration_s": 0.16,
-      "volume": 0.35,
+      "file": "assets/sfx/clock.wav",
+      "offset_s": 8.23,
+      "duration_s": 0.09,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/clock.wav",
+      "offset_s": 8.56,
+      "duration_s": 0.09,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/clock.wav",
+      "offset_s": 8.89,
+      "duration_s": 0.09,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/clock.wav",
+      "offset_s": 9.22,
+      "duration_s": 0.09,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/clock.wav",
+      "offset_s": 9.55,
+      "duration_s": 0.09,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/clock.wav",
+      "offset_s": 9.88,
+      "duration_s": 0.09,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 7,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 0.6,
+      "duration_s": 1.1,
+      "volume": 0.45,
       "source": "host"
     },
     {
@@ -227,7 +379,7 @@
       "file": "assets/sfx/ratchet.wav",
       "offset_s": 2.8,
       "duration_s": 0.5,
-      "volume": 0.7,
+      "volume": 0.8,
       "source": "host"
     },
     {
@@ -235,7 +387,15 @@
       "file": "assets/sfx/ratchet.wav",
       "offset_s": 3.7,
       "duration_s": 0.5,
-      "volume": 0.7,
+      "volume": 0.8,
+      "source": "host"
+    },
+    {
+      "frame": 7,
+      "file": "assets/sfx/ding.wav",
+      "offset_s": 4.6,
+      "duration_s": 1.1,
+      "volume": 0.45,
       "source": "host"
     },
     {
@@ -248,38 +408,79 @@
     },
     {
       "frame": 7,
-      "file": "assets/sfx/whoosh.wav",
-      "offset_s": 7.2,
-      "duration_s": 0.6,
+      "file": "assets/sfx/riser_long.wav",
+      "offset_s": 6.4,
+      "duration_s": 1.3,
+      "volume": 0.55,
+      "source": "host"
+    },
+    {
+      "frame": 8,
+      "file": "assets/sfx/swoosh.wav",
+      "offset_s": 0.0,
+      "duration_s": 0.55,
       "volume": 0.6,
       "source": "host"
     },
     {
       "frame": 8,
-      "file": "assets/sfx/whoosh.wav",
-      "offset_s": 0.0,
-      "duration_s": 0.6,
-      "volume": 0.5,
+      "file": "assets/sfx/impact.wav",
+      "offset_s": 0.45,
+      "duration_s": 0.9,
+      "volume": 0.55,
       "source": "host"
     },
     {
       "frame": 8,
-      "file": "assets/sfx/tick.wav",
+      "file": "assets/sfx/pop.wav",
+      "offset_s": 3.75,
+      "duration_s": 0.22,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 8,
+      "file": "assets/sfx/ding.wav",
       "offset_s": 3.8,
-      "duration_s": 0.16,
-      "volume": 0.5,
+      "duration_s": 1.1,
+      "volume": 0.4,
       "source": "host"
     },
     {
       "frame": 8,
       "file": "assets/sfx/chime.wav",
-      "offset_s": 7.6,
+      "offset_s": 7.5,
       "duration_s": 1.6,
-      "volume": 0.6,
+      "volume": 0.7,
       "source": "host"
     }
   ],
   "voices": [
+    {
+      "frame": 1,
+      "path": "assets/voice/01.wav",
+      "duration_s": 3.2,
+      "words": [
+        {
+          "id": "w1_0",
+          "text": "نصيحة",
+          "start": 0.4,
+          "end": 1.12
+        },
+        {
+          "id": "w1_1",
+          "text": "من",
+          "start": 1.12,
+          "end": 1.4
+        },
+        {
+          "id": "w1_2",
+          "text": "ميكانيكي",
+          "start": 1.4,
+          "end": 2.46
+        }
+      ]
+    },
     {
       "frame": 2,
       "path": "assets/voice/02.wav",
@@ -288,62 +489,50 @@
         {
           "id": "w2_0",
           "text": "برغي",
-          "start": 0.25,
-          "end": 0.72
+          "start": 0.2,
+          "end": 0.65
         },
         {
           "id": "w2_1",
           "text": "عالق",
-          "start": 0.72,
-          "end": 1.15
+          "start": 0.65,
+          "end": 1.09
         },
         {
           "id": "w2_2",
-          "text": "بسبب",
-          "start": 1.15,
-          "end": 1.59
+          "text": "بالصدأ",
+          "start": 1.09,
+          "end": 1.81
         },
         {
           "id": "w2_3",
-          "text": "الصدأ",
-          "start": 1.59,
-          "end": 2.25
+          "text": "إياك",
+          "start": 2.3,
+          "end": 2.67
         },
         {
           "id": "w2_4",
-          "text": "قبل",
-          "start": 2.42,
-          "end": 2.73
+          "text": "أن",
+          "start": 2.67,
+          "end": 2.97
         },
         {
           "id": "w2_5",
-          "text": "أن",
-          "start": 2.73,
-          "end": 2.95
+          "text": "تكسره",
+          "start": 2.97,
+          "end": 3.72
         },
         {
           "id": "w2_6",
-          "text": "تكسره",
-          "start": 2.95,
-          "end": 3.54
+          "text": "عندي",
+          "start": 3.852,
+          "end": 4.302
         },
         {
           "id": "w2_7",
-          "text": "هناك",
-          "start": 3.54,
-          "end": 3.91
-        },
-        {
-          "id": "w2_8",
-          "text": "حل",
-          "start": 3.91,
-          "end": 4.22
-        },
-        {
-          "id": "w2_9",
-          "text": "أذكى",
-          "start": 4.22,
-          "end": 4.76
+          "text": "الحل",
+          "start": 4.302,
+          "end": 4.782
         }
       ]
     },
@@ -354,111 +543,111 @@
       "words": [
         {
           "id": "w3_0",
-          "text": "زيت",
-          "start": 0.25,
-          "end": 0.62
+          "text": "هذا",
+          "start": 0.2,
+          "end": 0.49
         },
         {
           "id": "w3_1",
-          "text": "الاختراق",
-          "start": 0.62,
-          "end": 1.36
+          "text": "زيت",
+          "start": 0.49,
+          "end": 0.78
         },
         {
           "id": "w3_2",
-          "text": "من",
-          "start": 1.36,
-          "end": 1.55
+          "text": "الاختراق",
+          "start": 0.78,
+          "end": 1.62
         },
         {
           "id": "w3_3",
-          "text": "جيه",
-          "start": 1.55,
-          "end": 1.84
+          "text": "من",
+          "start": 1.62,
+          "end": 1.91
         },
         {
           "id": "w3_4",
-          "text": "إل",
-          "start": 1.84,
-          "end": 2.12
+          "text": "جيه",
+          "start": 1.91,
+          "end": 2.29
         },
         {
           "id": "w3_5",
-          "text": "إم",
-          "start": 2.12,
-          "end": 2.48
+          "text": "إل",
+          "start": 2.29,
+          "end": 2.59
         },
         {
           "id": "w3_6",
-          "text": "بخاخ",
-          "start": 2.649,
-          "end": 3.189
+          "text": "إم",
+          "start": 2.59,
+          "end": 3.0
         },
         {
           "id": "w3_7",
-          "text": "اختراق",
-          "start": 3.189,
-          "end": 3.909
+          "text": "بخاخ",
+          "start": 3.13,
+          "end": 3.77
         },
         {
           "id": "w3_8",
-          "text": "عالي",
-          "start": 3.909,
-          "end": 4.259
+          "text": "قوي",
+          "start": 3.77,
+          "end": 4.16
         },
         {
           "id": "w3_9",
-          "text": "الأداء",
-          "start": 4.259,
-          "end": 4.869
+          "text": "ومتعدد",
+          "start": 4.16,
+          "end": 4.81
         },
         {
           "id": "w3_10",
-          "text": "ومتعدد",
-          "start": 4.869,
-          "end": 5.489
+          "text": "الاستخدامات",
+          "start": 4.81,
+          "end": 6.31
         },
         {
           "id": "w3_11",
-          "text": "الاستخدامات",
-          "start": 5.489,
-          "end": 6.859
+          "text": "نستخدمه",
+          "start": 6.9,
+          "end": 7.75
         },
         {
           "id": "w3_12",
-          "text": "لمعالجة",
-          "start": 7.022,
-          "end": 7.632
+          "text": "في",
+          "start": 7.75,
+          "end": 8.03
         },
         {
           "id": "w3_13",
-          "text": "الصدأ",
-          "start": 7.632,
-          "end": 8.302
+          "text": "الورشة",
+          "start": 8.03,
+          "end": 8.7
         },
         {
           "id": "w3_14",
-          "text": "والتآكل",
-          "start": 8.302,
-          "end": 9.062
+          "text": "للصدأ",
+          "start": 8.7,
+          "end": 9.3
         },
         {
           "id": "w3_15",
-          "text": "والأجزاء",
-          "start": 9.062,
-          "end": 9.842
+          "text": "والتآكل",
+          "start": 9.3,
+          "end": 10.0
         },
         {
           "id": "w3_16",
-          "text": "الملتصقة",
-          "start": 9.842,
-          "end": 10.852
+          "text": "والقطع",
+          "start": 10.0,
+          "end": 10.65
         },
         {
           "id": "w3_17",
-          "text": "بسهولة",
-          "start": 10.852,
-          "end": 11.552
+          "text": "الملتصقة",
+          "start": 10.65,
+          "end": 11.59
         }
       ]
     },
@@ -469,105 +658,111 @@
       "words": [
         {
           "id": "w4_0",
-          "text": "تركيبته",
-          "start": 0.25,
-          "end": 1.04
+          "text": "السر",
+          "start": 0.3,
+          "end": 0.77
         },
         {
           "id": "w4_1",
-          "text": "القوية",
-          "start": 1.04,
-          "end": 1.71
+          "text": "في",
+          "start": 0.77,
+          "end": 1.06
         },
         {
           "id": "w4_2",
-          "text": "تخترق",
-          "start": 1.71,
-          "end": 2.41
+          "text": "تركيبته",
+          "start": 1.06,
+          "end": 1.97
         },
         {
           "id": "w4_3",
-          "text": "البراغي",
-          "start": 2.41,
-          "end": 2.99
+          "text": "يتغلغل",
+          "start": 2.102,
+          "end": 2.802
         },
         {
           "id": "w4_4",
-          "text": "والصواميل",
-          "start": 2.99,
-          "end": 3.78
+          "text": "بعمق",
+          "start": 2.802,
+          "end": 3.242
         },
         {
           "id": "w4_5",
-          "text": "الصدئة",
-          "start": 3.78,
-          "end": 4.53
+          "text": "بين",
+          "start": 3.242,
+          "end": 3.712
         },
         {
           "id": "w4_6",
-          "text": "بعمق",
-          "start": 4.53,
-          "end": 5.09
+          "text": "أسنان",
+          "start": 3.712,
+          "end": 4.372
         },
         {
           "id": "w4_7",
-          "text": "تذيب",
-          "start": 5.263,
-          "end": 5.693
+          "text": "البرغي",
+          "start": 4.372,
+          "end": 5.172
         },
         {
           "id": "w4_8",
-          "text": "الصدأ",
-          "start": 5.693,
-          "end": 6.243
+          "text": "يذيب",
+          "start": 5.312,
+          "end": 5.802
         },
         {
           "id": "w4_9",
-          "text": "وتطرد",
-          "start": 6.243,
-          "end": 6.913
+          "text": "الصدأ",
+          "start": 5.802,
+          "end": 6.432
         },
         {
           "id": "w4_10",
-          "text": "الرطوبة",
-          "start": 6.913,
-          "end": 7.693
+          "text": "بسرعة",
+          "start": 6.432,
+          "end": 7.122
         },
         {
           "id": "w4_11",
-          "text": "وتمنح",
-          "start": 7.865,
-          "end": 8.585
+          "text": "ويطرد",
+          "start": 7.263,
+          "end": 7.863
         },
         {
           "id": "w4_12",
-          "text": "تزييتا",
-          "start": 8.585,
-          "end": 9.305
+          "text": "الرطوبة",
+          "start": 7.863,
+          "end": 8.673
         },
         {
           "id": "w4_13",
-          "text": "فائقا",
-          "start": 9.305,
-          "end": 10.045
+          "text": "ثم",
+          "start": 8.815,
+          "end": 9.135
         },
         {
           "id": "w4_14",
-          "text": "وحماية",
-          "start": 10.045,
-          "end": 10.705
+          "text": "يزيت",
+          "start": 9.135,
+          "end": 9.635
         },
         {
           "id": "w4_15",
-          "text": "طويلة",
-          "start": 10.705,
-          "end": 11.245
+          "text": "القطعة",
+          "start": 9.635,
+          "end": 10.435
         },
         {
           "id": "w4_16",
-          "text": "الأمد",
-          "start": 11.245,
-          "end": 11.905
+          "text": "ويحميها",
+          "start": 10.435,
+          "end": 11.315
+        },
+        {
+          "id": "w4_17",
+          "text": "طويلا",
+          "start": 11.315,
+          "end": 11.925
         }
       ]
     },
@@ -578,81 +773,87 @@
       "words": [
         {
           "id": "w5_0",
-          "text": "أداة",
-          "start": 0.25,
-          "end": 0.76
+          "text": "لهذا",
+          "start": 0.2,
+          "end": 0.7
         },
         {
           "id": "w5_1",
-          "text": "أساسية",
-          "start": 0.76,
-          "end": 1.56
+          "text": "هو",
+          "start": 0.7,
+          "end": 0.95
         },
         {
           "id": "w5_2",
-          "text": "للميكانيكيين",
-          "start": 1.56,
-          "end": 2.84
+          "text": "أداة",
+          "start": 0.95,
+          "end": 1.42
         },
         {
           "id": "w5_3",
-          "text": "والمهندسين",
-          "start": 2.84,
-          "end": 3.89
+          "text": "أساسية",
+          "start": 1.42,
+          "end": 2.47
         },
         {
           "id": "w5_4",
-          "text": "وهواة",
-          "start": 3.89,
-          "end": 4.4
+          "text": "لكل",
+          "start": 2.599,
+          "end": 3.099
         },
         {
           "id": "w5_5",
-          "text": "الأعمال",
-          "start": 4.4,
-          "end": 5.19
+          "text": "ميكانيكي",
+          "start": 3.099,
+          "end": 4.199
         },
         {
           "id": "w5_6",
-          "text": "اليدوية",
-          "start": 5.19,
-          "end": 5.94
+          "text": "ومهندس",
+          "start": 4.199,
+          "end": 5.049
         },
         {
           "id": "w5_7",
-          "text": "لصيانة",
-          "start": 6.108,
-          "end": 6.728
+          "text": "وهاو",
+          "start": 5.049,
+          "end": 5.599
         },
         {
           "id": "w5_8",
-          "text": "وإصلاح",
-          "start": 6.728,
-          "end": 7.428
+          "text": "في",
+          "start": 6.0,
+          "end": 6.4
         },
         {
           "id": "w5_9",
-          "text": "الآلات",
-          "start": 7.428,
-          "end": 8.048
+          "text": "صيانة",
+          "start": 6.4,
+          "end": 6.95
         },
         {
           "id": "w5_10",
-          "text": "والمركبات",
-          "start": 8.048,
-          "end": 8.958
+          "text": "الآلات",
+          "start": 6.95,
+          "end": 7.58
         },
         {
           "id": "w5_11",
-          "text": "والمعدات",
-          "start": 8.958,
-          "end": 9.848
+          "text": "والسيارات",
+          "start": 7.58,
+          "end": 8.43
         },
         {
           "id": "w5_12",
+          "text": "والمعدات",
+          "start": 8.43,
+          "end": 9.34
+        },
+        {
+          "id": "w5_13",
           "text": "الصناعية",
-          "start": 9.848,
-          "end": 10.758
+          "start": 9.34,
+          "end": 10.33
         }
       ]
     },
@@ -663,99 +864,99 @@
       "words": [
         {
           "id": "w6_0",
-          "text": "طريقة",
-          "start": 0.25,
-          "end": 0.75
+          "text": "وطريقة",
+          "start": 0.2,
+          "end": 0.98
         },
         {
           "id": "w6_1",
-          "text": "الاستخدام",
-          "start": 0.75,
-          "end": 1.64
+          "text": "استخدامه",
+          "start": 0.98,
+          "end": 1.88
         },
         {
           "id": "w6_2",
-          "text": "قم",
-          "start": 1.826,
-          "end": 2.106
+          "text": "سهلة",
+          "start": 1.88,
+          "end": 2.42
         },
         {
           "id": "w6_3",
-          "text": "برج",
-          "start": 2.106,
-          "end": 2.396
+          "text": "قم",
+          "start": 2.551,
+          "end": 2.881
         },
         {
           "id": "w6_4",
-          "text": "العبوة",
-          "start": 2.396,
-          "end": 2.996
+          "text": "برج",
+          "start": 2.881,
+          "end": 3.221
         },
         {
           "id": "w6_5",
-          "text": "جيدا",
-          "start": 2.996,
-          "end": 3.556
+          "text": "العبوة",
+          "start": 3.221,
+          "end": 3.941
         },
         {
           "id": "w6_6",
-          "text": "رش",
-          "start": 3.732,
-          "end": 4.072
+          "text": "جيدا",
+          "start": 3.941,
+          "end": 4.441
         },
         {
           "id": "w6_7",
-          "text": "الزيت",
-          "start": 4.072,
-          "end": 4.652
+          "text": "رش",
+          "start": 4.577,
+          "end": 5.017
         },
         {
           "id": "w6_8",
           "text": "مباشرة",
-          "start": 4.652,
-          "end": 5.202
+          "start": 5.017,
+          "end": 5.697
         },
         {
           "id": "w6_9",
           "text": "على",
-          "start": 5.202,
-          "end": 5.492
+          "start": 5.697,
+          "end": 6.067
         },
         {
           "id": "w6_10",
-          "text": "المنطقة",
-          "start": 5.492,
-          "end": 6.162
+          "text": "مكان",
+          "start": 6.067,
+          "end": 6.527
         },
         {
           "id": "w6_11",
-          "text": "المستهدفة",
-          "start": 6.162,
-          "end": 7.222
+          "text": "الصدأ",
+          "start": 6.527,
+          "end": 7.257
         },
         {
           "id": "w6_12",
           "text": "واتركه",
-          "start": 7.391,
-          "end": 8.111
+          "start": 7.39,
+          "end": 8.14
         },
         {
           "id": "w6_13",
-          "text": "يتغلغل",
-          "start": 8.111,
-          "end": 8.731
+          "text": "يشتغل",
+          "start": 8.14,
+          "end": 8.71
         },
         {
           "id": "w6_14",
           "text": "بضع",
-          "start": 8.731,
-          "end": 9.091
+          "start": 8.71,
+          "end": 9.07
         },
         {
           "id": "w6_15",
           "text": "دقائق",
-          "start": 9.091,
-          "end": 9.781
+          "start": 9.07,
+          "end": 9.82
         }
       ]
     },
@@ -766,81 +967,63 @@
       "words": [
         {
           "id": "w7_0",
-          "text": "ثم",
-          "start": 0.25,
-          "end": 0.55
+          "text": "استخدم",
+          "start": 0.4,
+          "end": 1.17
         },
         {
           "id": "w7_1",
-          "text": "استخدم",
-          "start": 0.55,
-          "end": 1.33
+          "text": "العدة",
+          "start": 1.17,
+          "end": 1.71
         },
         {
           "id": "w7_2",
-          "text": "الأدوات",
-          "start": 1.33,
-          "end": 2.0
+          "text": "المناسبة",
+          "start": 1.71,
+          "end": 2.51
         },
         {
           "id": "w7_3",
-          "text": "المناسبة",
-          "start": 2.0,
-          "end": 2.78
+          "text": "لفك",
+          "start": 2.51,
+          "end": 2.97
         },
         {
           "id": "w7_4",
-          "text": "لفك",
-          "start": 2.78,
-          "end": 3.26
+          "text": "القطعة",
+          "start": 2.97,
+          "end": 3.79
         },
         {
           "id": "w7_5",
-          "text": "الأجزاء",
-          "start": 3.26,
-          "end": 3.99
+          "text": "بهدوء",
+          "start": 3.79,
+          "end": 4.35
         },
         {
           "id": "w7_6",
-          "text": "بعناية",
-          "start": 3.99,
-          "end": 4.53
+          "text": "وامسح",
+          "start": 4.6,
+          "end": 5.13
         },
         {
           "id": "w7_7",
-          "text": "وقم",
-          "start": 4.703,
-          "end": 5.093
+          "text": "الزيادة",
+          "start": 5.13,
+          "end": 5.79
         },
         {
           "id": "w7_8",
-          "text": "بمسح",
-          "start": 5.093,
-          "end": 5.623
+          "text": "بهذه",
+          "start": 6.0,
+          "end": 6.51
         },
         {
           "id": "w7_9",
-          "text": "أي",
-          "start": 5.623,
-          "end": 5.863
-        },
-        {
-          "id": "w7_10",
-          "text": "زوائد",
-          "start": 5.863,
-          "end": 6.313
-        },
-        {
-          "id": "w7_11",
-          "text": "من",
-          "start": 6.313,
-          "end": 6.563
-        },
-        {
-          "id": "w7_12",
-          "text": "المنتج",
-          "start": 6.563,
-          "end": 7.333
+          "text": "البساطة",
+          "start": 6.51,
+          "end": 7.36
         }
       ]
     },
@@ -852,92 +1035,80 @@
         {
           "id": "w8_0",
           "text": "زيت",
-          "start": 0.25,
-          "end": 0.62
+          "start": 0.2,
+          "end": 0.6
         },
         {
           "id": "w8_1",
           "text": "الاختراق",
-          "start": 0.62,
-          "end": 1.37
+          "start": 0.6,
+          "end": 1.42
         },
         {
           "id": "w8_2",
           "text": "من",
-          "start": 1.37,
-          "end": 1.58
+          "start": 1.42,
+          "end": 1.64
         },
         {
           "id": "w8_3",
           "text": "جيه",
-          "start": 1.58,
-          "end": 1.89
+          "start": 1.64,
+          "end": 1.96
         },
         {
           "id": "w8_4",
           "text": "إل",
-          "start": 1.89,
-          "end": 2.16
+          "start": 1.96,
+          "end": 2.26
         },
         {
           "id": "w8_5",
           "text": "إم",
-          "start": 2.16,
-          "end": 2.53
+          "start": 2.26,
+          "end": 2.63
         },
         {
           "id": "w8_6",
           "text": "اطلبه",
-          "start": 2.695,
-          "end": 3.255
+          "start": 2.764,
+          "end": 3.364
         },
         {
           "id": "w8_7",
           "text": "الآن",
-          "start": 3.255,
-          "end": 3.615
+          "start": 3.364,
+          "end": 3.774
         },
         {
           "id": "w8_8",
           "text": "من",
-          "start": 3.615,
-          "end": 3.835
+          "start": 3.774,
+          "end": 4.014
         },
         {
           "id": "w8_9",
           "text": "متجرنا",
-          "start": 3.835,
-          "end": 4.405
+          "start": 4.014,
+          "end": 4.624
         },
         {
           "id": "w8_10",
           "text": "الإلكتروني",
-          "start": 4.405,
-          "end": 5.435
+          "start": 4.624,
+          "end": 5.724
         },
         {
           "id": "w8_11",
-          "text": "مع",
-          "start": 5.603,
-          "end": 5.843
+          "text": "والتوصيل",
+          "start": 5.866,
+          "end": 6.646
         },
         {
           "id": "w8_12",
-          "text": "توفر",
-          "start": 5.843,
-          "end": 6.313
-        },
-        {
-          "id": "w8_13",
-          "text": "خدمة",
-          "start": 6.313,
-          "end": 6.753
-        },
-        {
-          "id": "w8_14",
-          "text": "التوصيل",
-          "start": 6.753,
-          "end": 7.713
+          "text": "متوفر",
+          "start": 6.646,
+          "end": 7.386
         }
       ]
     }

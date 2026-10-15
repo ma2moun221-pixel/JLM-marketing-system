@@ -140,19 +140,70 @@ def sfx_all():
     n = int(1.4 * SR)
     t = np.arange(n) / SR
     s["strain"] = (np.sin(2 * np.pi * (70 + 8 * np.sin(2 * np.pi * 5 * t)) * t) * 0.5 + lp(RNG.standard_normal(n), 40) * 2) * np.sin(np.linspace(0, np.pi, n)) * 0.05
+    # --- retention layer: clear but never harsh (all low-passed, soft attacks) ---
+    n = int(0.55 * SR)
+    t = np.arange(n) / SR
+    sw = lp(RNG.standard_normal(n), 8)
+    sweep = np.sin(2 * np.pi * (300 + 900 * (t / t[-1])) * t) * 0.15
+    s["swoosh"] = (sw / np.abs(sw).max() + sweep) * np.sin(np.linspace(0, np.pi, n)) ** 3 * 0.16
+    n = int(1.3 * SR)
+    t = np.arange(n) / SR
+    up = (t / t[-1]) ** 2.2
+    r = lp(RNG.standard_normal(n), 10) * up * 0.12 + np.sin(2 * np.pi * (140 + 520 * up) * t) * up * 0.05
+    s["riser_long"] = r * np.minimum(1, (t[-1] - t) / 0.03)
+    n = int(0.9 * SR)
+    t = np.arange(n) / SR
+    s["impact"] = (np.sin(2 * np.pi * (45 + 70 * np.exp(-t / 0.05)) * t) * np.exp(-t / 0.28) * 0.30
+                   + lp(RNG.standard_normal(n), 25) * np.exp(-t / 0.06) * 0.10)
+    n = int(1.1 * SR)
+    t = np.arange(n) / SR
+    s["ding"] = sum(np.sin(2 * np.pi * f * t) * a for f, a in [(1046.5, 1), (1568, 0.35), (2093, 0.12)]) * env_ad(n, 0.004, 0.28) * 0.07
+    n = int(0.22 * SR)
+    t = np.arange(n) / SR
+    s["pop"] = np.sin(2 * np.pi * (260 + 520 * (1 - np.exp(-t / 0.02))) * t) * env_ad(n, 0.003, 0.05) * 0.10
+    n = int(0.45 * SR)
+    t = np.arange(n) / SR
+    cl = sum(np.sin(2 * np.pi * f * t) * np.exp(-t / d) for f, d in [(620, 0.09), (1430, 0.05), (2710, 0.03)])
+    s["clank"] = lp(cl, 3) * np.minimum(1, t / 0.002) * 0.06
+    n = int(0.25 * SR)
+    t = np.arange(n) / SR
+    s["crack"] = lp(RNG.standard_normal(n), 2) * np.exp(-t / 0.03) * 0.10
+    n = int(0.09 * SR)
+    t = np.arange(n) / SR
+    s["clock"] = np.sin(2 * np.pi * 1800 * t) * env_ad(n, 0.0008, 0.012) * 0.05
+    n = int(0.6 * SR)
+    t = np.arange(n) / SR
+    s["thump"] = np.sin(2 * np.pi * 52 * t) * env_ad(n, 0.006, 0.16) * 0.28
     return s
 
 
-CUES = [  # (frame, sfx, offset_s, volume)
-    (1, "riser", 0.0, 0.6), (1, "tick", 1.1, 0.6),
-    (2, "tick", 1.6, 0.5), (2, "strain", 2.4, 0.7), (2, "tick", 4.2, 0.5),
-    (3, "whoosh", 0.05, 0.7), (3, "tick", 7.6, 0.5), (3, "tick", 8.3, 0.5), (3, "tick", 9.1, 0.5), (3, "riser", 10.6, 0.5),
-    (4, "plop", 1.2, 0.7), (4, "tick", 1.7, 0.5), (4, "tick", 5.3, 0.5), (4, "tick", 6.2, 0.5), (4, "tick", 7.9, 0.5),
-    (5, "tick", 1.6, 0.5), (5, "tick", 2.8, 0.5), (5, "tick", 3.9, 0.5), (5, "tick", 7.4, 0.45), (5, "tick", 8.0, 0.45),
-    (5, "tick", 9.0, 0.45), (5, "whoosh", 10.3, 0.7),
-    (6, "rattle", 1.9, 0.7), (6, "spray", 3.9, 0.7), (6, "tick", 7.6, 0.35), (6, "tick", 8.3, 0.35), (6, "tick", 9.0, 0.35),
-    (7, "ratchet", 2.8, 0.7), (7, "ratchet", 3.7, 0.7), (7, "cloth", 4.9, 0.8), (7, "whoosh", 7.2, 0.6),
-    (8, "whoosh", 0.0, 0.5), (8, "tick", 3.8, 0.5), (8, "chime", 7.6, 0.6),
+FRAME_START = {1: 0.0, 2: 3.2, 3: 8.36, 4: 20.31, 5: 32.61, 6: 43.77, 7: 53.95, 8: 61.68}
+
+CUES = [  # (frame, sfx, offset_s, volume) — retention design: every cut, reveal and step is marked
+    # 1 · intro sting
+    (1, "riser", 0.0, 0.55), (1, "impact", 1.0, 0.55), (1, "ding", 1.05, 0.45),
+    # 2 · hook — tension, the wrench slips, the promise
+    (2, "thump", 0.15, 0.6), (2, "thump", 1.55, 0.6), (2, "clank", 2.55, 0.8), (2, "clank", 2.85, 0.7),
+    (2, "crack", 3.0, 0.7), (2, "clank", 3.15, 0.6), (2, "riser_long", 3.3, 0.55), (2, "ding", 4.2, 0.5),
+    # 3 · product reveal + orbiting benefits, then dive into the drop
+    (3, "impact", 0.05, 0.6), (3, "swoosh", 0.4, 0.6), (3, "ding", 1.6, 0.45),
+    (3, "pop", 7.6, 0.6), (3, "pop", 8.3, 0.6), (3, "pop", 9.1, 0.6), (3, "riser_long", 9.75, 0.6),
+    # 4 · mechanism — drop, numbered steps
+    (4, "swoosh", 0.0, 0.7), (4, "plop", 1.2, 0.7), (4, "ding", 1.7, 0.45), (4, "ding", 5.15, 0.45),
+    (4, "ding", 6.2, 0.45), (4, "ding", 7.8, 0.45), (4, "swoosh", 10.8, 0.55),
+    # 5 · hub — nodes and chips, then the wipe
+    (5, "pop", 1.6, 0.6), (5, "pop", 2.8, 0.6), (5, "pop", 3.9, 0.6), (5, "pop", 7.4, 0.55),
+    (5, "pop", 8.0, 0.55), (5, "pop", 9.0, 0.55), (5, "swoosh", 10.4, 0.8),
+    # 6 · how to use 1 — shake, spray, timer
+    (6, "swoosh", 0.0, 0.5), (6, "ding", 1.8, 0.45), (6, "rattle", 1.95, 0.8), (6, "ding", 3.7, 0.45),
+    (6, "spray", 4.15, 0.8), (6, "ding", 7.3, 0.45),
+] + [(6, "clock", 7.9 + 0.33 * k, 0.6) for k in range(7)] + [
+    # 7 · how to use 2 — wrench turns free, cloth wipe
+    (7, "ding", 0.6, 0.45), (7, "ratchet", 2.8, 0.8), (7, "ratchet", 3.7, 0.8), (7, "ding", 4.6, 0.45),
+    (7, "cloth", 4.9, 0.8), (7, "riser_long", 6.4, 0.55),
+    # 8 · CTA — land, press, sting
+    (8, "swoosh", 0.0, 0.6), (8, "impact", 0.45, 0.55), (8, "pop", 3.75, 0.7), (8, "ding", 3.8, 0.4),
+    (8, "chime", 7.5, 0.7),
 ]
 
 
@@ -164,7 +215,7 @@ def main():
     sfx = sfx_all()
     for name, x in sfx.items():
         write(ROOT / f"assets/sfx/{name}.wav", x)
-    meta["bgm"] = {"path": "assets/bgm/bed.wav", "volume": 0.16, "source": "host", "duration_s": round(total + 0.5, 2)}
+    meta["bgm"] = {"path": "assets/bgm/bed.wav", "volume": 0.18, "source": "host", "duration_s": round(total + 0.5, 2)}
     meta["sfx"] = [{"frame": f, "file": f"assets/sfx/{n}.wav", "offset_s": o, "duration_s": round(len(sfx[n]) / SR, 2),
                     "volume": v, "source": "host"} for f, n, o, v in CUES]
     meta.setdefault("bgm_pending", False)

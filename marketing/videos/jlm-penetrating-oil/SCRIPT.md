@@ -1,54 +1,30 @@
-# SCRIPT — jlm-penetrating-oil
+# SCRIPT — jlm-penetrating-oil (v2: expert mechanic read)
 
-**Voice:** Kareem (Piper `ar_JO-kareem-medium`, offline via sherpa-onnx). HeyGen TTS needs sign-in and Kokoro has no Arabic.
-**Voice settings:** speed 1.28 · each sentence synthesised separately · gap 0.18 s · lead-in 0.25 s · tail 0.40 s (+1.4 s CTA hold)
-**Voice direction:** A confident workshop expert who speaks precisely and calmly, with no hype. Modern Standard Arabic.
-**Source:** `scripts/voice.py` holds the diacritised text that is fed to the TTS. The lines below are the display text.
+**Voice:** Kareem (Piper `ar_JO-kareem-medium`, offline via sherpa-onnx) processed into a "workshop expert" voice. The chain is −1 semitone, warmer low end, presence, compression and a short room.
+**Voice settings:** speed ≈ 1.16 (faster only where a frame needs it). Each sentence is placed at its frame's animation cue.
+**Voice direction:** An experienced mechanic speaking in the first person ("we use it in the workshop"). Confident, calm, practical.
+**Source:** `scripts/voice.py` holds the diacritised text and the cue times.
 
----
+## Frame 1 — Intro
+    نصيحة من ميكانيكي...
 
-## Line 1 — Hook (Frame 2)
+## Frame 2 — Hook
+    برغي عالق بالصدأ؟ إياك أن تكسره... عندي الحل.
 
-**Time:** 3.2 – 8.4s
-**Delivery:** A question first, then a short pause, then the promise.
+## Frame 3 — Product
+    هذا زيت الاختراق من JLM. بخاخ قوي ومتعدد الاستخدامات، نستخدمه في الورشة للصدأ والتآكل والقطع الملتصقة.
 
-    برغي عالق بسبب الصدأ؟ قبل أن تكسره... هناك حلّ أذكى.
+## Frame 4 — How it works
+    السر في تركيبته: يتغلغل بعمق بين أسنان البرغي. يذيب الصدأ بسرعة، ويطرد الرطوبة، ثم يزيّت القطعة ويحميها طويلًا.
 
-## Line 2 — Product intro (Frame 3)
+## Frame 5 — Who it's for
+    لهذا هو أداة أساسية، لكل ميكانيكي ومهندس وهاوٍ، في صيانة الآلات والسيارات والمعدات الصناعية.
 
-**Time:** 8.4 – 20.3s
-**Delivery:** Name the product clearly, then state its job.
+## Frame 6 — How to use 1
+    وطريقة استخدامه سهلة: قم برجّ العبوة جيدًا، رشّ مباشرة على مكان الصدأ، واتركه يشتغل بضع دقائق.
 
-    زيت الاختراق من JLM. بخاخ اختراق عالي الأداء ومتعدد الاستخدامات، لمعالجة الصدأ والتآكل والأجزاء الملتصقة بسهولة.
+## Frame 7 — How to use 2
+    استخدم العدّة المناسبة لفكّ القطعة بهدوء، وامسح الزيادة. بهذه البساطة.
 
-## Line 3 — How it works (Frame 4)
-
-**Time:** 20.3 – 32.6s
-**Delivery:** Explanatory and measured, one idea per phrase.
-
-    تركيبته القوية تخترق البراغي والصواميل الصدئة بعمق. تذيب الصدأ، وتطرد الرطوبة، وتمنح تزييتًا فائقًا، وحماية طويلة الأمد.
-
-## Line 4 — Who it is for (Frame 5)
-
-**Time:** 32.6 – 43.8s
-
-    أداة أساسية للميكانيكيين والمهندسين وهواة الأعمال اليدوية، لصيانة وإصلاح الآلات والمركبات والمعدات الصناعية.
-
-## Line 5 — How to use, part 1 (Frame 6)
-
-**Time:** 43.8 – 54.0s
-
-    طريقة الاستخدام: قم برجّ العبوة جيدًا. رشّ الزيت مباشرة على المنطقة المستهدفة. واتركه يتغلغل بضع دقائق.
-
-## Line 6 — How to use, part 2 (Frame 7)
-
-**Time:** 54.0 – 61.7s
-
-    ثم استخدم الأدوات المناسبة لفكّ الأجزاء بعناية، وقم بمسح أي زوائد من المنتج.
-
-## Line 7 — CTA (Frame 8)
-
-**Time:** 61.7 – 71.2s
-**Delivery:** Warm and direct.
-
-    زيت الاختراق من JLM. اطلبه الآن من متجرنا الإلكتروني، مع توفّر خدمة التوصيل.
+## Frame 8 — CTA
+    زيت الاختراق من JLM. اطلبه الآن من متجرنا الإلكتروني، والتوصيل متوفر.
