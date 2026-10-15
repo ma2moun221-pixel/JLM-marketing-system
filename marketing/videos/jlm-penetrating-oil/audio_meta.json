@@ -1,0 +1,946 @@
+{
+  "bgm": {
+    "path": "assets/bgm/bed.wav",
+    "volume": 0.16,
+    "source": "host",
+    "duration_s": 71.69
+  },
+  "sfx": [
+    {
+      "frame": 1,
+      "file": "assets/sfx/riser.wav",
+      "offset_s": 0.0,
+      "duration_s": 1.2,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 1,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 1.1,
+      "duration_s": 0.16,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 1.6,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/strain.wav",
+      "offset_s": 2.4,
+      "duration_s": 1.4,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 2,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 4.2,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/whoosh.wav",
+      "offset_s": 0.05,
+      "duration_s": 0.6,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 7.6,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 8.3,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 9.1,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 3,
+      "file": "assets/sfx/riser.wav",
+      "offset_s": 10.6,
+      "duration_s": 1.2,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/plop.wav",
+      "offset_s": 1.2,
+      "duration_s": 0.3,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 1.7,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 5.3,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 6.2,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 4,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 7.9,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 1.6,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 2.8,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 3.9,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 7.4,
+      "duration_s": 0.16,
+      "volume": 0.45,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 8.0,
+      "duration_s": 0.16,
+      "volume": 0.45,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 9.0,
+      "duration_s": 0.16,
+      "volume": 0.45,
+      "source": "host"
+    },
+    {
+      "frame": 5,
+      "file": "assets/sfx/whoosh.wav",
+      "offset_s": 10.3,
+      "duration_s": 0.6,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/rattle.wav",
+      "offset_s": 1.9,
+      "duration_s": 0.9,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/spray.wav",
+      "offset_s": 3.9,
+      "duration_s": 2.4,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 7.6,
+      "duration_s": 0.16,
+      "volume": 0.35,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 8.3,
+      "duration_s": 0.16,
+      "volume": 0.35,
+      "source": "host"
+    },
+    {
+      "frame": 6,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 9.0,
+      "duration_s": 0.16,
+      "volume": 0.35,
+      "source": "host"
+    },
+    {
+      "frame": 7,
+      "file": "assets/sfx/ratchet.wav",
+      "offset_s": 2.8,
+      "duration_s": 0.5,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 7,
+      "file": "assets/sfx/ratchet.wav",
+      "offset_s": 3.7,
+      "duration_s": 0.5,
+      "volume": 0.7,
+      "source": "host"
+    },
+    {
+      "frame": 7,
+      "file": "assets/sfx/cloth.wav",
+      "offset_s": 4.9,
+      "duration_s": 1.0,
+      "volume": 0.8,
+      "source": "host"
+    },
+    {
+      "frame": 7,
+      "file": "assets/sfx/whoosh.wav",
+      "offset_s": 7.2,
+      "duration_s": 0.6,
+      "volume": 0.6,
+      "source": "host"
+    },
+    {
+      "frame": 8,
+      "file": "assets/sfx/whoosh.wav",
+      "offset_s": 0.0,
+      "duration_s": 0.6,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 8,
+      "file": "assets/sfx/tick.wav",
+      "offset_s": 3.8,
+      "duration_s": 0.16,
+      "volume": 0.5,
+      "source": "host"
+    },
+    {
+      "frame": 8,
+      "file": "assets/sfx/chime.wav",
+      "offset_s": 7.6,
+      "duration_s": 1.6,
+      "volume": 0.6,
+      "source": "host"
+    }
+  ],
+  "voices": [
+    {
+      "frame": 2,
+      "path": "assets/voice/02.wav",
+      "duration_s": 5.16,
+      "words": [
+        {
+          "id": "w2_0",
+          "text": "برغي",
+          "start": 0.25,
+          "end": 0.72
+        },
+        {
+          "id": "w2_1",
+          "text": "عالق",
+          "start": 0.72,
+          "end": 1.15
+        },
+        {
+          "id": "w2_2",
+          "text": "بسبب",
+          "start": 1.15,
+          "end": 1.59
+        },
+        {
+          "id": "w2_3",
+          "text": "الصدأ",
+          "start": 1.59,
+          "end": 2.25
+        },
+        {
+          "id": "w2_4",
+          "text": "قبل",
+          "start": 2.42,
+          "end": 2.73
+        },
+        {
+          "id": "w2_5",
+          "text": "أن",
+          "start": 2.73,
+          "end": 2.95
+        },
+        {
+          "id": "w2_6",
+          "text": "تكسره",
+          "start": 2.95,
+          "end": 3.54
+        },
+        {
+          "id": "w2_7",
+          "text": "هناك",
+          "start": 3.54,
+          "end": 3.91
+        },
+        {
+          "id": "w2_8",
+          "text": "حل",
+          "start": 3.91,
+          "end": 4.22
+        },
+        {
+          "id": "w2_9",
+          "text": "أذكى",
+          "start": 4.22,
+          "end": 4.76
+        }
+      ]
+    },
+    {
+      "frame": 3,
+      "path": "assets/voice/03.wav",
+      "duration_s": 11.95,
+      "words": [
+        {
+          "id": "w3_0",
+          "text": "زيت",
+          "start": 0.25,
+          "end": 0.62
+        },
+        {
+          "id": "w3_1",
+          "text": "الاختراق",
+          "start": 0.62,
+          "end": 1.36
+        },
+        {
+          "id": "w3_2",
+          "text": "من",
+          "start": 1.36,
+          "end": 1.55
+        },
+        {
+          "id": "w3_3",
+          "text": "جيه",
+          "start": 1.55,
+          "end": 1.84
+        },
+        {
+          "id": "w3_4",
+          "text": "إل",
+          "start": 1.84,
+          "end": 2.12
+        },
+        {
+          "id": "w3_5",
+          "text": "إم",
+          "start": 2.12,
+          "end": 2.48
+        },
+        {
+          "id": "w3_6",
+          "text": "بخاخ",
+          "start": 2.649,
+          "end": 3.189
+        },
+        {
+          "id": "w3_7",
+          "text": "اختراق",
+          "start": 3.189,
+          "end": 3.909
+        },
+        {
+          "id": "w3_8",
+          "text": "عالي",
+          "start": 3.909,
+          "end": 4.259
+        },
+        {
+          "id": "w3_9",
+          "text": "الأداء",
+          "start": 4.259,
+          "end": 4.869
+        },
+        {
+          "id": "w3_10",
+          "text": "ومتعدد",
+          "start": 4.869,
+          "end": 5.489
+        },
+        {
+          "id": "w3_11",
+          "text": "الاستخدامات",
+          "start": 5.489,
+          "end": 6.859
+        },
+        {
+          "id": "w3_12",
+          "text": "لمعالجة",
+          "start": 7.022,
+          "end": 7.632
+        },
+        {
+          "id": "w3_13",
+          "text": "الصدأ",
+          "start": 7.632,
+          "end": 8.302
+        },
+        {
+          "id": "w3_14",
+          "text": "والتآكل",
+          "start": 8.302,
+          "end": 9.062
+        },
+        {
+          "id": "w3_15",
+          "text": "والأجزاء",
+          "start": 9.062,
+          "end": 9.842
+        },
+        {
+          "id": "w3_16",
+          "text": "الملتصقة",
+          "start": 9.842,
+          "end": 10.852
+        },
+        {
+          "id": "w3_17",
+          "text": "بسهولة",
+          "start": 10.852,
+          "end": 11.552
+        }
+      ]
+    },
+    {
+      "frame": 4,
+      "path": "assets/voice/04.wav",
+      "duration_s": 12.3,
+      "words": [
+        {
+          "id": "w4_0",
+          "text": "تركيبته",
+          "start": 0.25,
+          "end": 1.04
+        },
+        {
+          "id": "w4_1",
+          "text": "القوية",
+          "start": 1.04,
+          "end": 1.71
+        },
+        {
+          "id": "w4_2",
+          "text": "تخترق",
+          "start": 1.71,
+          "end": 2.41
+        },
+        {
+          "id": "w4_3",
+          "text": "البراغي",
+          "start": 2.41,
+          "end": 2.99
+        },
+        {
+          "id": "w4_4",
+          "text": "والصواميل",
+          "start": 2.99,
+          "end": 3.78
+        },
+        {
+          "id": "w4_5",
+          "text": "الصدئة",
+          "start": 3.78,
+          "end": 4.53
+        },
+        {
+          "id": "w4_6",
+          "text": "بعمق",
+          "start": 4.53,
+          "end": 5.09
+        },
+        {
+          "id": "w4_7",
+          "text": "تذيب",
+          "start": 5.263,
+          "end": 5.693
+        },
+        {
+          "id": "w4_8",
+          "text": "الصدأ",
+          "start": 5.693,
+          "end": 6.243
+        },
+        {
+          "id": "w4_9",
+          "text": "وتطرد",
+          "start": 6.243,
+          "end": 6.913
+        },
+        {
+          "id": "w4_10",
+          "text": "الرطوبة",
+          "start": 6.913,
+          "end": 7.693
+        },
+        {
+          "id": "w4_11",
+          "text": "وتمنح",
+          "start": 7.865,
+          "end": 8.585
+        },
+        {
+          "id": "w4_12",
+          "text": "تزييتا",
+          "start": 8.585,
+          "end": 9.305
+        },
+        {
+          "id": "w4_13",
+          "text": "فائقا",
+          "start": 9.305,
+          "end": 10.045
+        },
+        {
+          "id": "w4_14",
+          "text": "وحماية",
+          "start": 10.045,
+          "end": 10.705
+        },
+        {
+          "id": "w4_15",
+          "text": "طويلة",
+          "start": 10.705,
+          "end": 11.245
+        },
+        {
+          "id": "w4_16",
+          "text": "الأمد",
+          "start": 11.245,
+          "end": 11.905
+        }
+      ]
+    },
+    {
+      "frame": 5,
+      "path": "assets/voice/05.wav",
+      "duration_s": 11.16,
+      "words": [
+        {
+          "id": "w5_0",
+          "text": "أداة",
+          "start": 0.25,
+          "end": 0.76
+        },
+        {
+          "id": "w5_1",
+          "text": "أساسية",
+          "start": 0.76,
+          "end": 1.56
+        },
+        {
+          "id": "w5_2",
+          "text": "للميكانيكيين",
+          "start": 1.56,
+          "end": 2.84
+        },
+        {
+          "id": "w5_3",
+          "text": "والمهندسين",
+          "start": 2.84,
+          "end": 3.89
+        },
+        {
+          "id": "w5_4",
+          "text": "وهواة",
+          "start": 3.89,
+          "end": 4.4
+        },
+        {
+          "id": "w5_5",
+          "text": "الأعمال",
+          "start": 4.4,
+          "end": 5.19
+        },
+        {
+          "id": "w5_6",
+          "text": "اليدوية",
+          "start": 5.19,
+          "end": 5.94
+        },
+        {
+          "id": "w5_7",
+          "text": "لصيانة",
+          "start": 6.108,
+          "end": 6.728
+        },
+        {
+          "id": "w5_8",
+          "text": "وإصلاح",
+          "start": 6.728,
+          "end": 7.428
+        },
+        {
+          "id": "w5_9",
+          "text": "الآلات",
+          "start": 7.428,
+          "end": 8.048
+        },
+        {
+          "id": "w5_10",
+          "text": "والمركبات",
+          "start": 8.048,
+          "end": 8.958
+        },
+        {
+          "id": "w5_11",
+          "text": "والمعدات",
+          "start": 8.958,
+          "end": 9.848
+        },
+        {
+          "id": "w5_12",
+          "text": "الصناعية",
+          "start": 9.848,
+          "end": 10.758
+        }
+      ]
+    },
+    {
+      "frame": 6,
+      "path": "assets/voice/06.wav",
+      "duration_s": 10.18,
+      "words": [
+        {
+          "id": "w6_0",
+          "text": "طريقة",
+          "start": 0.25,
+          "end": 0.75
+        },
+        {
+          "id": "w6_1",
+          "text": "الاستخدام",
+          "start": 0.75,
+          "end": 1.64
+        },
+        {
+          "id": "w6_2",
+          "text": "قم",
+          "start": 1.826,
+          "end": 2.106
+        },
+        {
+          "id": "w6_3",
+          "text": "برج",
+          "start": 2.106,
+          "end": 2.396
+        },
+        {
+          "id": "w6_4",
+          "text": "العبوة",
+          "start": 2.396,
+          "end": 2.996
+        },
+        {
+          "id": "w6_5",
+          "text": "جيدا",
+          "start": 2.996,
+          "end": 3.556
+        },
+        {
+          "id": "w6_6",
+          "text": "رش",
+          "start": 3.732,
+          "end": 4.072
+        },
+        {
+          "id": "w6_7",
+          "text": "الزيت",
+          "start": 4.072,
+          "end": 4.652
+        },
+        {
+          "id": "w6_8",
+          "text": "مباشرة",
+          "start": 4.652,
+          "end": 5.202
+        },
+        {
+          "id": "w6_9",
+          "text": "على",
+          "start": 5.202,
+          "end": 5.492
+        },
+        {
+          "id": "w6_10",
+          "text": "المنطقة",
+          "start": 5.492,
+          "end": 6.162
+        },
+        {
+          "id": "w6_11",
+          "text": "المستهدفة",
+          "start": 6.162,
+          "end": 7.222
+        },
+        {
+          "id": "w6_12",
+          "text": "واتركه",
+          "start": 7.391,
+          "end": 8.111
+        },
+        {
+          "id": "w6_13",
+          "text": "يتغلغل",
+          "start": 8.111,
+          "end": 8.731
+        },
+        {
+          "id": "w6_14",
+          "text": "بضع",
+          "start": 8.731,
+          "end": 9.091
+        },
+        {
+          "id": "w6_15",
+          "text": "دقائق",
+          "start": 9.091,
+          "end": 9.781
+        }
+      ]
+    },
+    {
+      "frame": 7,
+      "path": "assets/voice/07.wav",
+      "duration_s": 7.73,
+      "words": [
+        {
+          "id": "w7_0",
+          "text": "ثم",
+          "start": 0.25,
+          "end": 0.55
+        },
+        {
+          "id": "w7_1",
+          "text": "استخدم",
+          "start": 0.55,
+          "end": 1.33
+        },
+        {
+          "id": "w7_2",
+          "text": "الأدوات",
+          "start": 1.33,
+          "end": 2.0
+        },
+        {
+          "id": "w7_3",
+          "text": "المناسبة",
+          "start": 2.0,
+          "end": 2.78
+        },
+        {
+          "id": "w7_4",
+          "text": "لفك",
+          "start": 2.78,
+          "end": 3.26
+        },
+        {
+          "id": "w7_5",
+          "text": "الأجزاء",
+          "start": 3.26,
+          "end": 3.99
+        },
+        {
+          "id": "w7_6",
+          "text": "بعناية",
+          "start": 3.99,
+          "end": 4.53
+        },
+        {
+          "id": "w7_7",
+          "text": "وقم",
+          "start": 4.703,
+          "end": 5.093
+        },
+        {
+          "id": "w7_8",
+          "text": "بمسح",
+          "start": 5.093,
+          "end": 5.623
+        },
+        {
+          "id": "w7_9",
+          "text": "أي",
+          "start": 5.623,
+          "end": 5.863
+        },
+        {
+          "id": "w7_10",
+          "text": "زوائد",
+          "start": 5.863,
+          "end": 6.313
+        },
+        {
+          "id": "w7_11",
+          "text": "من",
+          "start": 6.313,
+          "end": 6.563
+        },
+        {
+          "id": "w7_12",
+          "text": "المنتج",
+          "start": 6.563,
+          "end": 7.333
+        }
+      ]
+    },
+    {
+      "frame": 8,
+      "path": "assets/voice/08.wav",
+      "duration_s": 9.51,
+      "words": [
+        {
+          "id": "w8_0",
+          "text": "زيت",
+          "start": 0.25,
+          "end": 0.62
+        },
+        {
+          "id": "w8_1",
+          "text": "الاختراق",
+          "start": 0.62,
+          "end": 1.37
+        },
+        {
+          "id": "w8_2",
+          "text": "من",
+          "start": 1.37,
+          "end": 1.58
+        },
+        {
+          "id": "w8_3",
+          "text": "جيه",
+          "start": 1.58,
+          "end": 1.89
+        },
+        {
+          "id": "w8_4",
+          "text": "إل",
+          "start": 1.89,
+          "end": 2.16
+        },
+        {
+          "id": "w8_5",
+          "text": "إم",
+          "start": 2.16,
+          "end": 2.53
+        },
+        {
+          "id": "w8_6",
+          "text": "اطلبه",
+          "start": 2.695,
+          "end": 3.255
+        },
+        {
+          "id": "w8_7",
+          "text": "الآن",
+          "start": 3.255,
+          "end": 3.615
+        },
+        {
+          "id": "w8_8",
+          "text": "من",
+          "start": 3.615,
+          "end": 3.835
+        },
+        {
+          "id": "w8_9",
+          "text": "متجرنا",
+          "start": 3.835,
+          "end": 4.405
+        },
+        {
+          "id": "w8_10",
+          "text": "الإلكتروني",
+          "start": 4.405,
+          "end": 5.435
+        },
+        {
+          "id": "w8_11",
+          "text": "مع",
+          "start": 5.603,
+          "end": 5.843
+        },
+        {
+          "id": "w8_12",
+          "text": "توفر",
+          "start": 5.843,
+          "end": 6.313
+        },
+        {
+          "id": "w8_13",
+          "text": "خدمة",
+          "start": 6.313,
+          "end": 6.753
+        },
+        {
+          "id": "w8_14",
+          "text": "التوصيل",
+          "start": 6.753,
+          "end": 7.713
+        }
+      ]
+    }
+  ],
+  "bgm_pending": false
+}
