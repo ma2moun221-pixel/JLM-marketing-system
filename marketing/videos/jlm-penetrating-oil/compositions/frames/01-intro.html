@@ -200,7 +200,14 @@
           duration: RING_DUR,
           ease: "power2.out",
           onUpdate: function () {
-            ring.style.strokeDashoffset = String(ringLen * (1 - draw.p));
+            if (draw.p >= 1) {
+              // closed: a plain solid stroke, no dash seam (exact handoff ring)
+              ring.style.strokeDasharray = "none";
+              ring.style.strokeDashoffset = "0";
+            } else {
+              ring.style.strokeDasharray = ringLen + " " + ringLen;
+              ring.style.strokeDashoffset = String(ringLen * (1 - draw.p));
+            }
             var xy = pt(R, -90 + 360 * draw.p);
             tip.style.transform = "translate(" + xy[0] + "px," + xy[1] + "px)";
           },
@@ -209,9 +216,7 @@
       );
       // the glowing pen tip rides the draw, then dissolves as the ring closes
       tl.fromTo(tip, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, RING_START);
-      tl.to(tip, { opacity: 0, duration: 0.3, ease: "power1.in" }, RING_START + RING_DUR - 0.2);
-      // lock the ring to a plain solid stroke once closed (no dash seam)
-      tl.set(ring, { strokeDasharray: "none", strokeDashoffset: 0 }, RING_START + RING_DUR + 0.01);
+      tl.fromTo(tip, { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power1.in", immediateRender: false }, RING_START + RING_DUR - 0.2);
 
       // silver orbit hairlines draw counter-clockwise just behind it
       tl.fromTo(
@@ -274,17 +279,27 @@
       );
 
       // ===== Scene 3 (2.2–3.2s): logo + orbits leave, ring C waits alone =====
-      tl.to(
+      tl.fromTo(
         logo,
-        { opacity: 0, scale: 0.9, duration: 0.65, ease: "power2.inOut" },
+        { opacity: 1, scale: 1, filter: "blur(0px)" },
+        { opacity: 0, scale: 0.9, filter: "blur(0px)", duration: 0.65, ease: "power2.inOut", immediateRender: false },
         2.2
       );
-      tl.to(glow, { opacity: 0, scale: 0.9, duration: 0.6, ease: "power2.inOut" }, 2.2);
-      tl.to([orbitA, orbitB], { opacity: 0, duration: 0.7, ease: "power2.inOut" }, 2.25);
+      tl.fromTo(
+        glow,
+        { opacity: GLOW_PEAK, scale: 1 },
+        { opacity: 0, scale: 0.9, duration: 0.6, ease: "power2.inOut", immediateRender: false },
+        2.2
+      );
+      tl.fromTo(
+        [orbitA, orbitB],
+        { opacity: 0.25 },
+        { opacity: 0, duration: 0.7, ease: "power2.inOut", immediateRender: false },
+        2.25
+      );
 
       // hard-lock the handoff pose by 3.1s: ring only, logo/glow/orbits fully gone
       tl.set([logo, glow, tip, orbitA, orbitB], { opacity: 0 }, 3.05);
-      tl.set(ring, { strokeDasharray: "none", strokeDashoffset: 0, opacity: 1 }, 3.05);
       tl.set({}, {}, 3.2);
 
       window.__timelines["01-intro"] = tl;
