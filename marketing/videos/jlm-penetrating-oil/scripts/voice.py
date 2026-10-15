@@ -19,8 +19,9 @@ import numpy as np
 import sherpa_onnx
 
 ROOT = Path(__file__).resolve().parents[1]
-SPEED = 1.16          # a calm, confident expert pace
-MIN_GAP = 0.14
+SPEED = 1.22          # synthesis speed (kept moderate so diction stays clean)
+ATEMPO = 1.18         # then sped up without pitch change → ≈ 1.45× the original read
+MIN_GAP = 0.10
 
 FRAME_DUR = {1: 3.2, 2: 5.16, 3: 11.95, 4: 12.3, 5: 11.16, 6: 10.18, 7: 7.73, 8: 9.51}
 
@@ -48,13 +49,22 @@ LINES = {
 
 TASHKEEL = set(chr(c) for c in range(0x064B, 0x0653)) | {"ٰ"}
 
-# deeper + warmer "workshop expert": −1 semitone (formant-ish shift via resample),
-# body at 140 Hz, presence at 3 kHz, softened sibilance, gentle compression, a short room.
-FX = ("asetrate={sr}*0.944,aresample={sr},atempo=1.0593,"
-      "equalizer=f=140:t=q:w=1.0:g=3.5,equalizer=f=3000:t=q:w=1.2:g=2.0,"
-      "equalizer=f=6800:t=q:w=1.5:g=-2.5,"
-      "acompressor=threshold=-20dB:ratio=3:attack=8:release=120:makeup=3dB,"
-      "aecho=0.9:0.9:21|37:0.06|0.035")
+# smooth + soft: no pitch shift, gentle warmth, tamed presence and sibilance,
+# rolled-off highs, light compression, no room.
+FX = ("highpass=f=70,equalizer=f=220:t=q:w=1.0:g=2.0,equalizer=f=3200:t=q:w=1.4:g=-2.5,"
+      "deesser=i=0.5:m=0.5:f=0.5,equalizer=f=7000:t=h:w=0.7:g=-4,lowpass=f=10000,"
+      "acompressor=threshold=-22dB:ratio=2.2:attack=15:release=160:makeup=2dB")
+
+
+def atempo(x, sr, k):
+    if abs(k - 1) < 1e-3:
+        return x
+    with tempfile.TemporaryDirectory() as d:
+        a, b = Path(d) / "a.wav", Path(d) / "b.wav"
+        write_wav(a, x, sr)
+        subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(a), "-af", f"atempo={k:.4f}", str(b)], check=True)
+        with wave.open(str(b)) as w:
+            return np.frombuffer(w.readframes(w.getnframes()), np.int16).astype(np.float32) / 32768
 
 
 def plain(s):
@@ -104,7 +114,8 @@ def main():
     cfg = sherpa_onnx.OfflineTtsConfig(model=sherpa_onnx.OfflineTtsModelConfig(
         vits=sherpa_onnx.OfflineTtsVitsModelConfig(model=str(md / "ar_JO-kareem-medium.onnx"),
                                                    tokens=str(md / "tokens.txt"),
-                                                   data_dir=str(md / "espeak-ng-data")),
+                                                   data_dir=str(md / "espeak-ng-data"),
+                                                   noise_scale=0.45, noise_scale_w=0.6),
         num_threads=4))
     tts = sherpa_onnx.OfflineTts(cfg)
     out = ROOT / "assets/voice"
@@ -120,7 +131,7 @@ def main():
             for cue, text in lines:
                 a = tts.generate(text, sid=0, speed=speed)
                 sr = a.sample_rate
-                clips.append((cue, text, trim(np.array(a.samples, np.float32), sr)))
+                clips.append((cue, text, atempo(trim(np.array(a.samples, np.float32), sr), sr, ATEMPO)))
             end = 0.0
             for cue, _, x in clips:
                 end = max(cue, end + MIN_GAP) + len(x) / sr
