@@ -254,7 +254,7 @@
       tl.to($("cam0"), { x: 90, y: -50, duration: D4, ease: arcE(function (p) { return p * p; }) }, T4);
       tl.to($("cam2"), { x: -A_DROP.x, y: -A_DROP.y, duration: D4, ease: e2in }, T4);
       // motion-blur streak at wrapper level (depth push: symmetric blur), peaks with speed at the end of the dive
-      tl.set($("blur"), { filter: "blur(0px)" }, T4 + 0.1);
+      tl.set($("blur"), { filter: "none" }, 0);
       tl.fromTo($("blur"), { filter: "blur(0px)" }, { filter: "blur(16px)", duration: D4 - 0.1, ease: "power2.in", immediateRender: false }, T4 + 0.1);
       tl.fromTo($("disc"), { attr: { r: 0 } }, { attr: { r: 1200 }, duration: 0.38, ease: "power2.in" }, T4 + 0.37);
       // handoff_out: solid label blue for the last 0.2s
