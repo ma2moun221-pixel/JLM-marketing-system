@@ -248,11 +248,15 @@
       tl.to([$("title"), $("latin"), $("lineC"), $("tagsvg"), $("tagtext"), $("orbitback"), $("orbitfront"),
              $("ctr1"), $("ctr2"), $("ctr3"), $("shadow"), $("glow")],
         { opacity: 0, duration: 0.25, ease: "power1.in" }, T4);
+      // Re-anchor the rig on the drop point at its CAN@HERO screen position (visually identical pose),
+      // then spiral-zoom about it: the drop travels to (540,900) (= CAN@DROP at scale 1.7647) and beyond.
+      var dropHeroX = 540 + (A_DROP.x - A_HERO.x) * S_HERO, dropHeroY = 960 + (A_DROP.y - A_HERO.y) * S_HERO;
+      tl.set($("cam2"), { x: -A_DROP.x, y: -A_DROP.y }, T4);
+      tl.set($("cam1"), { x: dropHeroX, y: dropHeroY }, T4);
       tl.to($("cam1"), { scale: S_DIVE_END, duration: D4, ease: logE(S_HERO, S_DIVE_END, e2in) }, T4);
-      tl.to($("cam1"), { x: 540, y: 900, duration: D4, ease: e2in }, T4);
-      tl.to($("cam1"), { rotation: 6, duration: D4, ease: e2in }, T4);
-      tl.to($("cam0"), { x: 90, y: -50, duration: D4, ease: arcE(function (p) { return p * p; }) }, T4);
-      tl.to($("cam2"), { x: -A_DROP.x, y: -A_DROP.y, duration: D4, ease: e2in }, T4);
+      tl.to($("cam1"), { x: 540, y: 900, duration: 0.55, ease: "power2.inOut" }, T4);
+      tl.to($("cam1"), { rotation: 6, duration: D4, ease: "power2.in" }, T4);
+      tl.to($("cam0"), { x: -40, y: 30, duration: 0.55, ease: arcE(e3io) }, T4);
       // motion-blur streak at wrapper level (depth push: symmetric blur), peaks with speed at the end of the dive
       tl.set($("blur"), { filter: "none" }, 0);
       tl.fromTo($("blur"), { filter: "blur(0px)" }, { filter: "blur(16px)", duration: D4 - 0.1, ease: "power2.in", immediateRender: false }, T4 + 0.1);
