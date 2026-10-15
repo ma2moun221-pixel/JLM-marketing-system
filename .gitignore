@@ -66,3 +66,5 @@ __pycache__/
 /marketing/videos/jlm-penetrating-oil/.hyperframes/artifacts/
 /marketing/videos/jlm-penetrating-oil/renders/*_tmp*
 /marketing/videos/jlm-penetrating-oil/node_modules/
+/marketing/videos/jlm-penetrating-oil/node_modules/
+/marketing/videos/jlm-penetrating-oil/package-lock.json

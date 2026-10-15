@@ -1,0 +1,431 @@
+<template id="05-audience-template">
+  <div id="root" data-composition-id="05-audience" data-width="1080" data-height="1920">
+    <style>
+      @font-face{font-family:"Albert Sans";font-weight:100 900;font-style:normal;font-display:block;src:url("assets/fonts/AlbertSans-Regular.ttf") format("truetype");}
+      @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:700;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Bold.ttf") format("truetype");}
+      @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:400;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Regular.ttf") format("truetype");}
+
+      #root {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        font-family: "Helvetica Neue LT Arabic", "Albert Sans", sans-serif;
+        color: #F1F0EC;
+      }
+      #root .\30 5-audience-layer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+      }
+      #root .\30 5-audience-bg { background: #141516; }
+
+      /* camera + ring wrappers: full-canvas boxes so every child keeps frame coordinates */
+      #root .\30 5-audience-full {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+      }
+      #root .\30 5-audience-svg {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: visible;
+      }
+
+      /* headline «أداة أساسية» — centre y 330 */
+      #root .\30 5-audience-headline {
+        position: absolute;
+        left: 0;
+        width: 1080px;
+        top: 278px;
+        height: 104px;
+        line-height: 104px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 80px;
+        color: #F1F0EC;
+        white-space: nowrap;
+      }
+
+      /* hub: 400×400 box centred on (540, 760) */
+      #root .\30 5-audience-hub {
+        position: absolute;
+        left: 340px;
+        top: 560px;
+        width: 400px;
+        height: 400px;
+      }
+      #root .\30 5-audience-hub-spin,
+      #root .\30 5-audience-hub-glyph {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 400px;
+        height: 400px;
+      }
+      #root .\30 5-audience-hub svg { position: absolute; left: 0; top: 0; width: 400px; height: 400px; overflow: visible; }
+
+      /* audience nodes: zero-size anchor at the node centre */
+      #root .\30 5-audience-node {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+      }
+      #root .\30 5-audience-node-body {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 0;
+        height: 0;
+      }
+      #root .\30 5-audience-node-disc {
+        position: absolute;
+        left: -75px;
+        top: -75px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: #252729;
+        box-shadow: inset 0 0 0 2px rgba(192, 196, 199, 0.32);
+      }
+      #root .\30 5-audience-node-disc svg {
+        position: absolute;
+        left: 37px;
+        top: 37px;
+        width: 76px;
+        height: 76px;
+        overflow: visible;
+      }
+      #root .\30 5-audience-node-label {
+        position: absolute;
+        top: 86px;
+        left: -220px;
+        width: 440px;
+        text-align: center;
+        white-space: nowrap;
+      }
+      #root .\30 5-audience-node-label span {
+        display: inline-block;
+        padding: 0 14px;
+        background: #141516;
+        font-weight: 700;
+        font-size: 38px;
+        line-height: 54px;
+        color: #F1F0EC;
+      }
+
+      /* «لصيانة وإصلاح» — centre y 1300 */
+      #root .\30 5-audience-sub {
+        position: absolute;
+        left: 0;
+        width: 1080px;
+        top: 1268px;
+        height: 64px;
+        line-height: 64px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 46px;
+        color: #C0C4C7;
+        white-space: nowrap;
+      }
+
+      /* application chips — centre y 1450 */
+      #root .\30 5-audience-chip {
+        position: absolute;
+        top: 1408px;
+        height: 84px;
+        box-shadow: inset 0 0 0 3px #FAB817;
+        background: #141516;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        white-space: nowrap;
+      }
+      #root .\30 5-audience-chip svg { width: 44px; height: 44px; flex: 0 0 44px; overflow: visible; }
+      #root .\30 5-audience-chip span {
+        font-weight: 700;
+        font-size: 38px;
+        line-height: 84px;
+        color: #F1F0EC;
+      }
+
+      /* RTL wipe band */
+      #root .\30 5-audience-band {
+        position: absolute;
+        left: 0;
+        top: -40px;
+        width: 2000px;
+        height: 2000px;
+        background: #FAB817;
+      }
+    </style>
+
+    <!-- full-bleed ink ground -->
+    <div id="05-audience-bg" class="clip 05-audience-layer 05-audience-bg" data-start="0" data-duration="11.16" data-track-index="0"></div>
+
+    <!-- the shot -->
+    <div id="05-audience-stage" class="clip 05-audience-layer" data-start="0" data-duration="11.16" data-track-index="1">
+      <div id="05-audience-cam" class="05-audience-full">
+
+        <div id="05-audience-headline" class="05-audience-headline" dir="rtl" lang="ar">أداة أساسية</div>
+
+        <!-- ring of audiences (rotates as a unit around the hub) -->
+        <div id="05-audience-ring" class="05-audience-full">
+          <svg class="05-audience-svg" viewBox="0 0 1080 1920" aria-hidden="true">
+            <circle id="05-audience-orbit" cx="540" cy="760" r="330" fill="none" stroke="#C0C4C7" stroke-opacity="0.3" stroke-width="2" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1" transform="rotate(-90 540 760)"></circle>
+            <line id="05-audience-line-0" stroke="#FAB817" stroke-width="2.5" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></line>
+            <line id="05-audience-line-1" stroke="#FAB817" stroke-width="2.5" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></line>
+            <line id="05-audience-line-2" stroke="#FAB817" stroke-width="2.5" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></line>
+          </svg>
+
+          <!-- mechanics: wrench + gear -->
+          <div id="05-audience-node-0" class="05-audience-node">
+            <div id="05-audience-node-body-0" class="05-audience-node-body">
+              <div class="05-audience-node-disc">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C0C4C7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path id="05-audience-icon-gear-a" d=""></path>
+                  <circle cx="9" cy="9" r="1.9"></circle>
+                  <g transform="translate(8.6 8.6) scale(0.64)">
+                    <path vector-effect="non-scaling-stroke" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" fill="#252729"></path>
+                  </g>
+                </svg>
+              </div>
+              <div id="05-audience-label-0" class="05-audience-node-label"><span dir="rtl" lang="ar">الميكانيكيين</span></div>
+            </div>
+          </div>
+
+          <!-- engineers: drafting compass -->
+          <div id="05-audience-node-1" class="05-audience-node">
+            <div id="05-audience-node-body-1" class="05-audience-node-body">
+              <div class="05-audience-node-disc">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C0C4C7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="5" r="2"></circle>
+                  <path d="m3 21 8.02-14.26"></path>
+                  <path d="m12.99 6.74 1.93 3.44"></path>
+                  <path d="M19 12c-3.869 4.008-10.13 4.008-14 0"></path>
+                  <path d="m21 21-2.16-3.84"></path>
+                </svg>
+              </div>
+              <div id="05-audience-label-1" class="05-audience-node-label"><span dir="rtl" lang="ar">المهندسين</span></div>
+            </div>
+          </div>
+
+          <!-- hobbyists: hand + screwdriver -->
+          <div id="05-audience-node-2" class="05-audience-node">
+            <div id="05-audience-node-body-2" class="05-audience-node-body">
+              <div class="05-audience-node-disc">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C0C4C7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M16.2 5.2 L20.1 1.3 L22.7 3.9 L18.8 7.8 Z"></path>
+                  <path d="M17.5 6.5 L12.6 11.4"></path>
+                  <g transform="translate(0.2 6.6) scale(0.72)">
+                    <path vector-effect="non-scaling-stroke" d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+                  </g>
+                </svg>
+              </div>
+              <div id="05-audience-label-2" class="05-audience-node-label"><span dir="rtl" lang="ar">هواة الأعمال اليدوية</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- hub: the bolt-head hexagon (handoff_in) + wrench glyph -->
+        <div id="05-audience-hub" class="05-audience-hub">
+          <div id="05-audience-hub-spin" class="05-audience-hub-spin">
+            <svg viewBox="-200 -200 400 400" aria-hidden="true">
+              <polygon points="150,0 75,129.904 -75,129.904 -150,0 -75,-129.904 75,-129.904" fill="none" stroke="#FAB817" stroke-width="10"></polygon>
+            </svg>
+          </div>
+          <div class="05-audience-hub-glyph">
+            <svg viewBox="-200 -200 400 400" aria-hidden="true">
+              <g transform="translate(-72 -72) scale(6)">
+                <path id="05-audience-wrench" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" fill="none" stroke="#FAB817" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div id="05-audience-sub" class="05-audience-sub" dir="rtl" lang="ar">لصيانة وإصلاح</div>
+
+        <!-- applications (RTL: first chip on the right) -->
+        <div id="05-audience-chip-0" class="05-audience-chip" dir="rtl" lang="ar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FAB817" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path id="05-audience-icon-gear-b" d=""></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          <span>الآلات</span>
+        </div>
+        <div id="05-audience-chip-1" class="05-audience-chip" dir="rtl" lang="ar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FAB817" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"></path>
+            <circle cx="7" cy="17" r="2"></circle>
+            <path d="M9 17h6"></path>
+            <circle cx="17" cy="17" r="2"></circle>
+          </svg>
+          <span>المركبات</span>
+        </div>
+        <div id="05-audience-chip-2" class="05-audience-chip" dir="rtl" lang="ar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FAB817" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7 5V8l-7 5V4a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2Z"></path>
+            <path d="M17 18h1"></path>
+            <path d="M12 18h1"></path>
+            <path d="M7 18h1"></path>
+          </svg>
+          <span>المعدات الصناعية</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- scene 4: yellow wipe band, 14° leading edge, right → left -->
+    <div id="05-audience-wipe" class="clip 05-audience-layer" data-start="0" data-duration="11.16" data-track-index="2">
+      <div id="05-audience-band" class="05-audience-band"></div>
+    </div>
+
+    <script src="assets/vendor/gsap.min.js"></script>
+    <script>
+      (function () {
+        var P = "05-audience-";
+        var $ = function (id) { return document.getElementById(P + id); };
+        var D2R = Math.PI / 180;
+        var HX = 540, HY = 760; // hub centre (handoff_in)
+
+        // deterministic gear outline (no randomness)
+        function gearPath(cx, cy, ro, ri, n) {
+          var step = (Math.PI * 2) / n, d = "";
+          for (var k = 0; k < n; k++) {
+            var b = k * step - Math.PI / 2;
+            var pts = [[ri, b - 0.27 * step], [ro, b - 0.15 * step], [ro, b + 0.15 * step], [ri, b + 0.27 * step]];
+            for (var j = 0; j < 4; j++) {
+              var x = (cx + Math.cos(pts[j][1]) * pts[j][0]).toFixed(3);
+              var y = (cy + Math.sin(pts[j][1]) * pts[j][0]).toFixed(3);
+              d += (k === 0 && j === 0 ? "M" : "L") + x + " " + y + " ";
+            }
+          }
+          return d + "Z";
+        }
+        $("icon-gear-a").setAttribute("d", gearPath(9, 9, 6.6, 4.9, 8));
+        $("icon-gear-b").setAttribute("d", gearPath(12, 12, 9.6, 7.2, 8));
+
+        var tl = gsap.timeline({ paused: true });
+
+        // ---------- Scene 1 (0.0–1.5): hub decelerates, wrench draws, headline lands ----------
+        // handoff_in: rotation 0°, spinning clockwise at 90°/s. Ease f(u)=1.5u−0.5u³ over 1.0 s
+        // for 60° → initial speed 1.5·60 = 90°/s, final speed 0, rests flat-top again.
+        var hubSpin = $("hub-spin");
+        tl.fromTo(hubSpin, { rotation: 0 }, {
+          rotation: 60, duration: 1.0,
+          ease: function (u) { return 1.5 * u - 0.5 * u * u * u; }
+        }, 0);
+        tl.fromTo($("wrench"), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.0, ease: "power2.inOut" }, 0.35);
+        tl.fromTo($("headline"), { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }, 0.2);
+
+        // gentle camera push around the hub (starts at scale 1 → handoff_in untouched)
+        tl.fromTo($("cam"), { scale: 1, transformOrigin: "540px 760px" },
+          { scale: 1.035, transformOrigin: "540px 760px", duration: 9.3, ease: "sine.inOut" }, 1.0);
+
+        // orbit ring draws on from 12 o'clock as the first audience arrives
+        tl.fromTo($("orbit"), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.3, ease: "power2.inOut" }, 1.45);
+
+        // hub tick (soft pulse when something connects)
+        var hub = $("hub");
+        function tick(at) {
+          tl.fromTo(hub, { scale: 1 }, { scale: 1.06, duration: 0.12, ease: "power2.out", immediateRender: false }, at);
+          tl.fromTo(hub, { scale: 1.06 }, { scale: 1, duration: 0.4, ease: "power2.out", immediateRender: false }, at + 0.12);
+        }
+
+        // ---------- Scene 2 (1.6–5.6): three audience nodes orbit in on ring r=330 ----------
+        // slots (screen angle, clockwise from 3 o'clock): 2 o'clock = −30°, 6 = 90°, 10 = 210°
+        var R = 330;
+        var nodes = [
+          { at: 1.6, slot: -30 },
+          { at: 2.8, slot: 90 },
+          { at: 3.9, slot: 210 }
+        ];
+        nodes.forEach(function (n, i) {
+          var el = $("node-" + i), body = $("node-body-" + i), label = $("label-" + i), line = $("line-" + i);
+          var p = { a: n.slot - 60, r: 420 };
+          var place = function () {
+            gsap.set(el, { x: HX + Math.cos(p.a * D2R) * p.r, y: HY + Math.sin(p.a * D2R) * p.r });
+          };
+          place();
+          // orbit in clockwise along the ring (travel), landing at its slot
+          tl.fromTo(p, { a: n.slot - 60, r: 420 }, { a: n.slot, r: R, duration: 1.0, ease: "power3.out", onUpdate: place }, n.at);
+          // 3D flip in place (orbit-3d-entry) + fade
+          tl.fromTo(body, { opacity: 0, scale: 0.45, rotationY: 75, transformPerspective: 900 },
+            { opacity: 1, scale: 1, rotationY: 0, transformPerspective: 900, duration: 0.9, ease: "power3.out" }, n.at);
+          tl.fromTo(label, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, n.at + 0.35);
+          // yellow hairline draws OUTWARD from the hub edge to the node edge
+          var c = Math.cos(n.slot * D2R), s = Math.sin(n.slot * D2R);
+          line.setAttribute("x1", (HX + c * 141).toFixed(2));
+          line.setAttribute("y1", (HY + s * 141).toFixed(2));
+          line.setAttribute("x2", (HX + c * (R - 81)).toFixed(2));
+          line.setAttribute("y2", (HY + s * (R - 81)).toFixed(2));
+          tl.fromTo(line, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.out" }, n.at + 0.55);
+          tick(n.at + 0.95);
+        });
+
+        // ---------- Scene 3 (6.1–10.2): ring turns 60°, applications arc out of the hub ----------
+        var ROT_AT = 6.1, ROT_DUR = 1.25;
+        tl.fromTo($("ring"), { rotation: 0, transformOrigin: "540px 760px" },
+          { rotation: 60, transformOrigin: "540px 760px", duration: ROT_DUR, ease: "power2.inOut", immediateRender: false }, ROT_AT);
+        // keep every node upright while the ring turns
+        tl.fromTo([$("node-body-0"), $("node-body-1"), $("node-body-2")], { rotation: 0 },
+          { rotation: -60, duration: ROT_DUR, ease: "power2.inOut", immediateRender: false }, ROT_AT);
+        // headline rises to make room for the top node
+        tl.fromTo($("headline"), { y: 0 }, { y: -105, duration: ROT_DUR, ease: "power2.inOut", immediateRender: false }, ROT_AT);
+
+        tl.fromTo($("sub"), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, ease: "power3.out" }, 6.15);
+
+        // chips: fixed widths, RTL row centred, centre y 1450
+        var CY = 1450, GAP = 20;
+        var chips = [
+          { at: 7.4, w: 210 },
+          { at: 8.0, w: 270 },
+          { at: 9.0, w: 410 }
+        ];
+        var total = chips.reduce(function (a, c) { return a + c.w; }, 0) + GAP * (chips.length - 1);
+        var right = 540 + total / 2;
+        chips.forEach(function (c, i) {
+          var el = $("chip-" + i);
+          var left = right - c.w;
+          right = left - GAP;
+          el.style.left = left + "px";
+          el.style.width = c.w + "px";
+          var cx = left + c.w / 2;
+          var dx = cx - HX, dy = CY - HY;
+          var r1 = Math.sqrt(dx * dx + dy * dy);
+          var a1 = Math.atan2(dy, dx) / D2R;
+          var a0 = a1 + 50, r0 = 150; // leave the hub edge, sweep counter-clockwise onto its slot
+          var p = { u: 0 };
+          var place = function () {
+            var e = 1 - Math.pow(1 - p.u, 3);
+            var a = (a0 + (a1 - a0) * e) * D2R, r = r0 + (r1 - r0) * e;
+            gsap.set(el, { x: HX + Math.cos(a) * r - cx, y: HY + Math.sin(a) * r - CY });
+          };
+          place();
+          tl.fromTo(p, { u: 0 }, { u: 1, duration: 0.85, ease: "none", onUpdate: place }, c.at);
+          tl.fromTo(el, { opacity: 0, scale: 0.35 }, { opacity: 1, scale: 1, duration: 0.85, ease: "power3.out" }, c.at);
+          tick(c.at);
+        });
+
+        // ---------- Scene 4 (10.3–11.16): yellow band wipes right → left ----------
+        // skewX −14° → 14° slanted leading edge; band covers x 0–1080 from 11.1 s and is still
+        // travelling left at the cut (handoff_out).
+        tl.fromTo($("band"), { x: 1340, skewX: -14 }, { x: -440, skewX: -14, duration: 0.86, ease: "sine.in" }, 10.3);
+
+        window.__timelines = window.__timelines || {};
+        window.__timelines["05-audience"] = tl;
+      })();
+    </script>
+  </div>
+</template>

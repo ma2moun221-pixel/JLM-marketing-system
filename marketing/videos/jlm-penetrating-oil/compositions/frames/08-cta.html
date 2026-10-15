@@ -267,7 +267,8 @@
       var tl = gsap.timeline({ paused: true });
 
       // ---- Scene 1 (0.0–0.6s): wipe band exits right, ring draws, can arcs in ----
-      tl.fromTo($("band-mover"), { x: 0 }, { x: 1590, duration: 0.6, ease: "power1.in" }, 0);
+      // starts at frame 07's exit speed (~874 px/s) and accelerates out
+      tl.fromTo($("band-mover"), { x: 0 }, { x: 1590, duration: 0.6, ease: function (u) { return 0.33 * u + 0.67 * u * u; } }, 0);
 
       // silver hairline ring: slow rotation for the whole frame (the only motion in the hold)
       tl.fromTo($("hairline"), { rotation: 0, svgOrigin: "540 800" }, { rotation: 32, svgOrigin: "540 800", duration: DUR, ease: "none" }, 0);

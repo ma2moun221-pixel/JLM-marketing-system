@@ -205,8 +205,9 @@
       // title on "JLM" (1.6s)
       tl.fromTo([$("t1"), $("t2")], { y: 46, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.7, ease: "power3.out", stagger: 0.16 }, 1.6);
-      tl.fromTo($("latin"), { opacity: 0, letterSpacing: "0.42em", y: 10 },
-        { opacity: 1, letterSpacing: "0.06em", y: 0, duration: 0.8, ease: "power3.out" }, 1.95);
+      gsap.set($("latin"), { letterSpacing: "0.06em" });
+      tl.fromTo($("latin"), { opacity: 0, scale: 1.12, y: 10 },
+        { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power3.out" }, 1.95);
 
       // ===== Scene 2 (2.6–6.6): orbit ring + role line =====
       tl.fromTo($("ob-line"), { strokeDashoffset: 1000 }, { strokeDashoffset: 0, duration: 0.55, ease: "power2.in" }, 2.6);
