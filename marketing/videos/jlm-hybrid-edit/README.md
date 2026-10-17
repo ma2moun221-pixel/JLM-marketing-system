@@ -3,12 +3,14 @@
 The client's 18.8 s talking-head clip (presenter at a charger, holding the can), edited in the
 style the client picked from `brand/jlm/EDIT_STYLES.md`.
 
-- **Main style:** Fast-Paced / Retention (§3). Something new every 1–2.5 s:
-  - punch-ins and reframes (onto the charger, then a close-up of the can);
-  - word-pop captions on the shirt, kept clear of the can;
-  - line-icon badges beside the head (هايبريد، محرّك بنزين، تنظيف مستمر، يمنع التراكم);
-  - the product chip;
-  - a linked pair, رواسب كربونية → تشحيم.
+- **Main style:** Fast-Paced / Retention (§3). Something new every 1–2.5 s on a calm camera:
+  - **Camera (v2, client note):** one slow push per shot and one smooth move into the can when the product is named. No random punch-ins. The jump cut is a short dissolve.
+  - **Captions:** word-pop on the shirt, kept clear of the can. «بسيارات الهايبريد والبلَغ إن هايبريد» shares one caption frame.
+  - **Icons (v2):** always linked pairs at the bottom, first on the right, second on the left, same size and pop:
+    - هايبريد + بلَغ إن هايبريد;
+    - محرّك بنزين → تنظيف مستمر;
+    - يمنع الرواسب + يشحّم.
+  - **Product chip** at the top.
 - **Jump Cut clean-up (§2):** the lead-in and the 0.4 s pause are cut. The clip ends on «نظام الاحتراق» because the source cuts off mid-word.
 - **Vox board (§6)** over «بسبب تراكم مخلفات الاحتراق … المحرّك ما بيشتغل بصورة دايمة»:
   - an injector clogging with carbon;

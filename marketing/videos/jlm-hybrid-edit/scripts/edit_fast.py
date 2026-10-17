@@ -4,8 +4,8 @@ a Vox paper board for the "why" (§6) and a Kinetic close (§5) before the black
 
     python3 edit_fast.py --src CLIENT_VIDEO --out ../out/jlm_hybrid_fast.mp4 [--stills 1,5,...]
 
-Something new every 1–2.5 s: punch-ins and reframes (charger, can), word-pop captions,
-line-icon badges, the board, a can close-up, a linked problem → solution pair. All SFX are
+Something new every 1–2.5 s on a calm camera (one slow push per shot), word-pop captions,
+linked icon pairs at the bottom, the board, one smooth move into the can. All SFX are
 soft (ticks ≈ −40 dBFS); a synthesized 112 BPM bed sits under the voice.
 """
 
@@ -64,7 +64,7 @@ SEGMENTS = [
 
 # word-pop phrases (1–3 words). "!" red, "*" yellow, "#" hidden (the board carries it)
 PHRASES = [
-    "*نظام *الوقود", "بسيارات *الهايبريد", "والبلَغ إن هايبريد", "بمحركات *البنزين",
+    "*نظام *الوقود", "بسيارات *الهايبريد والبلَغ إن *هايبريد", "بمحركات *البنزين",
     "بحاجة دايمًا", "*لتنظيف مستمر",
     "#بسبب تراكم مخلفات", "#الاحتراق فيها", "#وبالذات إنّ المحرّك", "#ما بيشتغل", "#بصورة دايمة ومستمرة",
     "مع منتج", "*Petrol *Hybrid", "*Treatment", "من *JLM", "اللي بيعمل", "على *منع !تراكم",
@@ -163,6 +163,7 @@ class PopCaptions:
             ta = p["items"][active][2]
             if active:
                 sc *= 1 + 0.05 * math.sin(math.pi * R.clamp01((t - ta) / 0.14))
+            sc *= min(1.0, 0.94 * W / lay.shape[1])
             l2, x, yy = R.warp_premul(lay, sc, W / 2, y, (lay.shape[1] / 2, lay.shape[0] / 2))
             a = min(1.0, (t - p["t0"]) / 0.06, (p["t1"] - t) / 0.06)
             R.over(f, l2, x, yy, a)
@@ -208,12 +209,12 @@ def _sparkle():
     return [_star(-0.12, 0.10, 0.62), _star(0.56, -0.52, 0.26), _star(-0.62, -0.58, 0.18), _star(0.52, 0.62, 0.16)]
 
 
-def _soot():
-    s = []
-    for cx, cy, r in [(-0.30, 0.18, 0.34), (0.22, -0.06, 0.40), (0.32, 0.50, 0.22), (-0.46, -0.40, 0.18),
-                      (0.66, -0.52, 0.12), (-0.70, 0.56, 0.10)]:
-        s.append(V._arc(cx, cy, r, r, 0, 360, 36))
-    return s
+def _plugin():
+    car = V._car("v")[:6]
+    plug = V._rrect(-0.16, -0.86, 0.16, -0.62, 0.05)
+    prongs = [np.array([[-0.08, -0.86], [-0.08, -1.0]]), np.array([[0.08, -0.86], [0.08, -1.0]])]
+    cable = np.array([[0.0, -0.62], [0.0, -0.50], [0.10, -0.42], [0.10, -0.36]])
+    return car + [plug] + prongs + [cable]
 
 
 def _drop():
@@ -223,29 +224,60 @@ def _drop():
     return [pts, shine]
 
 
-V.ICONS.update({"hybrid": _hybrid, "pump": _pump, "sparkle": _sparkle, "soot": _soot, "drop": _drop})
+V.ICONS.update({"hybrid": _hybrid, "pump": _pump, "sparkle": _sparkle, "plugin": _plugin, "drop": _drop})
 
 
-class Badges:
-    """Single fast-paced badges beside the presenter's head (icon draws itself, label pill)."""
+class LinkedPairs(V.Pairs):
+    """The approved bottom pairs (VIDEO_STYLE §2): first badge on the right, second on the
+    left, same size and pop. kind "then" draws the arrow (cause → result); kind "and" draws a
+    plain dashed yellow line with a «+» in the middle (two things of the same kind)."""
 
     def __init__(self, items):
-        self.items = items          # (t0, t1, icon, colour, label, x, y)
+        super().__init__([it[:5] for it in items])
+        self.kinds = [it[5] for it in items]
+
+    def _plus_link(self, f, p, out):
+        x0, x1 = self.XA - V.BADGE / 2 - 16, self.XB + V.BADGE / 2 + 16
+        y = int(self.Y)
+        xe = x0 + (x1 - x0) * p
+        col = np.array(YEL, np.float32) / 255
+        lay = np.zeros((70, W), np.float32)
+        x = x0
+        while x > xe:
+            cv2.line(lay, (int(x), 35), (int(max(x - 22, xe)), 35), 1.0, 5, cv2.LINE_AA)
+            x -= 34
+        q = ease((p - 0.55) / 0.3)
+        if q > 0:
+            xm = int((x0 + x1) / 2)
+            cv2.circle(lay, (xm, 35), int(26 * q), 1.0, -1, cv2.LINE_AA)
+            cv2.line(lay, (xm - int(13 * q), 35), (xm + int(13 * q), 35), 0.0, 5, cv2.LINE_AA)
+            cv2.line(lay, (xm, 35 - int(13 * q)), (xm, 35 + int(13 * q)), 0.0, 5, cv2.LINE_AA)
+            disc = np.zeros_like(lay)
+            cv2.circle(disc, (xm, 35), int(26 * q), 1.0, -1, cv2.LINE_AA)
+        a = np.clip(lay + cv2.GaussianBlur(lay, (0, 0), 6) * 0.4, 0, 1)[..., None] * out
+        reg = f[y - 35:y + 35]
+        reg *= 1 - a
+        reg += a * col
+        if q > 0:
+            # the «+» strokes cut out of the disc, in charcoal
+            cut = (disc - lay).clip(0, 1)[..., None] * out
+            reg *= 1 - cut
+            reg += cut * np.array(CHA, np.float32) / 255
 
     def draw(self, f, t):
-        for t0, t1, icon, col, label, cx, cy in self.items:
-            if not (t0 <= t < t1 + 0.2):
+        for (ta, tb, t1, A, B), kind in zip(self.items, self.kinds):
+            if not (ta <= t < t1 + 0.25):
                 continue
-            lt = t - t0
-            out = 1 - ease((t - t1) / 0.2)
-            layer = V.badge_layer(icon, col, lt)
-            sc = (0.35 + 0.65 * back(lt / 0.30)) * (0.9 + 0.1 * out)
-            lay, x, y = R.warp_premul(layer, sc, cx, cy, (layer.shape[1] / 2, layer.shape[0] / 2))
-            R.over(f, lay, x, y, min(1.0, lt / 0.08) * out)
-            q = ease((lt - 0.40) / 0.22)
-            if q > 0:
-                lab = V.label_layer(label, col)
-                R.over(f, lab, cx - lab.shape[1] / 2, cy + V.BADGE / 2 + 6 + 10 * (1 - q), q * out)
+            out = 1 - ease((t - t1) / 0.25)
+            p = ease((t - tb + 0.25) / 0.40)
+            if p > 0:
+                if kind == "and":
+                    self._plus_link(f, p, out)
+                else:
+                    self._arrow(f, p, out, A[1], B[1])
+            self._badge(f, self.XA, t - ta, out, *A)
+            if t >= tb:
+                self._badge(f, self.XB, t - tb, out, *B)
 
 
 # ---------------------------------------------------------------- camera ---
@@ -483,7 +515,7 @@ class Kinetic:
     def frame(self, t, under):
         t0 = self.t0
         # yellow wipe from the right: footage → charcoal
-        p = ease((t - t0) / 0.32)
+        p = ease((t - t0) / 0.45)
         edge = W * (1 - p)
         f = under.copy()
         xs = int(max(edge, 0))
@@ -672,28 +704,28 @@ def main():
     name = NameLine(END0)
     chip = product_chip()
     chip_t = (b1, at("اللي") - 0.05)
-    RX, LX, BY = 0.83 * W, 0.17 * W, 0.27 * H
-    badges = Badges([
-        (at("بسيارات"), at("بمحركات") - 0.12, "hybrid", YEL, "هايبريد", RX, BY),
-        (at("بمحركات"), at("بحاجة") + 0.6, "pump", YEL, "محرّك بنزين", LX, BY),
-        (at("لتنظيف"), b0 - 0.05, "sparkle", YEL, "تنظيف مستمر", RX, BY),
-        (at("منع"), s2o(15.24), "shield", YEL, "يمنع التراكم", RX, BY),
+    # icons: always a pair at the bottom — first on the right, second on the left
+    pairs = LinkedPairs([
+        (at("بسيارات"), at("والبلَغ"), at("بمحركات") - 0.12,
+         ("hybrid", YEL, "هايبريد"), ("plugin", YEL, "بلَغ إن هايبريد"), "and"),
+        (at("بمحركات"), at("لتنظيف"), b0 - 0.12,
+         ("pump", YEL, "محرّك بنزين"), ("sparkle", YEL, "تنظيف مستمر"), "then"),
+        (at("منع"), at("وتشحيم"), SPEECH_END - 0.12,
+         ("shield", YEL, "يمنع الرواسب"), ("drop", YEL, "يشحّم"), "and"),
     ])
-    pairs = V.Pairs([(at("الرواسب"), at("وتشحيم"), SPEECH_END - 0.12,
-                      ("soot", RED, "رواسب كربونية"), ("drop", YEL, "تشحيم"))])
     cuts = [s2o(4.33), s2o(8.2), b1, s2o(KEEP[1][0])]
+    t_tr = at("Treatment")
+    # camera: one slow push per shot, plus one motivated move into the can when the
+    # product is named (and a smooth pull back out) — no punch-ins
     kfs = [
-        (0.00, 1.10, 600, 760, 0), (0.02, 1.15, 600, 760, 1.9),
-        (at("والبلَغ") - 0.1, 1.75, 300, 1000, 0.16),
-        (at("بمحركات") - 0.08, 1.18, 600, 720, 0.14),
-        (cuts[0], 1.0, 540, 960, 0), (cuts[0] + 0.02, 1.05, 560, 880, 1.2),
-        (at("لتنظيف") - 0.06, 1.16, 580, 700, 0.12),
-        (b1, 2.15, 450, 1010, 0), (b1 + 0.01, 2.3, 450, 1000, 1.85),
-        (at("Treatment") - 0.08, 1.06, 520, 860, 0.14),
-        (at("على") - 0.06, 1.18, 520, 700, 0.12),
-        (cuts[3], 1.04, 520, 880, 0),
-        (at("وتشحيم") - 0.06, 1.15, 520, 740, 0.12),
+        (0.00, 1.04, 580, 820, 0), (0.01, 1.10, 580, 790, cuts[0] - 0.05),
+        (cuts[0], 1.03, 560, 860, 0), (cuts[0] + 0.01, 1.08, 560, 820, b0 - cuts[0] - 0.05),
+        (b1, 1.85, 450, 1000, 0), (b1 + 0.01, 1.98, 450, 1000, t_tr - 0.4 - b1 - 0.05),
+        (t_tr - 0.4, 1.06, 520, 840, 0.7),
+        (t_tr + 0.31, 1.12, 520, 790, cuts[3] - t_tr - 0.4),
+        (cuts[3], 1.06, 520, 840, 0), (cuts[3] + 0.01, 1.12, 520, 790, SPEECH_END - cuts[3] - 0.05),
     ]
+    board_out = 0.4
     for p in caps.phrases:
         print(f"  {p['t0']:5.2f}–{p['t1']:5.2f} {'#' if p['hidden'] else ' '} " + " ".join(w for w, *_ in p["items"]))
     print(f"board {b0:.2f}–{b1:.2f}  card1 {board.tc1:.2f} card2 {board.tc2:.2f}")
@@ -713,7 +745,7 @@ def main():
         enc = subprocess.Popen(["ffmpeg", "-y", "-loglevel", "error", "-f", "rawvideo", "-pix_fmt", "rgb24",
                                 "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-c:v", "libx264", "-preset", "slow",
                                 "-crf", "17", "-pix_fmt", "yuv420p", str(tmp_v)], stdin=subprocess.PIPE)
-    live = last = None
+    live = last = held = board_live = None
     for n in range(n_frames):
         t = n / FPS
         if t < SPEECH_END:
@@ -721,26 +753,35 @@ def main():
             if len(raw) == W * H * 3:
                 live = np.frombuffer(raw, np.uint8).reshape(H, W, 3).astype(np.float32) / 255
         if t < KIN0:
-            if b0 <= t < b1:
-                # board slides up over the footage, and up and away at the end
-                bf = board.frame(t, live)
-                pin, pout = ease((t - b0) / 0.22), ease((t - b1 + 0.22) / 0.22)
-                ff = apply_cam(live, *camera(kfs, t))
-                y_in = int(H * (1 - pin)) if pin < 1 else 0
+            ff = apply_cam(live, *camera(kfs, t))
+            if t < cuts[3]:
+                held = ff
+            elif t < cuts[3] + 0.14:
+                # the jump cut is a short dissolve, not a jump
+                u = ease((t - cuts[3]) / 0.14)
+                ff = held * (1 - u) + ff * u
+            if b0 <= t < b1 + board_out:
+                # board slides up over the footage, then up and away onto the can close-up
+                bf = board.frame(min(t, b1 - 1 / FPS), live if t < b1 else board_live)
+                if t < b1:
+                    board_live = live
+                pin = ease((t - b0) / 0.4)
+                pout = ease((t - b1) / board_out)
                 f = ff.copy()
-                f[y_in:] = bf[:H - y_in]
-                if pout > 0:
-                    k = int(H * pout)
-                    f = np.concatenate([bf[k:], apply_cam(live, *camera(kfs, b1))[:k]]) if k < H else apply_cam(live, *camera(kfs, b1))
+                y_in = int(round(H * (1 - pin)))
+                if pout <= 0:
+                    f[y_in:] = bf[:H - y_in]
+                else:
+                    k = int(round(H * pout))
+                    f[:H - k] = bf[k:]
             else:
-                f = apply_cam(live, *camera(kfs, t))
-                badges.draw(f, t)
+                f = ff
                 pairs.draw(f, t)
                 if chip_t[0] <= t < chip_t[1]:
                     q = back((t - chip_t[0]) / 0.3) * (1 - ease((t - chip_t[1] + 0.2) / 0.2))
                     lay, x, y = R.warp_premul(chip, 0.7 + 0.3 * q, W / 2, 0.095 * H, (chip.shape[1] / 2, chip.shape[0] / 2))
                     R.over(f, lay, x, y, min(1.0, q * 2))
-                caps.draw(f, t, CAP_LOW if b1 <= t < at("Treatment") - 0.08 else CAP_Y)
+                caps.draw(f, t, CAP_LOW if b1 <= t < t_tr - 0.1 else CAP_Y)
             last = f
         elif t < END0 + 0.1:
             f = kin.frame(t, last)
@@ -763,8 +804,6 @@ def main():
 
     # sound: soft ticks on badges and key words, whooshes on reframes / board / wipe
     ev = []
-    for it in badges.items:
-        ev.append((it[0] + 0.05, V.soft_tick(SR, 480.0)))
     for ta, tb, *_ in pairs.items:
         ev += [(ta + 0.05, V.soft_tick(SR, 420.0)), (tb + 0.05, V.soft_tick(SR, 520.0))]
     lastk = -1
@@ -772,8 +811,8 @@ def main():
         if s - lastk > 0.6:
             ev.append((s, V.soft_tick(SR, 620.0 if tone == "*" else 380.0, 0.007)))
             lastk = s
-    for tk in [kf[0] for kf in kfs if kf[4] and kf[4] < 0.3] + [b0 - 0.1, b1 - 0.25, KIN0 - 0.05]:
-        ev.append((tk - 0.12, soft_whoosh()))
+    for tk in [b0 + 0.05, b1 + 0.1, t_tr - 0.25, KIN0 + 0.1]:
+        ev.append((tk - 0.16, soft_whoosh(0.42, 0.02)))
     ev += [(board.tc1, V.soft_tick(SR, 440.0)), (board.tc2, V.soft_tick(SR, 440.0))]
     ev += [(KIN0 + 0.18, soft_thump()), (KIN0 + 1.45, soft_whoosh(0.25, 0.018)), (KIN0 + 1.8, shimmer())]
     ev += [(END0 + 0.95, V.soft_tick(SR, 440.0)), (END0 + 1.35, V.soft_tick(SR, 440.0))]
