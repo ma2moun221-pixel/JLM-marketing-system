@@ -4,7 +4,11 @@ The client's 18.8 s talking-head clip (presenter at a charger, holding the can),
 style the client picked from `brand/jlm/EDIT_STYLES.md`.
 
 - **Main style:** Fast-Paced / Retention (§3). Something new every 1–2.5 s on a calm camera:
-  - **Camera (v2, client note):** one slow push per shot and one smooth move into the can when the product is named. No random punch-ins. The jump cut is a short dissolve.
+  - **Camera (v3, client note):**
+    - «بسيارات الهايبريد»: an eased push-in on the presenter.
+    - «والبلَغ إن هايبريد»: a glide to the charger and its plug, then back at «بمحركات».
+    - Both moves use a quintic ease and light motion blur. Otherwise there is one slow push per shot and one smooth move into the can when the product is named.
+    - The jump cut is a short dissolve.
   - **Captions:** word-pop on the shirt, kept clear of the can. «بسيارات الهايبريد والبلَغ إن هايبريد» shares one caption frame.
   - **Icons (v2):** always linked pairs at the bottom, first on the right, second on the left, same size and pop:
     - هايبريد + بلَغ إن هايبريد;

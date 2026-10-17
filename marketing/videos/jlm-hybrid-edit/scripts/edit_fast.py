@@ -281,16 +281,37 @@ class LinkedPairs(V.Pairs):
 
 
 # ---------------------------------------------------------------- camera ---
+def ease5(x):
+    """Quintic in-out: slow start, fast middle, soft landing (camera moves)."""
+    x = R.clamp01(x)
+    return 16 * x ** 5 if x < 0.5 else 1 - (-2 * x + 2) ** 5 / 2
+
+
 def camera(kfs, t):
-    """Keyframed punch-ins / reframes: (t, scale, cx, cy, dur) in source pixels."""
+    """Keyframed camera: (t, scale, cx, cy, dur) in source pixels. Moves shorter than
+    1 s use a quintic ease (designed moves); longer ones are slow drifts."""
     cur = prev = (1.0, W / 2, H / 2)
     for t0, s, cx, cy, d in kfs:
         if t < t0:
             break
-        u = 1.0 if d <= 0 else ease((t - t0) / d)
+        u = 1.0 if d <= 0 else (ease5((t - t0) / d) if d < 1.0 else ease((t - t0) / d))
         cur = tuple(a + (b - a) * u for a, b in zip(prev, (s, cx, cy)))
         prev = (s, cx, cy)
     return cur
+
+
+def cam_frame(img, kfs, t):
+    """Camera with motion blur: while the camera moves fast, average sub-frame positions."""
+    c0 = camera(kfs, t)
+    c1, c2 = camera(kfs, t - 0.4 / FPS), camera(kfs, t + 0.4 / FPS)
+    speed = abs(c2[0] - c1[0]) * 900 + abs(c2[1] - c1[1]) + abs(c2[2] - c1[2])
+    if speed < 6:
+        return apply_cam(img, *c0)
+    n = 7
+    acc = np.zeros_like(img)
+    for k in range(n):
+        acc += apply_cam(img, *camera(kfs, t + (k / (n - 1) - 0.5) * 0.35 / FPS))
+    return acc / n
 
 
 def apply_cam(img, s, cx, cy):
@@ -715,10 +736,16 @@ def main():
     ])
     cuts = [s2o(4.33), s2o(8.2), b1, s2o(KEEP[1][0])]
     t_tr = at("Treatment")
+    t_hy, t_pl, t_back = at("بسيارات") - 0.12, at("والبلَغ") - 0.18, at("بمحركات") - 0.12
     # camera: one slow push per shot, plus one motivated move into the can when the
     # product is named (and a smooth pull back out) — no punch-ins
     kfs = [
-        (0.00, 1.04, 580, 820, 0), (0.01, 1.10, 580, 790, cuts[0] - 0.05),
+        (0.00, 1.04, 580, 820, 0), (0.01, 1.07, 580, 800, t_hy - 0.06),
+        # «بسيارات الهايبريد»: push in on the presenter
+        (t_hy, 1.20, 585, 740, 0.7),
+        # «والبلَغ إن هايبريد»: glide to the charger and its plug, drift, glide back
+        (t_pl, 1.45, 372, 975, 0.8), (t_pl + 0.81, 1.50, 372, 975, t_back - t_pl - 0.86),
+        (t_back, 1.08, 580, 800, 0.75), (t_back + 0.76, 1.11, 580, 785, cuts[0] - t_back - 0.81),
         (cuts[0], 1.03, 560, 860, 0), (cuts[0] + 0.01, 1.08, 560, 820, b0 - cuts[0] - 0.05),
         (b1, 1.85, 450, 1000, 0), (b1 + 0.01, 1.98, 450, 1000, t_tr - 0.4 - b1 - 0.05),
         (t_tr - 0.4, 1.06, 520, 840, 0.7),
@@ -753,7 +780,7 @@ def main():
             if len(raw) == W * H * 3:
                 live = np.frombuffer(raw, np.uint8).reshape(H, W, 3).astype(np.float32) / 255
         if t < KIN0:
-            ff = apply_cam(live, *camera(kfs, t))
+            ff = cam_frame(live, kfs, t)
             if t < cuts[3]:
                 held = ff
             elif t < cuts[3] + 0.14:
@@ -811,7 +838,7 @@ def main():
         if s - lastk > 0.6:
             ev.append((s, V.soft_tick(SR, 620.0 if tone == "*" else 380.0, 0.007)))
             lastk = s
-    for tk in [b0 + 0.05, b1 + 0.1, t_tr - 0.25, KIN0 + 0.1]:
+    for tk in [t_hy + 0.15, t_pl + 0.2, t_back + 0.2, b0 + 0.05, b1 + 0.1, t_tr - 0.25, KIN0 + 0.1]:
         ev.append((tk - 0.16, soft_whoosh(0.42, 0.02)))
     ev += [(board.tc1, V.soft_tick(SR, 440.0)), (board.tc2, V.soft_tick(SR, 440.0))]
     ev += [(KIN0 + 0.18, soft_thump()), (KIN0 + 1.45, soft_whoosh(0.25, 0.018)), (KIN0 + 1.8, shimmer())]
