@@ -52,11 +52,11 @@ SEGMENTS = [
     (1.11, 1.95, "بسيارات الهايبريد"),
     (2.15, 3.13, "والبلَغ إن هايبريد"),
     (3.29, 4.28, "بمحركات البنزين"),
-    (4.49, 5.76, "بحاجة دايمًا لتنظيف مستمر"),
+    (4.49, 5.76, "بحاجة دائمًـا لتنظيف مستمر"),
     (5.88, 7.55, "بسبب تراكم مخلفات"),
     (7.67, 8.05, "الاحتراق فيها"),
     (8.32, 9.61, "وبالذات إنّ المحرّك"),
-    (9.74, 11.06, "ما بيشتغل بصورة دايمة ومستمرة"),
+    (9.74, 11.06, "ما بيشتغل بصورة دائمة ومستمرة"),
     (11.20, 12.92, "مع منتج Petrol Hybrid"),
     (13.06, 15.24, "Treatment من JLM اللي بيعمل على منع تراكم"),
     (15.65, 18.38, "الرواسب الكربونية وتشحيم نظام الاحتراق"),
@@ -65,8 +65,8 @@ SEGMENTS = [
 # word-pop phrases (1–3 words). "!" red, "*" yellow, "#" hidden (the board carries it)
 PHRASES = [
     "*نظام *الوقود", "بسيارات *الهايبريد والبلَغ إن *هايبريد", "بمحركات *البنزين",
-    "بحاجة دايمًا", "*لتنظيف مستمر",
-    "#بسبب تراكم مخلفات", "#الاحتراق فيها", "#وبالذات إنّ المحرّك", "#ما بيشتغل", "#بصورة دايمة ومستمرة",
+    "بحاجة دائمًـا", "*لتنظيف مستمر",
+    "#بسبب تراكم مخلفات", "#الاحتراق فيها", "#وبالذات إنّ المحرّك", "#ما بيشتغل", "#بصورة دائمة ومستمرة",
     "مع منتج", "*Petrol *Hybrid", "*Treatment", "من *JLM", "اللي بيعمل", "على *منع !تراكم",
     "!الرواسب !الكربونية", "*وتشحيم", "نظام الاحتراق",
 ]
@@ -384,7 +384,7 @@ class VoxBoard:
         self.card, self.pad = card_base(self.CW, self.CH)
         self.title = T.line([("السبب؟", INK)], 104, bold=True, shadow=False, pad=10)
         self.lab1 = T.line([("تراكم", RED), ("مخلفات الاحتراق", INK)], 46, bold=True, shadow=False, pad=8)
-        self.lab2 = T.line([("المحرّك", INK), ("ما بيشتغل", RED), ("بشكل دائم", INK)], 46, bold=True, shadow=False, pad=8)
+        self.lab2 = T.line([("المحرّك", INK), ("لا يعمل", RED), ("بشكل دائم", INK)], 46, bold=True, shadow=False, pad=8)
         self.petrol = T.line([("بنزين", INK)], 34, bold=True, shadow=False, pad=4)
         self.elec = T.line([("كهرباء", INK)], 34, bold=True, shadow=False, pad=4)
         self.blobs = [(rng.uniform(-30, 30), rng.uniform(-6, 26), rng.uniform(7, 15), rng.uniform(0, 0.8)) for _ in range(16)]
@@ -484,8 +484,10 @@ class VoxBoard:
         R.over(f, self.title, W / 2 - self.title.shape[1] / 2, 170 + 20 * (1 - q), q)
         u = ease((t - self.t0 - 0.25) / 0.35)
         if u > 0:
+            # under the letters' dots, never through them
             x1, x0 = W / 2 + 170, W / 2 - 170
-            poly(f, [(x1, 340), (x1 + (x0 - x1) * u, 340)], (np.array(YEL, np.float32) / 255).tolist(), 14)
+            yl = 170 + self.title.shape[0] + 10
+            poly(f, [(x1, yl), (x1 + (x0 - x1) * u, yl)], (np.array(YEL, np.float32) / 255).tolist(), 12)
         # card 1 (right, upper)
         q = back((t - self.tc1 + 0.15) / 0.30)
         if q > 0:
@@ -722,6 +724,7 @@ def main():
     board = VoxBoard(b0, b1, at("تراكم", 0), at("وبالذات"))
     kin = Kinetic(KIN0)
     endcard = V.EndCard(END0)
+    endcard.cta = T.line([("اطلبه الآن", YEL), ("من خلال", WHT)], 74, bold=True, shadow=False, pad=10)  # المنتج: masculine
     name = NameLine(END0)
     chip = product_chip()
     chip_t = (b1, at("اللي") - 0.05)
