@@ -38,3 +38,16 @@ npx hyperframes@0.8.161 render --quality high --output renders/video.mp4
 ثم طبّع الصوت بـ ffmpeg (loudnorm I=-14).
 
 **ملاحظة:** GSAP محلي في `assets/vendor/`، لأن الـ CDN محجوب في بيئة العمل.
+
+## 40 s cut-down (`renders/jlm_penetrating_oil_40s.mp4`)
+
+`python3 scripts/cutdown.py` re-times the 71 s v4 film to exactly 40 s. Nothing is cut out.
+
+- **Speed ramps:** holds play faster, about ×1.2–3.2 (benefit chips, mechanism steps, audience hub, usage steps).
+- **Match cuts and wipes** stay near 1×.
+- **Speed changes** are eased over 0.3 s, and fast stretches are frame-blended.
+- **CTA:** complete from about 37 s, held to the end.
+- **Audio:**
+  - the music is re-arranged on the remapped cut points (`music.build()`);
+  - all 56 SFX cues go through the same time map;
+  - −13.4 LUFS, peak −2.4 dBFS.
