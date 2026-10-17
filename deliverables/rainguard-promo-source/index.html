@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="fonts/local.css">
 <style>
 :root{
-  --y:#F5B301; --y2:#FFC93C; --ink:#07090d; --ice:#9FD3FF; --muted:rgba(255,255,255,.55);
+  --y:#FAB817; --dk:#252729; --y2:#FFC93C; --ink:#07090d; --ice:#9FD3FF; --muted:rgba(255,255,255,.55);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
@@ -20,18 +20,18 @@ body{font-family:'Tajawal',sans-serif;color:#fff;position:relative}
 #bigRing{left:90px;top:610px;width:900px;height:900px;opacity:.06}
 #floor{left:0;top:1450px;width:1080px;height:470px;background:linear-gradient(180deg,#0d1118,#05070a 70%)}
 #hline{left:0;top:1449px;width:1080px;height:3px;transform-origin:50% 50%;
-  background:linear-gradient(90deg,rgba(245,179,1,0),rgba(245,179,1,.9) 30%,#ffd76a 50%,rgba(245,179,1,.9) 70%,rgba(245,179,1,0));
-  box-shadow:0 0 18px rgba(245,179,1,.8)}
-#hdot{left:528px;top:1438px;width:24px;height:24px;border-radius:50%;
-  background:radial-gradient(circle,#fff6d0 0%,#ffcf3d 35%,rgba(245,179,1,0) 70%)}
+  background:linear-gradient(90deg,rgba(250,184,23,0),rgba(250,184,23,.9) 30%,#ffd76a 50%,rgba(250,184,23,.9) 70%,rgba(250,184,23,0));
+  box-shadow:0 0 18px rgba(250,184,23,.8)}
+#hdot{left:521px;top:1421px;width:38px;height:58px;background:linear-gradient(180deg,#ffe08a,var(--y));
+  -webkit-mask:url(assets/brand/drop.png) center/contain no-repeat;filter:drop-shadow(0 0 14px rgba(250,184,23,.9))}
 #hglow{left:240px;top:1380px;width:600px;height:140px;border-radius:50%;
-  background:radial-gradient(ellipse at center,rgba(245,179,1,.55),rgba(245,179,1,.12) 45%,rgba(245,179,1,0) 70%)}
+  background:radial-gradient(ellipse at center,rgba(250,184,23,.55),rgba(250,184,23,.12) 45%,rgba(250,184,23,0) 70%)}
 #prod{left:0;top:0;width:1080px;height:1920px;pointer-events:none}
 #bottle,#bottleRef{position:absolute;left:50%;transform-origin:50% 100%}
-#bottle{filter:drop-shadow(0 0 40px rgba(245,179,1,.25))}
+#bottle{filter:drop-shadow(0 0 40px rgba(250,184,23,.25))}
 #bottleRef{transform-origin:50% 0;opacity:.18;
   -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.9),rgba(0,0,0,0) 45%)}
-.ringO{position:absolute;border-radius:50%;border:2px solid rgba(245,179,1,.55);box-shadow:0 0 30px rgba(245,179,1,.25),inset 0 0 30px rgba(245,179,1,.12)}
+.ringO{position:absolute;border-radius:50%;border:2px solid rgba(250,184,23,.55);box-shadow:0 0 30px rgba(250,184,23,.25),inset 0 0 30px rgba(250,184,23,.12)}
 /* type */
 .label{font-family:'Montserrat';font-weight:700;font-size:26px;letter-spacing:.32em;color:var(--y);direction:ltr;
   display:flex;align-items:center;gap:22px;justify-content:center;width:1080px;left:0}
@@ -40,7 +40,7 @@ body{font-family:'Tajawal',sans-serif;color:#fff;position:relative}
 .yel{color:var(--y)}
 .sub{font-weight:500;font-size:44px;color:rgba(255,255,255,.82);text-align:center;width:1080px;left:0}
 .pill{display:flex;align-items:center;gap:16px;border:3px solid var(--y);border-radius:60px;padding:14px 36px;
-  font-weight:700;font-size:38px;background:rgba(10,12,16,.55);box-shadow:0 0 24px rgba(245,179,1,.25)}
+  font-weight:700;font-size:38px;background:rgba(10,12,16,.55);box-shadow:0 0 24px rgba(250,184,23,.25)}
 .pillwrap{width:1080px;left:0;display:flex;justify-content:center}
 .ice{border-color:var(--ice);color:#e6f4ff;box-shadow:0 0 26px rgba(159,211,255,.35);background:rgba(20,40,60,.45)}
 .sec{display:flex;align-items:center;gap:20px;font-weight:700;font-size:34px;color:var(--y)}
@@ -50,9 +50,9 @@ body{font-family:'Tajawal',sans-serif;color:#fff;position:relative}
 .q u::after{content:'';position:absolute;left:30%;right:30%;bottom:-10px;height:6px;border-radius:3px;background:var(--y)}
 /* icon rows */
 .row{position:absolute;right:80px;display:flex;align-items:center;gap:30px;flex-direction:row}
-.ic{width:104px;height:104px;border-radius:50%;border:3px solid rgba(245,179,1,.55);display:flex;align-items:center;justify-content:center;flex:none;position:relative}
+.ic{width:104px;height:104px;border-radius:50%;border:3px solid rgba(250,184,23,.55);display:flex;align-items:center;justify-content:center;flex:none;position:relative}
 .ic svg{width:54px;height:54px;stroke:var(--y);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.ic .halo{position:absolute;inset:-26px;border-radius:50%;border:2px solid rgba(245,179,1,.35)}
+.ic .halo{position:absolute;inset:-26px;border-radius:50%;border:2px solid rgba(250,184,23,.35)}
 .row .t{font-weight:800;font-size:56px;white-space:nowrap}
 .row .bar{width:6px;height:70px;border-radius:3px;background:var(--y);flex:none;margin-left:-8px;margin-right:-36px}
 .num{font-family:'Montserrat';font-weight:800;font-size:40px;color:var(--y)}
@@ -60,16 +60,26 @@ body{font-family:'Tajawal',sans-serif;color:#fff;position:relative}
 .chip{position:absolute;padding:10px 26px;border-radius:40px;font-weight:700;font-size:30px;border:2px solid rgba(255,255,255,.35);background:rgba(0,0,0,.35)}
 #panel{left:70px;top:400px;width:940px;height:580px;border-radius:34px;overflow:hidden;
   background:linear-gradient(180deg,rgba(24,34,50,.85),rgba(10,14,22,.9));border:2px solid rgba(255,255,255,.08);
-  box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 0 0 1px rgba(245,179,1,.06)}
-#cta{background:var(--y);color:#111;font-family:'Montserrat';font-weight:800;font-size:46px;border-radius:60px;padding:16px 64px;
-  box-shadow:0 0 40px rgba(245,179,1,.55)}
+  box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 0 0 1px rgba(250,184,23,.06)}
+#cta{background:var(--dk);color:var(--y);font-family:'Montserrat';font-weight:800;font-size:46px;border-radius:60px;padding:16px 64px;
+  box-shadow:0 14px 34px rgba(37,39,41,.35)}
 #flash{background:radial-gradient(ellipse at 50% 20%,rgba(220,235,255,.95),rgba(150,190,255,.35) 60%,rgba(120,160,255,.1));opacity:0;mix-blend-mode:screen}
+#bp{left:-210px;top:-240px;width:1500px;height:2400px;background:var(--y);
+  -webkit-mask-image:url(assets/brand/blueprint_lines.png);-webkit-mask-size:100% 100%;opacity:.07}
+.bdrop{display:inline-block;background:var(--y);-webkit-mask:url(assets/brand/drop.png) center/contain no-repeat}
+#yel{left:0;top:0;width:1080px;height:1920px;background:url(assets/brand/blueprint.jpg) center/cover var(--y)}
+#yfloor{left:0;top:1446px;width:1080px;height:4px;background:linear-gradient(90deg,rgba(37,39,41,0),var(--dk) 18%,var(--dk) 82%,rgba(37,39,41,0))}
+#yshadow{left:290px;top:1415px;width:500px;height:70px;border-radius:50%;background:radial-gradient(ellipse at center,rgba(37,39,41,.45),rgba(37,39,41,0) 70%)}
+.divider{display:flex;align-items:center;justify-content:center;gap:0;width:1080px;left:0}
+.divider i{display:block;height:4px;width:220px;background:var(--dk)}
+.divider .bdrop{width:30px;height:46px;background:var(--dk);margin:0 -2px}
 #vig{background:radial-gradient(ellipse 760px 1150px at 50% 50%,rgba(0,0,0,0) 60%,rgba(0,0,0,.65) 100%)}
 canvas{position:absolute}
 </style>
 </head>
 <body>
 <div id="bg" class="layer"></div>
+<div id="bp" class="abs"></div>
 <div id="spot" class="abs"></div>
 <div id="bigRing" class="abs"></div>
 <canvas id="bokeh" width="1080" height="1920" style="left:0;top:0"></canvas>
@@ -89,21 +99,23 @@ canvas{position:absolute}
 <div id="hline" class="abs"></div>
 <div id="hdot" class="abs"></div>
 
+<div id="yel" class="abs"><div id="yshadow" class="abs"></div><div id="yfloor" class="abs"></div>
+  <div id="ydrop" class="abs bdrop" style="left:521px;top:1419px;width:38px;height:58px;background:var(--dk)"></div></div>
 <div id="prod">
   <div id="ring1" class="ringO"></div>
-  <div id="ring2" class="ringO" style="border-color:rgba(245,179,1,.25)"></div>
+  <div id="ring2" class="ringO" style="border-color:rgba(250,184,23,.25)"></div>
   <img id="bottleRef" src="assets/bottle.png">
   <img id="bottle" src="assets/bottle.png">
 </div>
 
 <!-- S2: reveal -->
 <div id="s2" class="layer">
-  <div id="s2badge" class="abs pillwrap" style="top:170px"><div class="pill ice" style="font-size:34px;padding:10px 30px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#9FD3FF" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5"/></svg>عرض الشتاء</div></div>
-  <div id="s2label" class="abs label" style="top:290px"><i></i>JLM LIQUID TOOLS<i></i></div>
-  <div id="s2t1" class="abs h1" style="top:350px">معالج الزجاج</div>
-  <div id="s2t2" class="abs h1 yel" style="top:470px">الطارد للمطر</div>
+  <div id="s2badge" class="abs pillwrap" style="top:150px"><div class="pill ice" style="font-size:34px;padding:10px 30px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#9FD3FF" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5"/></svg>عرض الشتاء</div></div>
+  <div id="s2label" class="abs pillwrap" style="top:232px"><img src="assets/brand/logo_yellow.png" style="width:270px"></div>
+  <div id="s2t1" class="abs h1" style="top:345px">معالج الزجاج</div>
+  <div id="s2t2" class="abs h1 yel" style="top:465px">الطارد للمطر</div>
   <div id="s2sub" class="abs sub" style="top:615px">ينظّف الزجاج ويمنحه طبقة طاردة للماء</div>
-  <div id="s2pill" class="abs pillwrap" style="top:690px"><div class="pill"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 2c3.2 4.3 6.5 8 6.5 11.7a6.5 6.5 0 0 1-13 0C5.5 10 8.8 6.3 12 2z" fill="#F5B301"/></svg>عبوة واحدة 100 مل لخزان سائل الغسيل</div></div>
+  <div id="s2pill" class="abs pillwrap" style="top:690px"><div class="pill"><span class="bdrop" style="width:24px;height:37px"></span>عبوة واحدة 100 مل لخزان سائل الغسيل</div></div>
 </div>
 
 <!-- S3: how it works -->
@@ -141,7 +153,7 @@ canvas{position:absolute}
       </g>
     </svg>
   </div>
-  <div id="stream" class="abs" style="left:512px;top:690px;width:14px;height:90px;border-radius:7px;background:linear-gradient(180deg,#ffe25a,#F5B301);box-shadow:0 0 18px rgba(245,179,1,.7)"></div>
+  <div id="stream" class="abs" style="left:512px;top:690px;width:14px;height:90px;border-radius:7px;background:linear-gradient(180deg,#ffe25a,#FAB817);box-shadow:0 0 18px rgba(250,184,23,.7)"></div>
   <img id="pourBottle" class="abs" src="assets/bottle.png" style="height:400px;left:636px;top:400px;transform-origin:50% 50%">
   <div id="mlTag" class="abs pill" style="left:760px;top:430px;font-size:34px;padding:8px 26px;font-family:'Montserrat';font-weight:800;direction:ltr">100 ml</div>
   <div id="st1" class="row step" style="top:1080px"><div class="ic"><span class="num">1</span></div><div class="t">اسكب العبوة كاملة في الخزان الممتلئ</div></div>
@@ -158,16 +170,17 @@ canvas{position:absolute}
   <div id="f4" class="row" style="top:740px"><div class="bar"></div><div class="ic"><div class="halo"></div><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3M4.5 12a7.5 7.5 0 0 1 12.8-5.3"/><path d="M17.6 3.2v3.6H14M6.4 20.8v-3.6H10"/><path d="M12 8.6c1.3 1.6 2.3 2.9 2.3 4.1a2.3 2.3 0 0 1-4.6 0c0-1.2 1-2.5 2.3-4.1z"/></svg></div><div class="t">سهل المزج</div></div>
 </div>
 
-<!-- S6: end card -->
+<!-- S6: end card (official yellow + blueprint background) -->
 <div id="s6" class="layer">
-  <div id="s6badge" class="abs pillwrap" style="top:150px"><div class="pill ice" style="font-size:34px;padding:10px 30px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#9FD3FF" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5"/></svg>عرض الشتاء</div></div>
-  <div id="s6logo" class="abs" style="left:255px;top:250px;width:570px;height:200px"></div>
-  <div id="s6t1" class="abs h1" style="top:480px;font-size:100px">معالج الزجاج</div>
-  <div id="s6t2" class="abs h1 yel" style="top:585px;font-size:100px">الطارد للمطر</div>
-  <div id="s6bar" class="abs" style="left:480px;top:712px;width:120px;height:5px;border-radius:3px;background:var(--y)"></div>
-  <div id="s6tag" class="abs sub" style="top:738px;font-size:42px"><b style="color:#fff;font-weight:800">رؤية أوضح.</b> قيادة أكثر أماناً.</div>
-  <div id="s6av" class="abs sub" style="top:800px;font-size:34px;color:rgba(255,255,255,.7)">متوفر الآن على</div>
-  <div id="s6cta" class="abs pillwrap" style="top:852px"><div id="cta">jlmstore.com</div></div>
+  <div id="s6badge" class="abs pillwrap" style="top:150px"><div class="pill" style="font-size:34px;padding:10px 30px;background:var(--dk);border-color:var(--dk);color:#fff;box-shadow:none"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#9FD3FF" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5"/></svg>عرض الشتاء</div></div>
+  <div id="s6logo" class="abs pillwrap" style="top:250px"><img src="assets/brand/logo_on_yellow.png" style="width:580px"></div>
+  <div id="s6t1" class="abs h1" style="top:475px;font-size:100px;color:var(--dk)">معالج الزجاج</div>
+  <div id="s6t2" class="abs pillwrap" style="top:590px"><div class="h1" style="position:static;width:auto;font-size:92px;background:var(--dk);color:var(--y);padding:4px 34px 12px;border-radius:18px">الطارد للمطر</div></div>
+  <div id="s6bar" class="abs divider" style="top:728px"><i></i><span class="bdrop"></span><i></i></div>
+  <div id="s6tag" class="abs sub" style="top:788px;font-size:42px;color:rgba(37,39,41,.85)"><b style="color:var(--dk);font-weight:800">رؤية أوضح.</b> قيادة أكثر أماناً.</div>
+  <div id="s6av" class="abs sub" style="top:848px;font-size:32px;color:rgba(37,39,41,.75)">متوفر الآن على</div>
+  <div id="s6cta" class="abs pillwrap" style="top:892px"><div id="cta">jlmstore.com</div></div>
+  <div id="s6slogan" class="abs label" style="top:1560px;color:var(--dk);font-size:28px">WE UNDERSTAND CARS</div>
 </div>
 
 <canvas id="rain" width="1080" height="1920" style="left:0;top:0"></canvas>
@@ -206,8 +219,7 @@ function logoIcon(c){return `<path fill="${c}" d="M124.19,2.97 A100,100 0 1 1 75
 function logoSVG(main,accent){return `<svg viewBox="0 0 570 200" width="100%" height="100%" direction="ltr" style="direction:ltr">${logoIcon(main)}
  <text x="218" y="124" font-family="Montserrat" font-weight="900" font-size="146" fill="${main}" textLength="348" lengthAdjust="spacingAndGlyphs" style="letter-spacing:-2px">JLM</text>
  <text x="220" y="188" font-family="Montserrat" font-weight="700" font-size="31" fill="${accent}" textLength="344" lengthAdjust="spacing">LIQUID TOOLS</text></svg>`}
-$('s6logo').innerHTML=logoSVG('#E9E9E9','#F5B301');
-$('bigRing').innerHTML=`<svg viewBox="0 0 200 200" width="100%" height="100%">${logoIcon('#ffffff')}</svg>`;
+$('bigRing').innerHTML='<img src="assets/brand/icon.png" style="width:100%;height:100%;object-fit:contain">';
 
 // ---------- bokeh (ambient particles) ----------
 const bk=$('bokeh').getContext('2d'); const R1=rng(7);
@@ -217,7 +229,7 @@ function drawBokeh(t,amt){
   for(const p of parts){
     const y=((p.y - p.sp*t)%1920+1920)%1920, x=p.x+Math.sin(t*.6+p.ph)*20;
     const g=bk.createRadialGradient(x,y,0,x,y,p.r);
-    const c=p.ice?'159,211,255':'245,179,1';
+    const c=p.ice?'159,211,255':'250,184,23';
     g.addColorStop(0,`rgba(${c},${p.a*amt})`);g.addColorStop(.6,`rgba(${c},${p.a*.5*amt})`);g.addColorStop(1,`rgba(${c},0)`);
     bk.fillStyle=g;bk.beginPath();bk.arc(x,y,p.r,0,6.283);bk.fill();
   }
@@ -227,13 +239,13 @@ function drawBokeh(t,amt){
 const rc=$('rain').getContext('2d'); const R2=rng(11);
 const drops=[...Array(520)].map(()=>({x:R2()*1300-110,y:R2()*1920,l:28+R2()*70,s:1700+R2()*1100,a:.25+R2()*.6,w:1+R2()*1.6}));
 const splashes=[...Array(26)].map(()=>({x:60+R2()*960,p:R2(),d:.35+R2()*.4}));
-function drawRain(t,dens,alpha){
+function drawRain(t,dens,alpha,col='200,225,255'){
   rc.clearRect(0,0,1080,1920); if(dens<=0) return;
   const n=Math.floor(drops.length*dens);
   rc.lineCap='round';
   for(let i=0;i<n;i++){const d=drops[i];
     const y=((d.y+d.s*t)%2100)-120, x=d.x+y*.13;
-    rc.strokeStyle=`rgba(200,225,255,${d.a*alpha})`;rc.lineWidth=d.w;
+    rc.strokeStyle=`rgba(${col},${d.a*alpha})`;rc.lineWidth=d.w;
     rc.beginPath();rc.moveTo(x,y);rc.lineTo(x+d.l*.13,y+d.l);rc.stroke();
   }
   // splashes on the stage line
@@ -311,8 +323,8 @@ function drawDiag(t){
     for(let x=GX0-200;x<=GX1+200;x+=20)dc.lineTo(x,SY-5-3*Math.sin(x*.03+t*3));dc.lineTo(GX1+200,SY);dc.fill();}
   // coating layer
   if(coat>0){const x0=lerp(GX1+200,GX0-200,coat);
-    dc.shadowColor='rgba(245,179,1,.9)';dc.shadowBlur=18;dc.fillStyle='#F5B301';dc.fillRect(x0,SY-4,GX1+200-x0,5);dc.shadowBlur=0;
-    if(coat<1){const sg=dc.createRadialGradient(x0,SY-2,0,x0,SY-2,40);sg.addColorStop(0,'rgba(255,240,180,1)');sg.addColorStop(1,'rgba(245,179,1,0)');dc.fillStyle=sg;dc.beginPath();dc.arc(x0,SY-2,40,0,6.283);dc.fill();}}
+    dc.shadowColor='rgba(250,184,23,.9)';dc.shadowBlur=18;dc.fillStyle='#FAB817';dc.fillRect(x0,SY-4,GX1+200-x0,5);dc.shadowBlur=0;
+    if(coat<1){const sg=dc.createRadialGradient(x0,SY-2,0,x0,SY-2,40);sg.addColorStop(0,'rgba(255,240,180,1)');sg.addColorStop(1,'rgba(250,184,23,0)');dc.fillStyle=sg;dc.beginPath();dc.arc(x0,SY-2,40,0,6.283);dc.fill();}}
   // drops
   for(let i=0;i<ddrops.length;i++){const d=ddrops[i];
     const land=eOut(prog(t,d.l,.25)); if(land<=0) continue;
@@ -335,12 +347,12 @@ function drawTank(t){
   let d=`M0 340 L0 ${lvl}`;for(let x=0;x<=320;x+=16){d+=` L${x} ${lvl+6*Math.sin(x*.05+t*6)*(.3+mix)}`}d+=' L320 340 Z';
   const m=$('liqMix');m.setAttribute('d',d);m.setAttribute('opacity',.75*mix);
   bubs.forEach((b,i)=>{const k=((t/b.s+b.p)%1);const e=$('bb'+i);e.setAttribute('cy',320-k*(320-lvl));e.setAttribute('opacity',(1-k)*clamp(mix*2))});
-  $('tankBody').setAttribute('stroke',mix>0?`rgba(245,179,1,${.6+.3*mix})`:'rgba(255,255,255,.6)');
-  $('tankWrap').style.filter=mix>0?`drop-shadow(0 0 ${30*mix}px rgba(245,179,1,.45))`:'none';
+  $('tankBody').setAttribute('stroke',mix>0?`rgba(250,184,23,${.6+.3*mix})`:'rgba(255,255,255,.6)');
+  $('tankWrap').style.filter=mix>0?`drop-shadow(0 0 ${30*mix}px rgba(250,184,23,.45))`:'none';
 }
 
 // ---------- keyframes for the hero bottle ----------
-const BK=[[2.8,680,0,180],[3.7,680,1,0],[6.0,680,1,0],[6.6,380,1,0],[10.15,380,1,0],[10.5,380,0,40],[13.7,420,0,60],[14.15,420,1,0],[16.45,420,1,0],[17.1,470,1,0],[20,490,1,0]];
+const BK=[[2.8,680,0,180],[3.7,680,1,0],[6.0,680,1,0],[6.6,380,1,0],[10.15,380,1,0],[10.5,380,0,40],[13.7,420,0,60],[14.15,420,1,0],[16.45,420,1,0],[17.1,440,1,0],[20,455,1,0]];
 function bottleState(t){
   if(t<=BK[0][0])return{h:BK[0][1],o:0,y:BK[0][3]};
   for(let i=0;i<BK.length-1;i++){const a=BK[i],b=BK[i+1];if(t<=b[0]){const k=eInOut((t-a[0])/(b[0]-a[0]));
@@ -359,12 +371,18 @@ window.renderFrame=function(t){
   // stage
   const stage=eOut(prog(t,2.35,.7));
   $('hline').style.transform=`scaleX(${stage})`; $('hline').style.opacity=stage;
-  const pulse=.85+.15*Math.sin(t*4);
+  const pulse=.8+.2*Math.sin(t*4);
   vis($('hdot'),stage*pulse); vis($('hglow'),stage*(.7+.3*Math.sin(t*2.2)));
   vis($('floor'),stage); vis($('spot'),stage*.9);
   const bs=bottleState(t);
   vis($('bigRing'),stage*(t>16.5?.09:.06)); $('bigRing').style.transform=`rotate(${t*6}deg) scale(${1+.04*Math.sin(t)})`;
   drawBokeh(t,stage);
+  vis($('bp'),stage*.07); $('bp').style.transform=`translateY(${-t*6}px) scale(${1.02+t*.002})`;
+  // yellow brand background wipes in from the drop on the stage line
+  const yk=eInOut(prog(t,16.38,.55));
+  const Y=$('yel'); vis(Y,yk>0?1:0); Y.style.clipPath=`circle(${yk*2300}px at 540px 1450px)`;
+  Y.style.backgroundPosition=`center ${50+ (t-16.4)*1.2}%`;
+  const onY=yk>.5;
 
   // hero bottle
   const W=bs.h*ASP, top=1450-bs.h+bs.y;
@@ -407,8 +425,8 @@ window.renderFrame=function(t){
   steps.forEach(([el,a],i)=>{io(el,t,a,s4end+i*.04,{dy:40});
     const active=t>=a&&(i==2||t<steps[i+1][1]);
     el.querySelector('.t').style.color=active?'#fff':'rgba(255,255,255,.5)';
-    el.querySelector('.ic').style.borderColor=active?'#F5B301':'rgba(245,179,1,.4)';
-    el.querySelector('.ic').style.boxShadow=active?'0 0 30px rgba(245,179,1,.45)':'none';});
+    el.querySelector('.ic').style.borderColor=active?'#FAB817':'rgba(250,184,23,.4)';
+    el.querySelector('.ic').style.boxShadow=active?'0 0 30px rgba(250,184,23,.45)':'none';});
 
   // S5
   const s5end=16.45;
@@ -419,15 +437,22 @@ window.renderFrame=function(t){
     const active=t>=a&&(i==3||t<fs[i+1][1]);
     const k=active?eOut(prog(t,a,.35)):0;
     el.querySelector('.t').style.color=active?'#fff':'rgba(255,255,255,.45)';
-    el.querySelector('.ic').style.borderColor=active?'#F5B301':'rgba(245,179,1,.4)';
-    el.querySelector('.ic').style.boxShadow=active?`0 0 ${34*k}px rgba(245,179,1,.5)`:'none';
+    el.querySelector('.ic').style.borderColor=active?'#FAB817':'rgba(250,184,23,.4)';
+    el.querySelector('.ic').style.boxShadow=active?`0 0 ${34*k}px rgba(250,184,23,.5)`:'none';
     vis(el.querySelector('.halo'),k); el.querySelector('.halo').style.transform=`scale(${.8+.2*k})`;
     vis(el.querySelector('.bar'),k);});
 
+  // end card on yellow: bottle shadow/rings switch to the dark brand colour
+  b.style.filter=onY?'drop-shadow(0 26px 30px rgba(37,39,41,.35))':'drop-shadow(0 0 40px rgba(250,184,23,.25))';
+  [rg1,rg2].forEach((el,i)=>{el.style.borderColor=onY?`rgba(37,39,41,${i?.18:.35})`:'';el.style.boxShadow=onY?'none':''});
+  $('yshadow').style.width=(W*2.2)+'px';$('yshadow').style.left=(540-W*1.1)+'px';
+  $('vig').style.opacity=onY?.35:1;
+
   // S6
-  io($('s6badge'),t,17.15,99,{dy:-30}); io($('s6logo'),t,16.6,99,{dy:0,scale:-.15,blur:16,dur:.6});
-  io($('s6t1'),t,16.9,99,{dy:60}); io($('s6t2'),t,17.02,99,{dy:60});
-  const bw=eOut(prog(t,17.25,.4)); vis($('s6bar'),bw); $('s6bar').style.transform=`scaleX(${bw})`;
+  io($('s6badge'),t,17.15,99,{dy:-30}); io($('s6logo'),t,16.7,99,{dy:0,scale:-.15,blur:16,dur:.6});
+  io($('s6slogan'),t,18.0,99,{dy:20});
+  io($('s6t1'),t,16.95,99,{dy:60}); io($('s6t2'),t,17.08,99,{dy:60,scale:.08});
+  const bw=eOut(prog(t,17.25,.5)); vis($('s6bar'),bw); $('s6bar').style.transform=`scaleX(${bw})`;
   io($('s6tag'),t,17.35,99); io($('s6av'),t,17.55,99);
   io($('s6cta'),t,17.7,99,{scale:.2,dy:20});
   $('cta').style.transform=`scale(${1+.03*Math.sin(Math.max(0,t-18.2)*5)})`;
@@ -435,9 +460,9 @@ window.renderFrame=function(t){
   // rain, lightning
   const dens = t<2.4 ? 1 : lerp(1,.32,eInOut(prog(t,2.4,.6)));
   const ra = t<2.4 ? .55 : (t>6.2&&t<16.45 ? .22 : .32);
-  drawRain(t,dens,ra);
+  drawRain(t,dens,onY?.45:ra,onY?'255,255,255':'200,225,255');
   const fl=(tt,a)=>Math.max(0,1-Math.abs(t-tt)/a);
-  const flash=Math.max(fl(1.05,.06)*.9,fl(1.17,.09)*.6,fl(16.6,.12)*.45);
+  const flash=Math.max(fl(1.05,.06)*.9,fl(1.17,.09)*.6,fl(16.62,.1)*.25);
   $('flash').style.opacity=flash;
 };
 window.renderFrame(0);
