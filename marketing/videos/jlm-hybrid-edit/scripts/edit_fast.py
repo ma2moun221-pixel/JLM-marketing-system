@@ -49,10 +49,10 @@ def s2o(ts):
 # speech segments between pauses (source time), from the Whisper transcript
 SEGMENTS = [
     (0.19, 0.98, "نظام الوقود"),
-    (1.11, 1.95, "بسيارات الهايبريد"),
-    (2.15, 3.13, "والبلَغ إن هايبريد"),
+    (1.11, 1.95, "بسيارات Hybrid"),
+    (2.15, 3.13, "و Plug-in Hybrid"),
     (3.29, 4.28, "بمحركات البنزين"),
-    (4.49, 5.76, "بحاجة دائمًـا لتنظيف مستمر"),
+    (4.49, 5.76, "بحاجة دائماً لتنظيف مستمر"),
     (5.88, 7.55, "بسبب تراكم مخلفات"),
     (7.67, 8.05, "الاحتراق فيها"),
     (8.32, 9.61, "وبالذات إنّ المحرّك"),
@@ -64,8 +64,8 @@ SEGMENTS = [
 
 # word-pop phrases (1–3 words). "!" red, "*" yellow, "#" hidden (the board carries it)
 PHRASES = [
-    "*نظام *الوقود", "بسيارات *الهايبريد والبلَغ إن *هايبريد", "بمحركات *البنزين",
-    "بحاجة دائمًـا", "*لتنظيف مستمر",
+    "*نظام *الوقود", "بسيارات *Hybrid و *Plug-in *Hybrid", "بمحركات *البنزين",
+    "بحاجة دائماً", "*لتنظيف مستمر",
     "#بسبب تراكم مخلفات", "#الاحتراق فيها", "#وبالذات إنّ المحرّك", "#ما بيشتغل", "#بصورة دائمة ومستمرة",
     "مع منتج", "*Petrol *Hybrid", "*Treatment", "من *JLM", "اللي بيعمل", "على *منع !تراكم",
     "!الرواسب !الكربونية", "*وتشحيم", "نظام الاحتراق",
@@ -174,7 +174,7 @@ def latin_token(text, col, pad):
     lay = R.latin_layer(text, 70, col, 800, 0.01)
     h = T.line([("ا", WHT)], 78, bold=True, shadow=False, pad=pad).shape[0]
     out = np.zeros((h, lay.shape[1] + 2 * pad, 4), np.float32)
-    R.paste_into(out, lay, pad, (h - lay.shape[0]) // 2 + 4)
+    R.paste_into(out, lay, pad, (h - lay.shape[0]) // 2 + 11)
     sh = np.roll(cv2.GaussianBlur(out[..., 3], (0, 0), 9) * 0.55, 5, axis=0)
     res = np.zeros_like(out)
     res[..., 3] = sh
@@ -225,6 +225,33 @@ def _drop():
 
 
 V.ICONS.update({"hybrid": _hybrid, "pump": _pump, "sparkle": _sparkle, "plugin": _plugin, "drop": _drop})
+
+
+_arabic_label = V.label_layer
+
+
+@lru_cache(maxsize=None)
+def _label(text, color):
+    """Badge label pill; Latin labels (Hybrid, Plug-in Hybrid) set in Albert Sans."""
+    if T._is_arabic(text):
+        return _arabic_label(text, color)
+    txt = R.latin_layer(text, 30, WHT, 800, 0.01)
+    h = _arabic_label("ا", color).shape[0]
+    w = txt.shape[1] + 40
+    s = 3
+    img = np.zeros((h * s, w * s, 4), np.uint8)
+    r = h * s // 2
+    col = tuple(int(c) for c in color)
+    for fill, inset in [(col + (255,), 0), ((8, 8, 9, 235), 3 * s)]:
+        cv2.rectangle(img, (r, inset), (w * s - r, h * s - inset), fill, -1)
+        cv2.circle(img, (r, r), r - inset, fill, -1, cv2.LINE_AA)
+        cv2.circle(img, (w * s - r, r), r - inset, fill, -1, cv2.LINE_AA)
+    pill = R.to_premul(cv2.resize(img, (w, h), interpolation=cv2.INTER_AREA))
+    R.paste_into(pill, txt, (w - txt.shape[1]) // 2, (h - txt.shape[0]) // 2)
+    return pill
+
+
+V.label_layer = _label
 
 
 class LinkedPairs(V.Pairs):
@@ -730,8 +757,8 @@ def main():
     chip_t = (b1, at("اللي") - 0.05)
     # icons: always a pair at the bottom — first on the right, second on the left
     pairs = LinkedPairs([
-        (at("بسيارات"), at("والبلَغ"), at("بمحركات") - 0.12,
-         ("hybrid", YEL, "هايبريد"), ("plugin", YEL, "بلَغ إن هايبريد"), "and"),
+        (at("بسيارات"), at("و"), at("بمحركات") - 0.12,
+         ("hybrid", YEL, "Hybrid"), ("plugin", YEL, "Plug-in Hybrid"), "and"),
         (at("بمحركات"), at("لتنظيف"), b0 - 0.12,
          ("pump", YEL, "محرّك بنزين"), ("sparkle", YEL, "تنظيف مستمر"), "then"),
         (at("منع"), at("وتشحيم"), SPEECH_END - 0.12,
@@ -739,7 +766,7 @@ def main():
     ])
     cuts = [s2o(4.33), s2o(8.2), b1, s2o(KEEP[1][0])]
     t_tr = at("Treatment")
-    t_hy, t_pl, t_back = at("بسيارات") - 0.12, at("والبلَغ") - 0.18, at("بمحركات") - 0.12
+    t_hy, t_pl, t_back = at("بسيارات") - 0.12, at("و") - 0.18, at("بمحركات") - 0.12
     # camera: one slow push per shot, plus one motivated move into the can when the
     # product is named (and a smooth pull back out) — no punch-ins
     kfs = [
