@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>JLM Screen Rainguard – Winter Promo</title>
+<link rel="stylesheet" href="fonts/local.css">
+<style>
+:root{
+  --y:#F5B301; --y2:#FFC93C; --ink:#07090d; --ice:#9FD3FF; --muted:rgba(255,255,255,.55);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;overflow:hidden;background:var(--ink)}
+body{font-family:'Tajawal',sans-serif;color:#fff;position:relative}
+.abs{position:absolute}
+.layer{position:absolute;inset:0}
+#bg{background:radial-gradient(ellipse 900px 1200px at 540px 980px,#16202e 0%,#0b0f16 55%,#06080c 100%)}
+#spot{left:0;top:0;width:1080px;height:1460px;
+  background:linear-gradient(180deg,rgba(255,236,200,.16),rgba(255,236,200,.05) 70%,rgba(255,236,200,0));
+  clip-path:polygon(43% 0,57% 0,88% 100%,12% 100%);filter:blur(28px)}
+#bigRing{left:90px;top:610px;width:900px;height:900px;opacity:.06}
+#floor{left:0;top:1450px;width:1080px;height:470px;background:linear-gradient(180deg,#0d1118,#05070a 70%)}
+#hline{left:0;top:1449px;width:1080px;height:3px;transform-origin:50% 50%;
+  background:linear-gradient(90deg,rgba(245,179,1,0),rgba(245,179,1,.9) 30%,#ffd76a 50%,rgba(245,179,1,.9) 70%,rgba(245,179,1,0));
+  box-shadow:0 0 18px rgba(245,179,1,.8)}
+#hdot{left:528px;top:1438px;width:24px;height:24px;border-radius:50%;
+  background:radial-gradient(circle,#fff6d0 0%,#ffcf3d 35%,rgba(245,179,1,0) 70%)}
+#hglow{left:240px;top:1380px;width:600px;height:140px;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(245,179,1,.55),rgba(245,179,1,.12) 45%,rgba(245,179,1,0) 70%)}
+#prod{left:0;top:0;width:1080px;height:1920px;pointer-events:none}
+#bottle,#bottleRef{position:absolute;left:50%;transform-origin:50% 100%}
+#bottle{filter:drop-shadow(0 0 40px rgba(245,179,1,.25))}
+#bottleRef{transform-origin:50% 0;opacity:.18;
+  -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.9),rgba(0,0,0,0) 45%)}
+.ringO{position:absolute;border-radius:50%;border:2px solid rgba(245,179,1,.55);box-shadow:0 0 30px rgba(245,179,1,.25),inset 0 0 30px rgba(245,179,1,.12)}
+/* type */
+.label{font-family:'Montserrat';font-weight:700;font-size:26px;letter-spacing:.32em;color:var(--y);direction:ltr;
+  display:flex;align-items:center;gap:22px;justify-content:center;width:1080px;left:0}
+.label i{display:block;width:60px;height:3px;background:var(--y)}
+.h1{font-weight:800;font-size:116px;line-height:1.05;text-align:center;width:1080px;left:0}
+.yel{color:var(--y)}
+.sub{font-weight:500;font-size:44px;color:rgba(255,255,255,.82);text-align:center;width:1080px;left:0}
+.pill{display:flex;align-items:center;gap:16px;border:3px solid var(--y);border-radius:60px;padding:14px 36px;
+  font-weight:700;font-size:38px;background:rgba(10,12,16,.55);box-shadow:0 0 24px rgba(245,179,1,.25)}
+.pillwrap{width:1080px;left:0;display:flex;justify-content:center}
+.ice{border-color:var(--ice);color:#e6f4ff;box-shadow:0 0 26px rgba(159,211,255,.35);background:rgba(20,40,60,.45)}
+.sec{display:flex;align-items:center;gap:20px;font-weight:700;font-size:34px;color:var(--y)}
+.sec i{display:block;width:70px;height:3px;background:var(--y)}
+.q{font-weight:800;font-size:132px;text-align:center;width:1080px;left:0;text-shadow:0 8px 40px rgba(0,0,0,.6)}
+.q u{text-decoration:none;position:relative}
+.q u::after{content:'';position:absolute;left:30%;right:30%;bottom:-10px;height:6px;border-radius:3px;background:var(--y)}
+/* icon rows */
+.row{position:absolute;right:80px;display:flex;align-items:center;gap:30px;flex-direction:row}
+.ic{width:104px;height:104px;border-radius:50%;border:3px solid rgba(245,179,1,.55);display:flex;align-items:center;justify-content:center;flex:none;position:relative}
+.ic svg{width:54px;height:54px;stroke:var(--y);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ic .halo{position:absolute;inset:-26px;border-radius:50%;border:2px solid rgba(245,179,1,.35)}
+.row .t{font-weight:800;font-size:56px;white-space:nowrap}
+.row .bar{width:6px;height:70px;border-radius:3px;background:var(--y);flex:none;margin-left:-8px;margin-right:-36px}
+.num{font-family:'Montserrat';font-weight:800;font-size:40px;color:var(--y)}
+.step .t{font-size:44px;font-weight:700}
+.chip{position:absolute;padding:10px 26px;border-radius:40px;font-weight:700;font-size:30px;border:2px solid rgba(255,255,255,.35);background:rgba(0,0,0,.35)}
+#panel{left:70px;top:400px;width:940px;height:580px;border-radius:34px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(24,34,50,.85),rgba(10,14,22,.9));border:2px solid rgba(255,255,255,.08);
+  box-shadow:0 30px 80px rgba(0,0,0,.5),inset 0 0 0 1px rgba(245,179,1,.06)}
+#cta{background:var(--y);color:#111;font-family:'Montserrat';font-weight:800;font-size:46px;border-radius:60px;padding:16px 64px;
+  box-shadow:0 0 40px rgba(245,179,1,.55)}
+#flash{background:radial-gradient(ellipse at 50% 20%,rgba(220,235,255,.95),rgba(150,190,255,.35) 60%,rgba(120,160,255,.1));opacity:0;mix-blend-mode:screen}
+#vig{background:radial-gradient(ellipse 760px 1150px at 50% 50%,rgba(0,0,0,0) 60%,rgba(0,0,0,.65) 100%)}
+canvas{position:absolute}
+</style>
+</head>
+<body>
+<div id="bg" class="layer"></div>
+<div id="spot" class="abs"></div>
+<div id="bigRing" class="abs"></div>
+<canvas id="bokeh" width="1080" height="1920" style="left:0;top:0"></canvas>
+
+<!-- S1: windshield -->
+<div id="s1" class="layer">
+  <canvas id="glass" width="1080" height="1920" style="left:0;top:0"></canvas>
+  <div class="layer" style="background:linear-gradient(180deg,rgba(80,110,150,.25),rgba(10,14,20,.2) 50%,rgba(5,7,10,.7))"></div>
+  <div id="q1" class="abs q" style="top:760px">مطر <u>غزير</u><span class="yel">؟</span></div>
+  <div id="q2" class="abs q" style="top:760px">رؤية <u>ضعيفة</u><span class="yel">؟</span></div>
+  <div id="q3" class="abs q" style="top:760px">طريق <u>خطِر</u><span class="yel">؟</span></div>
+</div>
+
+<!-- stage -->
+<div id="floor" class="abs"></div>
+<div id="hglow" class="abs"></div>
+<div id="hline" class="abs"></div>
+<div id="hdot" class="abs"></div>
+
+<div id="prod">
+  <div id="ring1" class="ringO"></div>
+  <div id="ring2" class="ringO" style="border-color:rgba(245,179,1,.25)"></div>
+  <img id="bottleRef" src="assets/bottle.png">
+  <img id="bottle" src="assets/bottle.png">
+</div>
+
+<!-- S2: reveal -->
+<div id="s2" class="layer">
+  <div id="s2badge" class="abs pillwrap" style="top:170px"><div class="pill ice" style="font-size:34px;padding:10px 30px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#9FD3FF" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5"/></svg>عرض الشتاء</div></div>
+  <div id="s2label" class="abs label" style="top:290px"><i></i>JLM LIQUID TOOLS<i></i></div>
+  <div id="s2t1" class="abs h1" style="top:350px">معالج الزجاج</div>
+  <div id="s2t2" class="abs h1 yel" style="top:470px">الطارد للمطر</div>
+  <div id="s2sub" class="abs sub" style="top:615px">ينظّف الزجاج ويمنحه طبقة طاردة للماء</div>
+  <div id="s2pill" class="abs pillwrap" style="top:690px"><div class="pill"><svg width="30" height="30" viewBox="0 0 24 24"><path d="M12 2c3.2 4.3 6.5 8 6.5 11.7a6.5 6.5 0 0 1-13 0C5.5 10 8.8 6.3 12 2z" fill="#F5B301"/></svg>عبوة واحدة 100 مل لخزان سائل الغسيل</div></div>
+</div>
+
+<!-- S3: how it works -->
+<div id="s3" class="layer">
+  <div id="s3sec" class="abs" style="top:200px;width:1080px;display:flex;justify-content:center"><div class="sec"><i></i>مبدأ العمل<i></i></div></div>
+  <div id="s3h" class="abs h1" style="top:258px;font-size:96px">كيف يعمل؟</div>
+  <div id="panel" class="abs">
+    <canvas id="diag" width="940" height="580" style="left:0;top:0"></canvas>
+    <div id="chipA" class="chip" style="right:30px;top:28px;color:rgba(255,255,255,.85)">بدون معالجة</div>
+    <div id="chipB" class="chip" style="right:30px;top:28px;color:#111;background:var(--y);border-color:var(--y)">مع JLM Rainguard</div>
+    <div id="coatLbl" class="abs" style="left:40px;top:330px;font-weight:700;font-size:30px;color:var(--y);display:flex;align-items:center;gap:12px;direction:rtl">طبقة طاردة للماء <span style="display:block;width:50px;height:2px;background:var(--y)"></span></div>
+    <div class="abs" style="right:40px;bottom:30px;font-weight:500;font-size:26px;color:rgba(255,255,255,.45)">زجاج السيارة</div>
+  </div>
+  <div id="capA" class="abs sub" style="top:1010px;font-weight:700;font-size:44px">الماء ينتشر على الزجاج <span style="color:rgba(255,255,255,.5)">ويحجب الرؤية</span></div>
+  <div id="capB" class="abs sub" style="top:1010px;font-weight:700;font-size:44px">القطرات تتكوّر <span class="yel">وتنزلق بسهولة</span></div>
+</div>
+
+<!-- S4: usage -->
+<div id="s4" class="layer">
+  <div id="s4sec" class="abs" style="top:200px;width:1080px;display:flex;justify-content:center"><div class="sec"><i></i>طريقة الاستعمال<i></i></div></div>
+  <div id="s4h" class="abs h1" style="top:258px;font-size:88px">اسكب. امزج. <span class="yel">انطلق.</span></div>
+  <div id="tankWrap" class="abs" style="left:294px;top:690px;width:320px;height:340px">
+    <svg id="tank" width="320" height="340" viewBox="0 0 320 340">
+      <defs><clipPath id="tclip"><rect x="20" y="80" width="280" height="240" rx="36"/></clipPath>
+        <linearGradient id="mixg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F5D42A"/><stop offset="1" stop-color="#9BD86A"/></linearGradient></defs>
+      <rect x="190" y="30" width="70" height="60" rx="10" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.55)" stroke-width="3"/>
+      <g clip-path="url(#tclip)">
+        <rect id="liqBlue" x="0" y="120" width="320" height="220" fill="#3f9cff" opacity=".55"/>
+        <path id="liqMix" d="" fill="url(#mixg)" opacity="0"/>
+        <g id="bubbles"></g>
+      </g>
+      <rect id="tankBody" x="20" y="80" width="280" height="240" rx="36" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.6)" stroke-width="3"/>
+      <g stroke="rgba(255,255,255,.85)" stroke-width="5" fill="none" stroke-linecap="round" transform="translate(70 150)">
+        <path d="M10 70 Q60 20 110 70"/><path d="M60 72 L40 38"/><path d="M22 22l-8-10M60 12V0M98 22l8-10"/>
+      </g>
+    </svg>
+  </div>
+  <div id="stream" class="abs" style="left:512px;top:690px;width:14px;height:90px;border-radius:7px;background:linear-gradient(180deg,#ffe25a,#F5B301);box-shadow:0 0 18px rgba(245,179,1,.7)"></div>
+  <img id="pourBottle" class="abs" src="assets/bottle.png" style="height:400px;left:636px;top:400px;transform-origin:50% 50%">
+  <div id="mlTag" class="abs pill" style="left:760px;top:430px;font-size:34px;padding:8px 26px;font-family:'Montserrat';font-weight:800;direction:ltr">100 ml</div>
+  <div id="st1" class="row step" style="top:1080px"><div class="ic"><span class="num">1</span></div><div class="t">اسكب العبوة كاملة في الخزان الممتلئ</div></div>
+  <div id="st2" class="row step" style="top:1200px"><div class="ic"><span class="num">2</span></div><div class="t">يمتزج فوراً مع سائل الغسيل</div></div>
+  <div id="st3" class="row step" style="top:1320px"><div class="ic"><span class="num">3</span></div><div class="t">رشّ الزجاج وانطلق برؤية أوضح</div></div>
+</div>
+
+<!-- S5: features -->
+<div id="s5" class="layer">
+  <div id="s5sec" class="abs" style="top:230px;right:80px"><div class="sec" style="flex-direction:row-reverse"><i></i>المزايا الرئيسية</div></div>
+  <div id="f1" class="row" style="top:320px"><div class="bar"></div><div class="ic"><div class="halo"></div><svg viewBox="0 0 24 24"><path d="M12 2.5l7.5 3v5.6c0 4.9-3.2 8.6-7.5 10.4-4.3-1.8-7.5-5.5-7.5-10.4V5.5z"/><path d="M12 8c1.6 2 2.8 3.5 2.8 5a2.8 2.8 0 0 1-5.6 0c0-1.5 1.2-3 2.8-5z"/></svg></div><div class="t">حماية معززة من المطر</div></div>
+  <div id="f2" class="row" style="top:460px"><div class="bar"></div><div class="ic"><div class="halo"></div><svg viewBox="0 0 24 24"><path d="M12 4l1.8 4.6L18.5 10l-4.7 1.6L12 16.4l-1.8-4.8L5.5 10l4.7-1.4z"/><path d="M18.5 15.5l.7 1.7 1.8.7-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7zM5.5 2.5l.5 1.3 1.3.5-1.3.5-.5 1.3-.5-1.3-1.3-.5 1.3-.5z"/></svg></div><div class="t">تنظيف عميق للزجاج</div></div>
+  <div id="f3" class="row" style="top:600px"><div class="bar"></div><div class="ic"><div class="halo"></div><svg viewBox="0 0 24 24"><path d="M2.5 17.5C5 9.5 19 9.5 21.5 17.5z"/><path d="M12 17.2l-4.8-6.4"/><circle cx="12" cy="17.2" r="1.1"/></svg></div><div class="t">آمن على البلاستيك والمساحات</div></div>
+  <div id="f4" class="row" style="top:740px"><div class="bar"></div><div class="ic"><div class="halo"></div><svg viewBox="0 0 24 24"><path d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3M4.5 12a7.5 7.5 0 0 1 12.8-5.3"/><path d="M17.6 3.2v3.6H14M6.4 20.8v-3.6H10"/><path d="M12 8.6c1.3 1.6 2.3 2.9 2.3 4.1a2.3 2.3 0 0 1-4.6 0c0-1.2 1-2.5 2.3-4.1z"/></svg></div><div class="t">سهل المزج</div></div>
+</div>
+
+<!-- S6: end card -->
+<div id="s6" class="layer">
+  <div id="s6badge" class="abs pillwrap" style="top:150px"><div class="pill ice" style="font-size:34px;padding:10px 30px"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#9FD3FF" stroke-width="1.8" stroke-linecap="round"><path d="M12 2v20M3.3 7l17.4 10M3.3 17L20.7 7M9 3.5l3 2.5 3-2.5M9 20.5l3-2.5 3 2.5"/></svg>عرض الشتاء</div></div>
+  <div id="s6logo" class="abs" style="left:255px;top:250px;width:570px;height:200px"></div>
+  <div id="s6t1" class="abs h1" style="top:480px;font-size:100px">معالج الزجاج</div>
+  <div id="s6t2" class="abs h1 yel" style="top:585px;font-size:100px">الطارد للمطر</div>
+  <div id="s6bar" class="abs" style="left:480px;top:712px;width:120px;height:5px;border-radius:3px;background:var(--y)"></div>
+  <div id="s6tag" class="abs sub" style="top:738px;font-size:42px"><b style="color:#fff;font-weight:800">رؤية أوضح.</b> قيادة أكثر أماناً.</div>
+  <div id="s6av" class="abs sub" style="top:800px;font-size:34px;color:rgba(255,255,255,.7)">متوفر الآن على</div>
+  <div id="s6cta" class="abs pillwrap" style="top:852px"><div id="cta">jlmstore.com</div></div>
+</div>
+
+<canvas id="rain" width="1080" height="1920" style="left:0;top:0"></canvas>
+<div id="flash" class="layer"></div>
+<div id="vig" class="layer"></div>
+
+<script>
+// ---------- helpers ----------
+const $ = id => document.getElementById(id);
+const clamp = (v,a=0,b=1) => Math.min(b,Math.max(a,v));
+const lerp = (a,b,k) => a+(b-a)*k;
+const eOut = k => 1-Math.pow(1-k,3);
+const eInOut = k => k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+const eBack = k => {const c=1.7;return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2)};
+const prog = (t,a,d) => clamp((t-a)/d);
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+// in/out with slide + blur, like the reference's soft fade-ups
+function io(el,t,a,b,{dy=40,dur=.45,outDur=.35,blur=12,scale=0}={}){
+  const ki=eOut(prog(t,a,dur)), ko=prog(t,b,outDur);
+  const op=ki*(1-ko);
+  el.style.opacity=op;
+  const y=(1-ki)*dy - eInOut(ko)*dy*.6;
+  const s=1+(1-ki)*scale;
+  el.style.transform=`translateY(${y}px) scale(${s})`;
+  const bl=(1-ki)*blur+ko*blur;
+  el.style.filter=bl>.3?`blur(${bl}px)`:'none';
+  el.style.visibility=op<=0.001?'hidden':'visible';
+  return op;
+}
+function vis(el,op){el.style.opacity=op;el.style.visibility=op<=0.001?'hidden':'visible'}
+
+// ---------- logo (rebuilt as vector from the JLM brand mark) ----------
+function logoIcon(c){return `<path fill="${c}" d="M124.19,2.97 A100,100 0 1 1 75.81,2.97 L83.07,32.08 A70,70 0 1 0 116.93,32.08 Z"/>
+ <mask id="slot${c.replace(/[^a-z0-9]/gi,'')}"><rect width="200" height="200" fill="#fff"/><polygon points="30,71 82,89 82,107 30,116" fill="#000"/></mask>
+ <path fill="${c}" fill-rule="evenodd" mask="url(#slot${c.replace(/[^a-z0-9]/gi,'')})" d="M160,100 A60,60 0 1 1 40,100 A60,60 0 1 1 160,100 Z M129,100 A29,29 0 1 0 71,100 A29,29 0 1 0 129,100 Z"/>`}
+function logoSVG(main,accent){return `<svg viewBox="0 0 570 200" width="100%" height="100%" direction="ltr" style="direction:ltr">${logoIcon(main)}
+ <text x="218" y="124" font-family="Montserrat" font-weight="900" font-size="146" fill="${main}" textLength="348" lengthAdjust="spacingAndGlyphs" style="letter-spacing:-2px">JLM</text>
+ <text x="220" y="188" font-family="Montserrat" font-weight="700" font-size="31" fill="${accent}" textLength="344" lengthAdjust="spacing">LIQUID TOOLS</text></svg>`}
+$('s6logo').innerHTML=logoSVG('#E9E9E9','#F5B301');
+$('bigRing').innerHTML=`<svg viewBox="0 0 200 200" width="100%" height="100%">${logoIcon('#ffffff')}</svg>`;
+
+// ---------- bokeh (ambient particles) ----------
+const bk=$('bokeh').getContext('2d'); const R1=rng(7);
+const parts=[...Array(46)].map(()=>({x:R1()*1080,y:R1()*1920,r:6+R1()*34,a:.04+R1()*.12,sp:8+R1()*26,ph:R1()*6.28,ice:R1()<.45}));
+function drawBokeh(t,amt){
+  bk.clearRect(0,0,1080,1920); if(amt<=0) return;
+  for(const p of parts){
+    const y=((p.y - p.sp*t)%1920+1920)%1920, x=p.x+Math.sin(t*.6+p.ph)*20;
+    const g=bk.createRadialGradient(x,y,0,x,y,p.r);
+    const c=p.ice?'159,211,255':'245,179,1';
+    g.addColorStop(0,`rgba(${c},${p.a*amt})`);g.addColorStop(.6,`rgba(${c},${p.a*.5*amt})`);g.addColorStop(1,`rgba(${c},0)`);
+    bk.fillStyle=g;bk.beginPath();bk.arc(x,y,p.r,0,6.283);bk.fill();
+  }
+}
+
+// ---------- rain ----------
+const rc=$('rain').getContext('2d'); const R2=rng(11);
+const drops=[...Array(520)].map(()=>({x:R2()*1300-110,y:R2()*1920,l:28+R2()*70,s:1700+R2()*1100,a:.25+R2()*.6,w:1+R2()*1.6}));
+const splashes=[...Array(26)].map(()=>({x:60+R2()*960,p:R2(),d:.35+R2()*.4}));
+function drawRain(t,dens,alpha){
+  rc.clearRect(0,0,1080,1920); if(dens<=0) return;
+  const n=Math.floor(drops.length*dens);
+  rc.lineCap='round';
+  for(let i=0;i<n;i++){const d=drops[i];
+    const y=((d.y+d.s*t)%2100)-120, x=d.x+y*.13;
+    rc.strokeStyle=`rgba(200,225,255,${d.a*alpha})`;rc.lineWidth=d.w;
+    rc.beginPath();rc.moveTo(x,y);rc.lineTo(x+d.l*.13,y+d.l);rc.stroke();
+  }
+  // splashes on the stage line
+  for(const s of splashes){const k=((t/s.d+s.p)%1);
+    rc.strokeStyle=`rgba(210,230,255,${(1-k)*.5*alpha*Math.min(1,dens*2)})`;rc.lineWidth=1.5;
+    rc.beginPath();rc.ellipse(s.x,1451,4+k*26,1+k*5,0,Math.PI,2*Math.PI);rc.stroke();}
+}
+
+// ---------- S1 windshield ----------
+const gc=$('glass').getContext('2d');
+const night=document.createElement('canvas');night.width=1080;night.height=1920;
+(function(){const c=night.getContext('2d');const R=rng(3);
+  const g=c.createLinearGradient(0,0,0,1920);g.addColorStop(0,'#0b1422');g.addColorStop(.55,'#101a28');g.addColorStop(1,'#05070b');
+  c.fillStyle=g;c.fillRect(0,0,1080,1920);c.filter='blur(26px)';
+  const cols=['255,170,60','255,60,50','255,60,50','200,220,255','120,170,255','255,200,120'];
+  for(let i=0;i<55;i++){const x=R()*1080,y=500+R()*1000,r=14+R()*70,col=cols[Math.floor(R()*cols.length)];
+    const rg=c.createRadialGradient(x,y,0,x,y,r);rg.addColorStop(0,`rgba(${col},${.35+R()*.45})`);rg.addColorStop(1,`rgba(${col},0)`);
+    c.fillStyle=rg;c.beginPath();c.arc(x,y,r,0,6.283);c.fill();}
+  // a pair of tail lights ahead
+  for(const x of [420,660]){const rg=c.createRadialGradient(x,1060,0,x,1060,90);rg.addColorStop(0,'rgba(255,40,40,.95)');rg.addColorStop(1,'rgba(255,40,40,0)');c.fillStyle=rg;c.beginPath();c.arc(x,1060,90,0,6.283);c.fill();}
+})();
+const R3=rng(21);
+const wdrops=[...Array(260)].map(()=>({x:R3()*1080,y:R3()*1920,r:4+Math.pow(R3(),2)*22,t0:R3()*1.8,trick:R3()<.18,v:60+R3()*220}));
+function drawGlass(t){
+  gc.clearRect(0,0,1080,1920);
+  const z=1.04+t*.02;
+  gc.save();gc.translate(540,960);gc.scale(z,z);gc.translate(-540,-960);gc.drawImage(night,0,0);gc.restore();
+  for(const d of wdrops){ if(t<d.t0) continue;
+    const g=eOut(clamp((t-d.t0)/.25)); const r=d.r*g;
+    let y=d.y; if(d.trick) y+=Math.max(0,t-d.t0-.3)*d.v;
+    if(d.trick){gc.strokeStyle='rgba(180,210,255,.10)';gc.lineWidth=r*.9;gc.beginPath();gc.moveTo(d.x,d.y);gc.lineTo(d.x,y);gc.stroke();}
+    const rg=gc.createRadialGradient(d.x-r*.25,y-r*.3,r*.1,d.x,y,r);
+    rg.addColorStop(0,'rgba(255,255,255,.10)');rg.addColorStop(.75,'rgba(150,180,220,.10)');rg.addColorStop(1,'rgba(0,0,0,.35)');
+    gc.fillStyle=rg;gc.beginPath();gc.arc(d.x,y,r,0,6.283);gc.fill();
+    gc.fillStyle='rgba(255,255,255,.55)';gc.beginPath();gc.ellipse(d.x-r*.35,y-r*.4,r*.22,r*.13,-.6,0,6.283);gc.fill();
+    gc.strokeStyle='rgba(255,230,200,.22)';gc.lineWidth=Math.max(1,r*.12);gc.beginPath();gc.arc(d.x,y,r*.78,.3,1.6);gc.stroke();
+  }
+}
+
+// ---------- S3 diagram ----------
+const dc=$('diag').getContext('2d');
+const SY=410, GX0=40, GX1=900;
+const ddrops=[{x:150,A:1500,l:6.45},{x:280,A:1000,l:6.7},{x:420,A:1800,l:6.55},{x:560,A:1200,l:6.85},{x:690,A:1600,l:6.6},{x:820,A:1100,l:6.95}];
+const R4=rng(5); const pstreaks=[...Array(30)].map(()=>({x:60+R4()*820,p:R4(),s:.55+R4()*.4}));
+function drawDrop(x,A,th,stretch=0){
+  const R=Math.sqrt(A/(th-Math.sin(th)*Math.cos(th))); const cy=SY+R*Math.cos(th);
+  dc.save();
+  dc.beginPath();dc.rect(x-R-10,SY-400,2*R+stretch*2+20,400);dc.clip();
+  dc.beginPath();
+  if(stretch>0){dc.ellipse(x+stretch*.5,cy,R+stretch*.5,R,0,0,6.283);} else dc.arc(x,cy,R,0,6.283);
+  const g=dc.createLinearGradient(x,cy-R,x,SY);g.addColorStop(0,'rgba(190,225,255,.75)');g.addColorStop(1,'rgba(90,160,255,.35)');
+  dc.fillStyle=g;dc.fill();dc.strokeStyle='rgba(225,242,255,.9)';dc.lineWidth=2.5;dc.stroke();
+  dc.fillStyle='rgba(255,255,255,.85)';const hy=Math.max(cy-R*.55,SY-(SY-(cy-R))*.7);
+  dc.beginPath();dc.ellipse(x-R*.35,hy,Math.max(2,R*.16),Math.max(1.5,R*.09),-.5,0,6.283);dc.fill();
+  dc.restore();
+}
+function drawDiag(t){
+  dc.clearRect(0,0,940,580);
+  const coat=eInOut(prog(t,7.7,.6));           // coating sweep (right→left)
+  const bead=eInOut(prog(t,8.15,.75));          // spreading → beading
+  const tilt=eInOut(prog(t,8.9,.5))*-9*Math.PI/180;
+  // falling rain inside panel
+  dc.lineCap='round';
+  for(const s of pstreaks){const k=((t/s.s+s.p)%1); const y=-40+k*(SY+20);
+    dc.strokeStyle='rgba(200,225,255,.35)';dc.lineWidth=2;dc.beginPath();dc.moveTo(s.x,y);dc.lineTo(s.x+4,y+34);dc.stroke();}
+  dc.save();dc.translate(470,SY+35);dc.rotate(tilt);dc.translate(-470,-(SY+35));
+  // glass slab
+  const gg=dc.createLinearGradient(0,SY,0,SY+70);gg.addColorStop(0,'rgba(160,210,255,.30)');gg.addColorStop(1,'rgba(160,210,255,.07)');
+  dc.fillStyle=gg;dc.fillRect(GX0-200,SY,GX1-GX0+400,70);
+  dc.strokeStyle='rgba(255,255,255,.55)';dc.lineWidth=2;dc.beginPath();dc.moveTo(GX0-200,SY);dc.lineTo(GX1+200,SY);dc.stroke();
+  dc.strokeStyle='rgba(255,255,255,.18)';dc.beginPath();dc.moveTo(GX0-200,SY+70);dc.lineTo(GX1+200,SY+70);dc.stroke();
+  // water film (untreated)
+  const film=(1-bead)*clamp((t-6.5)/.6);
+  if(film>0){dc.fillStyle=`rgba(120,180,255,${.35*film})`;dc.beginPath();dc.moveTo(GX0-200,SY);
+    for(let x=GX0-200;x<=GX1+200;x+=20)dc.lineTo(x,SY-5-3*Math.sin(x*.03+t*3));dc.lineTo(GX1+200,SY);dc.fill();}
+  // coating layer
+  if(coat>0){const x0=lerp(GX1+200,GX0-200,coat);
+    dc.shadowColor='rgba(245,179,1,.9)';dc.shadowBlur=18;dc.fillStyle='#F5B301';dc.fillRect(x0,SY-4,GX1+200-x0,5);dc.shadowBlur=0;
+    if(coat<1){const sg=dc.createRadialGradient(x0,SY-2,0,x0,SY-2,40);sg.addColorStop(0,'rgba(255,240,180,1)');sg.addColorStop(1,'rgba(245,179,1,0)');dc.fillStyle=sg;dc.beginPath();dc.arc(x0,SY-2,40,0,6.283);dc.fill();}}
+  // drops
+  for(let i=0;i<ddrops.length;i++){const d=ddrops[i];
+    const land=eOut(prog(t,d.l,.25)); if(land<=0) continue;
+    const th=lerp(30,150,bead)*Math.PI/180;
+    const ts=9.05+i*.07; const dt=Math.max(0,t-ts); const dx=-.5*2600*dt*dt; const st=Math.min(60,dt*160);
+    if(d.x+dx<-80) continue;
+    drawDrop(d.x+dx,d.A*land,th,st);
+  }
+  dc.restore();
+}
+
+// ---------- S4 tank ----------
+const bub=$('bubbles'); const R5=rng(9);
+const bubs=[...Array(14)].map(()=>({x:40+R5()*240,r:3+R5()*7,s:.6+R5()*.8,p:R5()}));
+bub.innerHTML=bubs.map((b,i)=>`<circle id="bb${i}" cx="${b.x}" cy="300" r="${b.r}" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"/>`).join('');
+function drawTank(t){
+  const mix=eInOut(prog(t,11.2,1.3));
+  const lvl=lerp(132,112,eOut(prog(t,11.1,1.2)));
+  $('liqBlue').setAttribute('y',lvl);
+  let d=`M0 340 L0 ${lvl}`;for(let x=0;x<=320;x+=16){d+=` L${x} ${lvl+6*Math.sin(x*.05+t*6)*(.3+mix)}`}d+=' L320 340 Z';
+  const m=$('liqMix');m.setAttribute('d',d);m.setAttribute('opacity',.75*mix);
+  bubs.forEach((b,i)=>{const k=((t/b.s+b.p)%1);const e=$('bb'+i);e.setAttribute('cy',320-k*(320-lvl));e.setAttribute('opacity',(1-k)*clamp(mix*2))});
+  $('tankBody').setAttribute('stroke',mix>0?`rgba(245,179,1,${.6+.3*mix})`:'rgba(255,255,255,.6)');
+  $('tankWrap').style.filter=mix>0?`drop-shadow(0 0 ${30*mix}px rgba(245,179,1,.45))`:'none';
+}
+
+// ---------- keyframes for the hero bottle ----------
+const BK=[[2.8,680,0,180],[3.7,680,1,0],[6.0,680,1,0],[6.6,380,1,0],[10.15,380,1,0],[10.5,380,0,40],[13.7,420,0,60],[14.15,420,1,0],[16.45,420,1,0],[17.1,470,1,0],[20,490,1,0]];
+function bottleState(t){
+  if(t<=BK[0][0])return{h:BK[0][1],o:0,y:BK[0][3]};
+  for(let i=0;i<BK.length-1;i++){const a=BK[i],b=BK[i+1];if(t<=b[0]){const k=eInOut((t-a[0])/(b[0]-a[0]));
+    return{h:lerp(a[1],b[1],k),o:lerp(a[2],b[2],k),y:lerp(a[3],b[3],k)}}}
+  const l=BK[BK.length-1];return{h:l[1],o:l[2],y:l[3]};
+}
+const ASP=513/1588;
+
+// ---------- main render ----------
+window.renderFrame=function(t){
+  // S1 windshield
+  const s1o=1-eInOut(prog(t,2.35,.5));
+  vis($('s1'),s1o); if(s1o>0) drawGlass(t);
+  io($('q1'),t,.15,.95,{dy:60,scale:.08}); io($('q2'),t,1.05,1.75,{dy:60,scale:.08}); io($('q3'),t,1.85,2.45,{dy:60,scale:.08});
+
+  // stage
+  const stage=eOut(prog(t,2.35,.7));
+  $('hline').style.transform=`scaleX(${stage})`; $('hline').style.opacity=stage;
+  const pulse=.85+.15*Math.sin(t*4);
+  vis($('hdot'),stage*pulse); vis($('hglow'),stage*(.7+.3*Math.sin(t*2.2)));
+  vis($('floor'),stage); vis($('spot'),stage*.9);
+  const bs=bottleState(t);
+  vis($('bigRing'),stage*(t>16.5?.09:.06)); $('bigRing').style.transform=`rotate(${t*6}deg) scale(${1+.04*Math.sin(t)})`;
+  drawBokeh(t,stage);
+
+  // hero bottle
+  const W=bs.h*ASP, top=1450-bs.h+bs.y;
+  const b=$('bottle'), r=$('bottleRef');
+  b.style.height=bs.h+'px';b.style.top=top+'px';b.style.marginLeft=(-W/2)+'px';vis(b,bs.o);
+  r.style.height=bs.h+'px';r.style.top=(1452+(-bs.y))+'px';r.style.marginLeft=(-W/2)+'px';r.style.transform='scaleY(-1) translateY(-100%)';
+  r.style.transformOrigin='50% 0';r.style.top=(1452+bs.h-bs.y)+'px';vis(r,bs.o*.18*(bs.y<1?1:0));
+  // rings around bottle (reference: glowing halo behind product)
+  const rg1=$('ring1'),rg2=$('ring2');
+  const rd=bs.h*.92, cy=1450-bs.h*.42;
+  [[rg1,rd],[rg2,rd*1.22]].forEach(([el,d],i)=>{el.style.width=d+'px';el.style.height=d+'px';el.style.left=(540-d/2)+'px';el.style.top=(cy-d/2)+'px';
+    vis(el,bs.o*(.55+.25*Math.sin(t*2+i))*(i?0.7:1))});
+  $('hglow').style.width=(W*2.6)+'px';$('hglow').style.left=(540-W*1.3)+'px';
+
+  // S2
+  const s2end=6.0;
+  io($('s2badge'),t,3.25,s2end,{dy:-30}); io($('s2label'),t,3.35,s2end);
+  io($('s2t1'),t,3.5,s2end+.05,{dy:70,scale:.06}); io($('s2t2'),t,3.65,s2end+.1,{dy:70,scale:.06});
+  io($('s2sub'),t,4.0,s2end+.12); io($('s2pill'),t,4.35,s2end+.15,{scale:.1});
+
+  // S3
+  const s3end=10.15;
+  io($('s3sec'),t,6.25,s3end); io($('s3h'),t,6.35,s3end,{dy:60});
+  const po=io($('panel'),t,6.4,s3end,{dy:80,scale:.04,blur:6}); if(po>0) drawDiag(t);
+  vis($('chipA'),1-prog(t,7.75,.2)); vis($('chipB'),prog(t,7.75,.2));
+  $('chipB').style.transform=`scale(${1+.25*(1-eBack(prog(t,7.75,.4)))})`;
+  vis($('coatLbl'),prog(t,8.0,.3)*(1-prog(t,9.4,.2)));
+  io($('capA'),t,6.7,7.85,{dy:30}); io($('capB'),t,8.3,s3end,{dy:30});
+
+  // S4
+  const s4end=13.6;
+  io($('s4sec'),t,10.3,s4end); io($('s4h'),t,10.4,s4end,{dy:60});
+  io($('tankWrap'),t,10.5,s4end,{dy:60}); drawTank(t);
+  const pb=$('pourBottle'); const po4=io(pb,t,10.45,s4end,{dy:-60});
+  const rot=-115*eInOut(prog(t,10.75,.45)); pb.style.transform+=` rotate(${rot}deg)`;
+  io($('mlTag'),t,10.6,10.95,{dy:-20,outDur:.2});
+  const sk=prog(t,11.1,.2)*(1-prog(t,12.25,.2));
+  const st=$('stream'); vis(st,sk*po4); st.style.transform=`scaleY(${eOut(prog(t,11.1,.25))}) scaleX(${1+.15*Math.sin(t*30)})`;st.style.transformOrigin='50% 0';
+  const steps=[[$('st1'),10.8],[$('st2'),11.75],[$('st3'),12.6]];
+  steps.forEach(([el,a],i)=>{io(el,t,a,s4end+i*.04,{dy:40});
+    const active=t>=a&&(i==2||t<steps[i+1][1]);
+    el.querySelector('.t').style.color=active?'#fff':'rgba(255,255,255,.5)';
+    el.querySelector('.ic').style.borderColor=active?'#F5B301':'rgba(245,179,1,.4)';
+    el.querySelector('.ic').style.boxShadow=active?'0 0 30px rgba(245,179,1,.45)':'none';});
+
+  // S5
+  const s5end=16.45;
+  io($('s5sec'),t,13.85,s5end);
+  const fs=[[$('f1'),14.0],[$('f2'),14.55],[$('f3'),15.1],[$('f4'),15.65]];
+  fs.forEach(([el,a],i)=>{io(el,t,a,s5end+i*.03,{dy:0,blur:8});
+    el.style.transform=`translateX(${-60*(1-eOut(prog(t,a,.45)))}px)`;
+    const active=t>=a&&(i==3||t<fs[i+1][1]);
+    const k=active?eOut(prog(t,a,.35)):0;
+    el.querySelector('.t').style.color=active?'#fff':'rgba(255,255,255,.45)';
+    el.querySelector('.ic').style.borderColor=active?'#F5B301':'rgba(245,179,1,.4)';
+    el.querySelector('.ic').style.boxShadow=active?`0 0 ${34*k}px rgba(245,179,1,.5)`:'none';
+    vis(el.querySelector('.halo'),k); el.querySelector('.halo').style.transform=`scale(${.8+.2*k})`;
+    vis(el.querySelector('.bar'),k);});
+
+  // S6
+  io($('s6badge'),t,17.15,99,{dy:-30}); io($('s6logo'),t,16.6,99,{dy:0,scale:-.15,blur:16,dur:.6});
+  io($('s6t1'),t,16.9,99,{dy:60}); io($('s6t2'),t,17.02,99,{dy:60});
+  const bw=eOut(prog(t,17.25,.4)); vis($('s6bar'),bw); $('s6bar').style.transform=`scaleX(${bw})`;
+  io($('s6tag'),t,17.35,99); io($('s6av'),t,17.55,99);
+  io($('s6cta'),t,17.7,99,{scale:.2,dy:20});
+  $('cta').style.transform=`scale(${1+.03*Math.sin(Math.max(0,t-18.2)*5)})`;
+
+  // rain, lightning
+  const dens = t<2.4 ? 1 : lerp(1,.32,eInOut(prog(t,2.4,.6)));
+  const ra = t<2.4 ? .55 : (t>6.2&&t<16.45 ? .22 : .32);
+  drawRain(t,dens,ra);
+  const fl=(tt,a)=>Math.max(0,1-Math.abs(t-tt)/a);
+  const flash=Math.max(fl(1.05,.06)*.9,fl(1.17,.09)*.6,fl(16.6,.12)*.45);
+  $('flash').style.opacity=flash;
+};
+window.renderFrame(0);
+</script>
+</body>
+</html>
