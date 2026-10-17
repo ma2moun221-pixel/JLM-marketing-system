@@ -5,6 +5,10 @@ description: Professional video editing, montage, captions and icon/emoji overla
 
 # مونتاج فيديو احترافي بأدوات مجانية
 
+> **لمشاريع JLM:** ابدأ بمهارة `jlm-edit-styles`. هي تحلّل الفيديو، وتسأل المستخدم أي ستايل
+> من الستايلات الستة يريد مع توصية، وتطبّق هوية JLM (`brand/jlm/EDIT_STYLES.md`). هذه المهارة
+> مرجع للأدوات فقط.
+
 مهارة تنفيذية: تأخذ فيديو خام وتُخرِج نسخة مُونتَجة جاهزة للنشر (Reel / TikTok / Short / إعلان)، مع
 كابشن عربي قوي، أيقونات ورموز، وجودة عالية — **بأدوات مجانية 100%** (ffmpeg + libass + خطوط
 Google Fonts + CapCut النسخة المجانية).

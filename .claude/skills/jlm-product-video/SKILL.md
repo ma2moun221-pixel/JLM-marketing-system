@@ -37,8 +37,11 @@ for a new film, then change only `scripts/storyboard.py` and `assets/`.
 
 ## Footage edits (real video with a presenter)
 
-When the user sends camera footage to edit, follow `brand/jlm/VIDEO_STYLE.md`
-(the client's approved style, third reference). The style has:
+When the user sends a video to edit, **start with the `jlm-edit-styles` skill**. It
+analyses the footage, asks which of the six editing styles to use and recommends one
+(see `brand/jlm/EDIT_STYLES.md`). When the user picks the approved look (Clean with a
+Fast-Paced accent), follow `brand/jlm/VIDEO_STYLE.md` (the client's approved style, third
+reference). The style has:
 - one-line karaoke captions at 66 % height on a soft dark box: the spoken word in
   yellow, upcoming words grey, problem words red;
 - under the caption, one pair of round dark badges per sentence, linked by a
