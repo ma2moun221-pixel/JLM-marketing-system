@@ -259,9 +259,69 @@ class LinkedPairs(V.Pairs):
     left, same size and pop. kind "then" draws the arrow (cause → result); kind "and" draws a
     plain dashed yellow line with a «+» in the middle (two things of the same kind)."""
 
+    HERO = (W / 2, 0.585 * H, 2.1)      # where a hero badge is introduced: centre, between caption and slots
+
     def __init__(self, items):
         super().__init__([it[:5] for it in items])
         self.kinds = [it[5] for it in items]
+        self.heroes = [it[6] if len(it) > 6 else None for it in items]
+        g = np.zeros((560, 560), np.float32)
+        cv2.circle(g, (280, 280), 150, 1.0, -1, cv2.LINE_AA)
+        g = cv2.GaussianBlur(g, (0, 0), 70)
+        self.glow = np.dstack([g[..., None] * np.array(YEL, np.float32) / 255 * 0.55, g * 0.55]).astype(np.float32)
+
+    def _hero_pose(self, lt, slot_x, fly):
+        """One badge, one continuous move (FLIP): pop in at the hero pose, hold while the icon
+        draws, then a single quintic glide into its slot. Returns (x, y, scale, hero-ness)."""
+        hx, hy, hs = self.HERO
+        f0, f1 = fly
+        if lt < f0:
+            return hx, hy, hs * (0.35 + 0.65 * back(lt / 0.38, 1.2)), min(1.0, lt / 0.25)
+        u = ease5((lt - f0) / (f1 - f0))
+        return hx + (slot_x - hx) * u, hy + (self.Y - hy) * u, hs + (1.0 - hs) * u, 1 - u
+
+    def focus(self, t):
+        """How much the footage should step back (dim + soften) for a hero badge."""
+        k = 0.0
+        for (ta, tb, t1, A, B), hero in zip(self.items, self.heroes):
+            if hero is None:
+                continue
+            for t0 in (ta, tb):
+                lt = t - t0
+                if 0 <= lt < hero[1]:
+                    k = max(k, self._hero_pose(lt, 0, hero)[3])
+        return k
+
+    def _hero_badge(self, f, slot_x, lt, out, fly, icon, color, label):
+        x, y, sc, h = self._hero_pose(lt, slot_x, fly)
+        if h > 0.02:
+            R.over(f, self.glow, x - 280, y - 280, h * out)
+        layer = V.badge_layer(icon, color, lt * 2.0)     # ring + icon finish drawing before the glide
+        # light motion blur while gliding: average three sub-frame poses
+        f0, f1 = fly
+        moving = f0 < lt < f1
+        alpha = min(1.0, lt / 0.08) * out
+        if not moving:
+            px, py, ps, _ = self._hero_pose(lt, slot_x, fly)
+            lay, lx, ly = R.warp_premul(layer, ps * (0.92 + 0.08 * out), px, py, (layer.shape[1] / 2, layer.shape[0] / 2))
+            R.over(f, lay, lx, ly, alpha)
+        else:
+            samples = [lt + d for d in np.linspace(-0.011, 0.011, 9)]
+            poses = [self._hero_pose(ls, slot_x, fly) for ls in samples]
+            warped = [R.warp_premul(layer, ps * (0.92 + 0.08 * out), px, py, (layer.shape[1] / 2, layer.shape[0] / 2))
+                      for px, py, ps, _ in poses]
+            x0 = min(l[1] for l in warped)
+            y0 = min(l[2] for l in warped)
+            x1 = max(l[1] + l[0].shape[1] for l in warped)
+            y1 = max(l[2] + l[0].shape[0] for l in warped)
+            acc = np.zeros((y1 - y0, x1 - x0, 4), np.float32)
+            for lay, lx, ly in warped:
+                acc[ly - y0:ly - y0 + lay.shape[0], lx - x0:lx - x0 + lay.shape[1]] += lay / len(warped)
+            R.over(f, acc, x0, y0, alpha)
+        q = ease((lt - f1 - 0.05) / 0.25)
+        if q > 0:
+            lab = V.label_layer(label, color)
+            R.over(f, lab, slot_x - lab.shape[1] / 2, self.Y + V.BADGE / 2 + 6 + 10 * (1 - q), q * out)
 
     def _plus_link(self, f, p, out):
         x0, x1 = self.XA - V.BADGE / 2 - 16, self.XB + V.BADGE / 2 + 16
@@ -292,10 +352,19 @@ class LinkedPairs(V.Pairs):
             reg += cut * np.array(CHA, np.float32) / 255
 
     def draw(self, f, t):
-        for (ta, tb, t1, A, B), kind in zip(self.items, self.kinds):
+        for (ta, tb, t1, A, B), kind, hero in zip(self.items, self.kinds, self.heroes):
             if not (ta <= t < t1 + 0.25):
                 continue
             out = 1 - ease((t - t1) / 0.25)
+            if hero is not None:
+                # the link draws once the second badge has landed
+                p = ease((t - tb - hero[1] + 0.05) / 0.40)
+                if p > 0:
+                    (self._plus_link(f, p, out) if kind == "and" else self._arrow(f, p, out, A[1], B[1]))
+                self._hero_badge(f, self.XA, t - ta, out, hero, *A)
+                if t >= tb:
+                    self._hero_badge(f, self.XB, t - tb, out, hero, *B)
+                continue
             p = ease((t - tb + 0.25) / 0.40)
             if p > 0:
                 if kind == "and":
@@ -337,7 +406,7 @@ def cam_frame(img, kfs, t):
     n = 7
     acc = np.zeros_like(img)
     for k in range(n):
-        acc += apply_cam(img, *camera(kfs, t + (k / (n - 1) - 0.5) * 0.35 / FPS))
+        acc += apply_cam(img, *camera(kfs, t + (k / (n - 1) - 0.5) * 0.2 / FPS))
     return acc / n
 
 
@@ -757,9 +826,9 @@ def main():
     chip_t = (b1, at("اللي") - 0.05)
     # icons: always a pair at the bottom — first on the right, second on the left
     pairs = LinkedPairs([
-        (at("بسيارات"), at("و"), at("بمحركات") - 0.12,
-         ("hybrid", YEL, "Hybrid"), ("plugin", YEL, "Plug-in Hybrid"), "and"),
-        (at("بمحركات"), at("لتنظيف"), b0 - 0.12,
+        (at("بسيارات"), at("و"), at("بمحركات") + 0.55,
+         ("hybrid", YEL, "Hybrid"), ("plugin", YEL, "Plug-in Hybrid"), "and", (0.56, 1.0)),
+        (at("بمحركات") + 0.82, at("لتنظيف"), b0 - 0.12,
          ("pump", YEL, "محرّك بنزين"), ("sparkle", YEL, "تنظيف مستمر"), "then"),
         (at("منع"), at("وتشحيم"), SPEECH_END - 0.12,
          ("shield", YEL, "يمنع الرواسب"), ("drop", YEL, "يشحّم"), "and"),
@@ -775,7 +844,7 @@ def main():
         (t_hy, 1.20, 585, 740, 0.7),
         # «والبلَغ إن هايبريد»: glide to the charger and its plug, drift, glide back
         (t_pl, 1.45, 372, 975, 0.8), (t_pl + 0.81, 1.50, 372, 975, t_back - t_pl - 0.86),
-        (t_back, 1.08, 580, 800, 0.75), (t_back + 0.76, 1.11, 580, 785, cuts[0] - t_back - 0.81),
+        (t_back, 1.08, 580, 800, 0.95), (t_back + 0.96, 1.11, 580, 785, cuts[0] - t_back - 1.01),
         (cuts[0], 1.03, 560, 860, 0), (cuts[0] + 0.01, 1.08, 560, 820, b0 - cuts[0] - 0.05),
         (b1, 1.85, 450, 1000, 0), (b1 + 0.01, 1.98, 450, 1000, t_tr - 0.4 - b1 - 0.05),
         (t_tr - 0.4, 1.06, 520, 840, 0.7),
@@ -833,6 +902,11 @@ def main():
                     f[:H - k] = bf[k:]
             else:
                 f = ff
+                k = pairs.focus(t)
+                if k > 0.01:
+                    small = cv2.resize(f, (W // 2, H // 2), interpolation=cv2.INTER_AREA)
+                    soft = cv2.resize(cv2.GaussianBlur(small, (0, 0), 6), (W, H), interpolation=cv2.INTER_CUBIC)
+                    f = (f * (1 - 0.8 * k) + soft * 0.8 * k) * (1 - 0.32 * k)
                 pairs.draw(f, t)
                 if chip_t[0] <= t < chip_t[1]:
                     q = back((t - chip_t[0]) / 0.3) * (1 - ease((t - chip_t[1] + 0.2) / 0.2))
@@ -861,8 +935,11 @@ def main():
 
     # sound: soft ticks on badges and key words, whooshes on reframes / board / wipe
     ev = []
-    for ta, tb, *_ in pairs.items:
+    for (ta, tb, *_), hero in zip(pairs.items, pairs.heroes):
         ev += [(ta + 0.05, V.soft_tick(SR, 420.0)), (tb + 0.05, V.soft_tick(SR, 520.0))]
+        if hero is not None:
+            for t0 in (ta, tb):
+                ev += [(t0 + hero[0] - 0.08, soft_whoosh(0.5, 0.016)), (t0 + hero[1], V.soft_tick(SR, 560.0, 0.008))]
     lastk = -1
     for s, tone in caps.keywords():
         if s - lastk > 0.6:

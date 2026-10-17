@@ -10,6 +10,7 @@ style the client picked from `brand/jlm/EDIT_STYLES.md`.
     - Both moves use a quintic ease and light motion blur. Otherwise there is one slow push per shot and one smooth move into the can when the product is named.
     - The jump cut is a short dissolve.
   - **Captions:** word-pop on the shirt, kept clear of the can. «بسيارات الهايبريد والبلَغ إن هايبريد» shares one caption frame.
+  - **Hero icons (v6):** Hybrid and Plug-in Hybrid are introduced large in the centre with a yellow glow. The footage behind steps back (dim and soft-focus). Each icon then makes one quintic FLIP glide, with motion blur, into its slot. The «+» link draws after both have landed.
   - **Icons (v2):** always linked pairs at the bottom, first on the right, second on the left, same size and pop:
     - هايبريد + بلَغ إن هايبريد;
     - محرّك بنزين → تنظيف مستمر;
