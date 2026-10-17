@@ -37,7 +37,7 @@ while t < min(total, end) - 0.5:
     target = t + 22
     lo, hi = int((target - 4) * 100), int(min(target + 4, total) * 100)
     cut = target if hi <= lo else (lo + int(np.argmin(rms[lo:hi]))) / 100
-    cut = min(cut, total)
+    cut = min(cut, total, end)
     st = rec.create_stream()
     st.accept_waveform(sr, a[int(t * sr): int(cut * sr)])
     rec.decode_stream(st)
