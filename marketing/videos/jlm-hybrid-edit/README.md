@@ -33,3 +33,17 @@ python3 scripts/edit_fast.py --src CLIENT_VIDEO --out out/jlm_hybrid_fast.mp4 [-
 ```
 
 Output: `out/jlm_hybrid_fast.mp4`, 1080×1920, 30 fps, 24.3 s, −15 LUFS, peak −2.3 dBFS.
+
+## Clean / Minimal version (`out/jlm_hybrid_clean.mp4`)
+
+`python3 scripts/edit_clean.py --src CLIENT_VIDEO --out out/jlm_hybrid_clean.mp4` builds the same edit in the client's second choice, Clean / Minimal (EDIT_STYLES §1). It keeps the same words, board, close and CTA, and is calmer:
+
+- **Lower-third:** one bar (charcoal, 5 px yellow frame) with whole phrases.
+  - White text, one yellow keyword, and red only for the problem word («الرواسب»).
+  - Phrases crossfade inside the bar.
+  - The product appears as a two-line title («Petrol Hybrid Treatment / من JLM»).
+- **Icons:** one small icon at a time, always in the same spot, crossfading from one to the next.
+- **Camera:** one slow push per shot, with no reframes or punch-ins. The jump cut has matched framing and a dissolve.
+- **Board:** dissolves in and out.
+- **Close:** the words fade up one by one.
+- **Audio:** music about 20 dB under the voice, with only soft ticks and whooshes.
