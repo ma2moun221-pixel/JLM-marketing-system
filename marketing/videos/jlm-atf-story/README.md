@@ -1,14 +1,14 @@
-# JLM Automatic Transmission Flush — 15 s Story
+# JLM Automatic Transmission Flush — 20 s Story
 
-A 1080×1920 HyperFrames motion story with a GSAP timeline in `compositions/story.html`. All text stays inside the Story safe area (about y 250–1580).
+A 1080×1920 HyperFrames motion story with a GSAP timeline in `compositions/story.html`. All text stays inside the Story safe area (about y 250–1580). Re-timed from 15 s to 20 s so every caption holds about 1.5–2 s after it lands.
 
 | Time | Scene |
 |---|---|
-| 0–2.6 s | **Hook.** A line gear gathers dark deposits: «بقايا ومخلفات / سائل ناقل الحركة القديم؟». The gear's rim irises into a yellow ring. |
-| 2.55–5.75 s | **Product.** The can rises into the ring, a sheen crosses the label, and the name appears (Albert Sans) with «منظّف ناقل الحركة الأوتوماتيكي من JLM». A yellow gear-pattern wipe follows. |
-| 5.75–9.0 s | **Cleaning.** «يضمن إزالة جميع بقايا ومخلفات سائل ناقل الحركة القديم». A gold wave dissolves the deposits and the gear turns gold. Then «قبل استبداله بسائل جديد»: the old fluid drains from a gauge and gold fills it. |
-| 9.0–12.0 s | **Results.** «نتيجة لذلك» and three cards with self-drawing JLM line icons: cooler running, clutches and gears protected, maximum wear protection. |
-| 11.95–15 s | **CTA.** Logo, can in the ring, «اطلبه الآن من خلال», the jlmstore.com pill and «مع توفّر خدمة التوصيل». |
+| 0–3.4 s | **Hook.** A line gear gathers dark deposits: «بقايا ومخلفات / سائل ناقل الحركة القديم؟». The gear's rim irises into a yellow ring. |
+| 3.35–7.6 s | **Product.** The can rises into the ring, a sheen crosses the label, and the name appears (Albert Sans) with «منظّف ناقل الحركة الأوتوماتيكي من JLM». A yellow gear-pattern wipe follows. |
+| 7.6–12.45 s | **Cleaning.** «يضمن إزالة جميع بقايا ومخلفات سائل ناقل الحركة القديم». A gold wave dissolves the deposits and the gear turns gold. Then «قبل استبداله بسائل جديد»: the old fluid drains from a gauge and gold fills it. |
+| 12.45–16.7 s | **Results.** «نتيجة لذلك» and three cards with self-drawing JLM line icons: cooler running, clutches and gears protected, maximum wear protection. |
+| 16.6–20 s | **CTA.** Logo, can in the ring, «اطلبه الآن من خلال», the jlmstore.com pill and «مع توفّر خدمة التوصيل». |
 
 The on-screen copy comes from the client's caption. The product image is the client's photo, upscaled 4× with EDSR and cut out (`assets/atf-can.png`).
 

@@ -40,7 +40,7 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
 #wipe{position:absolute;left:-2300px;top:-100px;width:1500px;height:2200px;background:#FAB817 url("assets/gears_yellow.webp") center/1400px auto;transform:skewX(-14deg);}
 </style>
 <div id="story-root" data-composition-id="story" data-width="1080" data-height="1920">
- <div id="stage" class="clip full" data-start="0" data-duration="15" data-track-index="1">
+ <div id="stage" class="clip full" data-start="0" data-duration="20" data-track-index="1">
   <div id="bg" class="full"></div>
   <div id="grain" class="full"></div>
 
@@ -145,74 +145,75 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
  var tl = gsap.timeline({paused:true});
  function S(id){return document.getElementById(id);}
  function Q(sel){return document.querySelectorAll(sel);}
+ // 20 s cut: every caption stays up long enough to read (≈1.5–2 s after it lands)
  // background: slow drift for the whole story
- tl.fromTo("#grain",{scale:1.05,rotation:-2},{scale:1.15,rotation:2,duration:15,ease:"none"},0);
+ tl.fromTo("#grain",{scale:1.05,rotation:-2},{scale:1.15,rotation:2,duration:20,ease:"none"},0);
 
- // ---------- 1 · HOOK (0 – 2.6) ----------
+ // ---------- 1 · HOOK (0 – 3.4) ----------
  tl.set("#s1",{autoAlpha:1},0);
  tl.fromTo("#g1",{scale:.6,opacity:0,rotation:-40,svgOrigin:"540 820"},{scale:1,opacity:1,rotation:0,svgOrigin:"540 820",duration:.9,ease:"power3.out"},0);
- tl.to("#g1",{rotation:24,svgOrigin:"540 820",duration:1.2,ease:"none"},.9);
+ tl.to("#g1",{rotation:30,svgOrigin:"540 820",duration:2.0,ease:"none"},.9);
  tl.fromTo("#dots1 circle",{scale:0,transformOrigin:"50% 50%"},{scale:1,duration:.35,ease:"back.out(2)",stagger:.045},.35);
  tl.fromTo(".h1",{opacity:0,y:40},{opacity:1,y:0,duration:.5,ease:"power3.out",stagger:.15},.3);
  tl.fromTo(".h2",{opacity:0,y:30},{opacity:1,y:0,duration:.45,ease:"power3.out",stagger:.09},.75);
  // iris: the gear's rim becomes the yellow ring that frames the product
- tl.to(".h1,.h2",{opacity:0,y:-30,duration:.3,ease:"power2.in"},2.15);
- tl.to("#g1",{scale:1.5,opacity:0,rotation:120,svgOrigin:"540 820",duration:.5,ease:"power2.in"},2.1);
- tl.fromTo("#iris",{attr:{r:240},opacity:0},{attr:{r:430},opacity:1,duration:.5,ease:"power2.inOut"},2.1);
- tl.set("#s1",{autoAlpha:0},2.6);
+ tl.to(".h1,.h2",{opacity:0,y:-30,duration:.3,ease:"power2.in"},2.95);
+ tl.to("#g1",{scale:1.5,opacity:0,rotation:120,svgOrigin:"540 820",duration:.5,ease:"power2.in"},2.9);
+ tl.fromTo("#iris",{attr:{r:240},opacity:0},{attr:{r:430},opacity:1,duration:.5,ease:"power2.inOut"},2.9);
+ tl.set("#s1",{autoAlpha:0},3.4);
 
- // ---------- 2 · PRODUCT (2.55 – 5.75) ----------
- tl.set("#s2",{autoAlpha:1},2.55);
- tl.set("#ring2",{attr:{"stroke-dashoffset":0}},2.55);
- tl.fromTo("#disc2",{opacity:0},{opacity:1,duration:.4},2.55);
- tl.fromTo("#hair2",{rotation:0,svgOrigin:"540 820",opacity:0},{rotation:40,svgOrigin:"540 820",opacity:1,duration:3.2,ease:"none"},2.55);
- tl.fromTo("#can2",{y:520,rotation:-10,opacity:0},{y:0,rotation:0,opacity:1,duration:.85,ease:"power3.out"},2.6);
- tl.fromTo("#sh2",{x:0},{x:1000,duration:.8,ease:"power2.inOut"},3.45);
- tl.fromTo("#n1",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},3.2);
- tl.fromTo("#n2",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},3.45);
- tl.fromTo("#n3",{opacity:0,y:20},{opacity:1,y:0,duration:.45,ease:"power3.out"},3.7);
- tl.to("#can2",{y:-12,duration:1.4,ease:"sine.inOut"},4.1);
+ // ---------- 2 · PRODUCT (3.35 – 7.6) ----------
+ tl.set("#s2",{autoAlpha:1},3.35);
+ tl.set("#ring2",{attr:{"stroke-dashoffset":0}},3.35);
+ tl.fromTo("#disc2",{opacity:0},{opacity:1,duration:.4},3.35);
+ tl.fromTo("#hair2",{rotation:0,svgOrigin:"540 820",opacity:0},{rotation:50,svgOrigin:"540 820",opacity:1,duration:4.3,ease:"none"},3.35);
+ tl.fromTo("#can2",{y:520,rotation:-10,opacity:0},{y:0,rotation:0,opacity:1,duration:.85,ease:"power3.out"},3.4);
+ tl.fromTo("#sh2",{x:0},{x:1000,duration:.8,ease:"power2.inOut"},4.25);
+ tl.fromTo("#n1",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},4.0);
+ tl.fromTo("#n2",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},4.25);
+ tl.fromTo("#n3",{opacity:0,y:20},{opacity:1,y:0,duration:.45,ease:"power3.out"},4.5);
+ tl.to("#can2",{y:-14,duration:2.2,ease:"sine.inOut"},4.9);
  // yellow gear-pattern wipe → scene 3
- tl.fromTo("#wipe",{x:0},{x:3700,duration:.8,ease:"power2.inOut"},5.35);
- tl.set("#s2",{autoAlpha:0},5.75);
+ tl.fromTo("#wipe",{x:0},{x:3700,duration:.8,ease:"power2.inOut"},7.2);
+ tl.set("#s2",{autoAlpha:0},7.6);
 
- // ---------- 3 · CLEANS THE OLD FLUID (5.75 – 9.0) ----------
- tl.set("#s3",{autoAlpha:1},5.75);
- tl.fromTo(".c1",{opacity:0,y:30},{opacity:1,y:0,duration:.4,ease:"power3.out",stagger:.07},5.85);
- tl.fromTo("#g3",{scale:.85,opacity:0,svgOrigin:"540 820"},{scale:1,opacity:1,svgOrigin:"540 820",duration:.5,ease:"power3.out"},5.8);
- tl.fromTo("#g3r",{rotation:0,svgOrigin:"540 820"},{rotation:45,svgOrigin:"540 820",duration:3.2,ease:"none"},5.8);
+ // ---------- 3 · CLEANS THE OLD FLUID (7.6 – 12.45) ----------
+ tl.set("#s3",{autoAlpha:1},7.6);
+ tl.fromTo(".c1",{opacity:0,y:30},{opacity:1,y:0,duration:.4,ease:"power3.out",stagger:.07},7.7);
+ tl.fromTo("#g3",{scale:.85,opacity:0,svgOrigin:"540 820"},{scale:1,opacity:1,svgOrigin:"540 820",duration:.5,ease:"power3.out"},7.65);
+ tl.fromTo("#g3r",{rotation:0,svgOrigin:"540 820"},{rotation:60,svgOrigin:"540 820",duration:4.8,ease:"none"},7.65);
  // a gold wave sweeps out from the hub: deposits dissolve, the gear turns gold
- tl.fromTo("#wave",{attr:{r:60},opacity:1},{attr:{r:330},opacity:0,duration:1.1,ease:"power2.out"},6.55);
- tl.fromTo("#cleanc",{attr:{r:0}},{attr:{r:300},duration:1.1,ease:"power2.out"},6.55);
- tl.to("#dots3 circle",{scale:0,opacity:0,transformOrigin:"50% 50%",duration:.35,ease:"power2.in",stagger:{each:.05,from:"center"}},6.6);
- tl.fromTo(".c2",{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:"power3.out",stagger:.08},7.55);
- tl.fromTo("#gauge",{opacity:0,y:20},{opacity:1,y:0,duration:.35},7.6);
- tl.fromTo("#old",{width:"100%"},{width:"0%",duration:.55,ease:"power2.in"},7.9);
- tl.fromTo("#gold",{width:"0%"},{width:"100%",duration:.6,ease:"power2.out"},8.35);
- tl.to("#s3 .ar, #gauge, #g3",{opacity:0,y:-20,duration:.3,ease:"power2.in"},8.75);
- tl.set("#s3",{autoAlpha:0},9.05);
+ tl.fromTo("#wave",{attr:{r:60},opacity:1},{attr:{r:330},opacity:0,duration:1.2,ease:"power2.out"},8.7);
+ tl.fromTo("#cleanc",{attr:{r:0}},{attr:{r:300},duration:1.2,ease:"power2.out"},8.7);
+ tl.to("#dots3 circle",{scale:0,opacity:0,transformOrigin:"50% 50%",duration:.4,ease:"power2.in",stagger:{each:.06,from:"center"}},8.75);
+ tl.fromTo(".c2",{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:"power3.out",stagger:.08},10.0);
+ tl.fromTo("#gauge",{opacity:0,y:20},{opacity:1,y:0,duration:.35},10.05);
+ tl.fromTo("#old",{width:"100%"},{width:"0%",duration:.6,ease:"power2.in"},10.4);
+ tl.fromTo("#gold",{width:"0%"},{width:"100%",duration:.65,ease:"power2.out"},10.9);
+ tl.to("#s3 .ar, #gauge, #g3",{opacity:0,y:-20,duration:.3,ease:"power2.in"},12.1);
+ tl.set("#s3",{autoAlpha:0},12.45);
 
- // ---------- 4 · RESULTS (9.0 – 12.0) ----------
- tl.set("#s4",{autoAlpha:1},9.0);
- tl.fromTo("#res",{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:"power3.out"},9.05);
+ // ---------- 4 · RESULTS (12.45 – 16.7) ----------
+ tl.set("#s4",{autoAlpha:1},12.45);
+ tl.fromTo("#res",{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:"power3.out"},12.5);
  ["#k1","#k2","#k3"].forEach(function(k,i){
-   tl.fromTo(k,{opacity:0,x:90},{opacity:1,x:0,duration:.5,ease:"power3.out"},9.3+i*.6);
-   tl.fromTo(k+" .ico",{attr:{"stroke-dasharray":"1 1","stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut"},9.55+i*.6);
+   tl.fromTo(k,{opacity:0,x:90},{opacity:1,x:0,duration:.5,ease:"power3.out"},12.75+i*.8);
+   tl.fromTo(k+" .ico",{attr:{"stroke-dasharray":"1 1","stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut"},13.0+i*.8);
  });
- tl.to("#s4 .card, #res",{opacity:0,y:-30,duration:.35,ease:"power2.in",stagger:.05},11.6);
- tl.set("#s4",{autoAlpha:0},12.05);
+ tl.to("#s4 .card, #res",{opacity:0,y:-30,duration:.35,ease:"power2.in",stagger:.05},16.25);
+ tl.set("#s4",{autoAlpha:0},16.7);
 
- // ---------- 5 · CTA (11.95 – 15.0) ----------
- tl.set("#s5",{autoAlpha:1},11.95);
- tl.fromTo("#disc5",{opacity:0},{opacity:1,duration:.4},11.95);
- tl.fromTo("#ring5",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},11.95);
- tl.fromTo("#can5",{scale:.8,opacity:0,y:40},{scale:1,opacity:1,y:0,duration:.7,ease:"power3.out"},12.05);
- tl.fromTo("#logo5",{opacity:0,y:-24},{opacity:1,y:0,duration:.6,ease:"power3.out"},12.2);
- tl.fromTo("#a1",{opacity:0,y:28},{opacity:1,y:0,duration:.5,ease:"power3.out"},12.55);
- tl.fromTo("#pill",{opacity:0,scale:.6},{opacity:1,scale:1,duration:.5,ease:"back.out(1.8)"},12.95);
- tl.fromTo("#d1",{opacity:0,y:24},{opacity:1,y:0,duration:.5,ease:"power3.out"},13.45);
- tl.fromTo("#truck path, #truck circle",{attr:{"stroke-dasharray":"1 1","stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut",stagger:.08},13.5);
- tl.to("#can5",{y:-10,duration:1.4,ease:"sine.inOut"},13.6);
+ // ---------- 5 · CTA (16.6 – 20.0) ----------
+ tl.set("#s5",{autoAlpha:1},16.6);
+ tl.fromTo("#disc5",{opacity:0},{opacity:1,duration:.4},16.6);
+ tl.fromTo("#ring5",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},16.6);
+ tl.fromTo("#can5",{scale:.8,opacity:0,y:40},{scale:1,opacity:1,y:0,duration:.7,ease:"power3.out"},16.7);
+ tl.fromTo("#logo5",{opacity:0,y:-24},{opacity:1,y:0,duration:.6,ease:"power3.out"},16.85);
+ tl.fromTo("#a1",{opacity:0,y:28},{opacity:1,y:0,duration:.5,ease:"power3.out"},17.2);
+ tl.fromTo("#pill",{opacity:0,scale:.6},{opacity:1,scale:1,duration:.5,ease:"back.out(1.8)"},17.6);
+ tl.fromTo("#d1",{opacity:0,y:24},{opacity:1,y:0,duration:.5,ease:"power3.out"},18.1);
+ tl.fromTo("#truck path, #truck circle",{attr:{"stroke-dasharray":"1 1","stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut",stagger:.08},18.15);
+ tl.to("#can5",{y:-10,duration:1.6,ease:"sine.inOut"},18.3);
 
  window.__timelines = window.__timelines || {};
  window.__timelines["story"] = tl;

@@ -1,4 +1,4 @@
-"""Soundtrack for the 15 s Automatic Transmission Flush story: music + soft SFX, mixed.
+"""Soundtrack for the 20 s Automatic Transmission Flush story: music + soft SFX, mixed.
 
     python3 scripts/audio.py            # writes assets/bgm/story_mix.wav
 
@@ -18,18 +18,18 @@ sys.path.insert(0, str(ROOT.parent / "jlm-penetrating-oil/scripts"))
 import music as M  # noqa: E402
 
 SR = 48000
-TOTAL = 15.0
-# scene starts in compositions/story.html
-CUTS = {"hook": 0.2, "drop": 2.55, "mech": 5.75, "aud": 9.0, "use": 99.0, "use2": 99.0, "cta": 11.95}
+TOTAL = 20.0
+# scene starts in compositions/story.html (20 s cut)
+CUTS = {"hook": 0.2, "drop": 3.35, "mech": 7.6, "aud": 12.45, "use": 99.0, "use2": 99.0, "cta": 16.6}
 
 # (time, sfx, volume)
 CUES = [
     (0.05, "whoosh", 0.45), (0.45, "pop", 0.30), (0.75, "pop", 0.30), (1.05, "pop", 0.30),
-    (2.10, "swoosh", 0.45), (2.62, "impact", 0.40), (3.45, "swoosh", 0.30), (3.75, "ding", 0.30),
-    (5.35, "swoosh", 0.55), (6.55, "plop", 0.40), (6.85, "plop", 0.30), (7.15, "plop", 0.25),
-    (8.35, "ding", 0.30), (9.30, "pop", 0.45), (9.90, "pop", 0.45), (10.50, "pop", 0.45),
-    (11.60, "swoosh", 0.45), (12.05, "impact", 0.35), (12.95, "pop", 0.50), (13.00, "ding", 0.30),
-    (13.50, "whoosh", 0.25), (14.20, "chime", 0.45),
+    (2.90, "swoosh", 0.45), (3.42, "impact", 0.40), (4.25, "swoosh", 0.30), (4.55, "ding", 0.30),
+    (7.20, "swoosh", 0.55), (8.70, "plop", 0.40), (9.00, "plop", 0.30), (9.30, "plop", 0.25),
+    (10.90, "ding", 0.30), (12.75, "pop", 0.45), (13.55, "pop", 0.45), (14.35, "pop", 0.45),
+    (16.25, "swoosh", 0.45), (16.70, "impact", 0.35), (17.60, "pop", 0.50), (17.65, "ding", 0.30),
+    (18.15, "whoosh", 0.25), (19.00, "chime", 0.45),
 ]
 
 
