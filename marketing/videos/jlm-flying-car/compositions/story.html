@@ -1,0 +1,308 @@
+<template>
+<style>
+@font-face{font-family:"Albert Sans";font-weight:100 900;font-display:block;src:url("assets/fonts/AlbertSans-Regular.ttf") format("truetype");}
+@font-face{font-family:"HNA";font-weight:700;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Bold.ttf") format("truetype");}
+@font-face{font-family:"HNA";font-weight:400;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Regular.ttf") format("truetype");}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000;}
+#story-root{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:#1A1B1D;}
+.full{position:absolute;left:0;top:0;width:1080px;height:1920px;}
+#bg{background:radial-gradient(1100px 1300px at 50% 42%, #2C2E31 0%, #212325 55%, #121314 100%);}
+#grain{opacity:.045;background-image:url("assets/gears_yellow.webp");background-size:1600px auto;background-position:center;mix-blend-mode:screen;filter:grayscale(1) contrast(2);}
+.scene{position:absolute;left:0;top:0;width:1080px;height:1920px;visibility:hidden;}
+.ar{font-family:"HNA";font-weight:700;color:#F1F0EC;direction:rtl;text-align:center;position:absolute;left:0;width:1080px;}
+.w{display:inline-block;}
+.y{color:#FAB817;} .r{color:#E8452E;}
+.lat{font-family:"Albert Sans";font-weight:800;direction:ltr;}
+svg{position:absolute;left:0;top:0;overflow:visible;}
+.ico{stroke-dasharray:1 1;fill:none;stroke:#FAB817;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;}
+/* world: skyline + road (moves down when the camera follows the car up) */
+#world{visibility:hidden;}
+#sky path{fill:#1F2123;stroke:#C0C4C7;stroke-opacity:.16;stroke-width:2;}
+#sky rect{fill:#FAB817;opacity:.28;}
+/* car */
+#carw{position:absolute;left:40px;top:860px;width:1000px;height:400px;visibility:hidden;}
+/* meter */
+#meter{position:absolute;left:240px;top:1325px;width:600px;height:40px;border-radius:20px;border:3px solid #C0C4C7;overflow:hidden;}
+#mfill{position:absolute;left:0;top:0;height:100%;width:0;background:#E8452E;}
+#mgold{position:absolute;left:0;top:0;height:100%;width:0;background:linear-gradient(90deg,#FFD25A,#FAB817);}
+#mlabel{top:1245px;font-size:44px;font-weight:400;color:#C0C4C7;}
+/* product */
+.can{position:absolute;width:260px;height:680px;}
+.can img{width:100%;height:100%;display:block;filter:drop-shadow(0 30px 40px rgba(0,0,0,.55));}
+.sheen{position:absolute;inset:0;-webkit-mask-image:url("assets/extreme-can.png");mask-image:url("assets/extreme-can.png");-webkit-mask-size:100% 100%;mask-size:100% 100%;overflow:hidden;}
+.sheen i{position:absolute;top:-20%;left:-60%;width:40%;height:140%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));transform:skewX(-18deg);}
+/* flight */
+#fly{visibility:hidden;}
+.sl{position:absolute;left:0;height:3px;border-radius:2px;background:linear-gradient(90deg,rgba(192,196,199,0),rgba(192,196,199,.55));}
+.cloud{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(241,240,236,.09),rgba(241,240,236,0));}
+/* cards */
+.card{position:absolute;left:60px;width:960px;height:190px;border-radius:28px;background:rgba(18,19,20,.88);border:2px solid rgba(192,196,199,.25);}
+.card .bar{position:absolute;right:0;top:24px;width:8px;height:142px;border-radius:4px;background:#FAB817;}
+.card .icw{position:absolute;right:40px;top:35px;width:120px;height:120px;border-radius:60px;background:#26282B;border:3px solid #FAB817;}
+.card .icw svg{left:10px;top:10px;}
+.card .t{position:absolute;right:190px;left:30px;top:0;height:190px;display:flex;align-items:center;justify-content:flex-start;font-family:"HNA";font-weight:700;font-size:50px;color:#F1F0EC;direction:rtl;white-space:nowrap;}
+/* cta */
+#pill{position:absolute;left:290px;top:1330px;width:500px;height:104px;border-radius:52px;background:#FAB817;color:#252729;font-family:"Albert Sans";font-weight:800;font-size:56px;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 44px rgba(250,184,23,.26);}
+#truck path,#truck circle{fill:none;stroke:#FAB817;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;}
+/* light sweep that reveals the car */
+#beam{position:absolute;left:-200px;top:620px;width:160px;height:560px;background:linear-gradient(90deg,rgba(241,240,236,0),rgba(241,240,236,.32),rgba(241,240,236,0));filter:blur(8px);opacity:0;}
+</style>
+<div id="story-root" data-composition-id="story" data-width="1080" data-height="1920">
+ <div id="stage" class="clip full" data-start="0" data-duration="20" data-track-index="1">
+  <div id="bg" class="full"></div>
+  <div id="grain" class="full"></div>
+
+  <!-- world behind the car -->
+  <div id="world" class="full">
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920" style="top:100px">
+    <defs><linearGradient id="gRoad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#18191B"></stop><stop offset=".5" stop-color="#18191B" stop-opacity=".6"></stop><stop offset="1" stop-color="#18191B" stop-opacity="0"></stop></linearGradient><filter id="soft" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="7"></feGaussianBlur></filter></defs>
+    <g id="sky"><path d="M-40 1058 V910 H26 V1058 M32 1058 V917 H122 V1058 M128 1058 V853 H186 V1058 M192 1058 V745 H250 V1058 M256 1058 V861 H322 V1058 M328 1058 V860 H432 V1058 M438 1058 V858 H516 V1058 M522 1058 V858 H612 V1058 M618 1058 V917 H696 V1058 M702 1058 V858 H792 V1058 M798 1058 V743 H902 V1058 M908 1058 V827 H998 V1058 M1004 1058 V841 H1094 V1058 M1100 1058 V754 H1150 V1058"></path><rect x="-10" y="928" width="7" height="11"/><rect x="8" y="1030" width="7" height="11"/><rect x="98" y="935" width="7" height="11"/><rect x="62" y="969" width="7" height="11"/><rect x="304" y="947" width="7" height="11"/><rect x="340" y="878" width="7" height="11"/><rect x="412" y="878" width="7" height="11"/><rect x="486" y="876" width="7" height="11"/><rect x="486" y="978" width="7" height="11"/><rect x="750" y="876" width="7" height="11"/><rect x="864" y="761" width="7" height="11"/><rect x="882" y="761" width="7" height="11"/><rect x="920" y="879" width="7" height="11"/><rect x="1034" y="961" width="7" height="11"/><rect x="1070" y="995" width="7" height="11"/><rect x="1034" y="1029" width="7" height="11"/><rect x="1130" y="772" width="7" height="11"/></g>
+    <rect x="0" y="1058" width="1080" height="1000" fill="url(#gRoad)"></rect>
+    <line x1="0" y1="1058" x2="1080" y2="1058" stroke="#C0C4C7" stroke-opacity=".35" stroke-width="3"></line>
+    <line id="lane" x1="-200" y1="1110" x2="1280" y2="1110" stroke="#C0C4C7" stroke-opacity=".22" stroke-width="5" stroke-dasharray="60 50"></line>
+    <ellipse id="shadow" cx="540" cy="1060" rx="420" ry="14" fill="#000" opacity=".6" filter="url(#soft)"></ellipse>
+   </svg>
+  </div>
+
+  <!-- flight layer: clouds + speed lines -->
+  <div id="fly" class="full">
+   <div class="cloud" data-layout-allow-overflow id="cl1" style="left:0;top:520px;width:620px;height:200px"></div>
+   <div class="cloud" data-layout-allow-overflow id="cl2" style="left:0;top:1080px;width:760px;height:240px"></div>
+   <div class="cloud" data-layout-allow-overflow id="cl3" style="left:0;top:1450px;width:540px;height:180px"></div>
+   <div class="sl" id="sl1" style="top:600px;width:260px"></div>
+   <div class="sl" id="sl2" style="top:690px;width:180px"></div>
+   <div class="sl" id="sl3" style="top:880px;width:320px"></div>
+   <div class="sl" id="sl4" style="top:960px;width:200px"></div>
+   <div class="sl" id="sl5" style="top:1040px;width:280px"></div>
+   <div class="sl" id="sl6" style="top:1180px;width:220px"></div>
+   <div class="sl" id="sl7" style="top:1320px;width:300px"></div>
+   <div class="sl" id="sl8" style="top:1500px;width:240px"></div>
+  </div>
+
+  <div id="beam"></div>
+
+  <!-- 1 · HOOK -->
+  <div id="s1" class="scene">
+   <div class="ar" style="top:420px;font-size:100px"><span class="w h1">سيارتك</span> <span class="w h1">فقدت</span> <span class="w h1 r">قوتها؟</span></div>
+  </div>
+
+  <!-- shared power meter (hook → after the treatment) -->
+  <div id="mwrap" class="full" style="visibility:hidden">
+   <div class="ar" id="mlabel">قوة المحرّك</div>
+   <div id="meter"><div id="mfill"></div><div id="mgold"></div></div>
+  </div>
+
+  <!-- 2 · PRODUCT + POUR -->
+  <div id="s2" class="scene">
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <circle id="disc2" cx="540" cy="800" r="200" fill="#151617"></circle>
+    <circle id="ring2" cx="540" cy="800" r="200" fill="none" stroke="#FAB817" stroke-width="8" pathLength="1" stroke-dasharray="1 1" transform="rotate(-90 540 800)"></circle>
+    <circle id="hair2" cx="540" cy="800" r="244" fill="none" stroke="#C0C4C7" stroke-width="2" stroke-opacity=".5" pathLength="100" stroke-dasharray="22 3"></circle>
+   </svg>
+   <div id="can2" class="can" style="left:410px;top:460px"><img src="assets/extreme-can.png" alt="" /><div class="sheen"><i id="sh2" data-layout-allow-overflow></i></div></div>
+   <div class="ar lat" id="n1" style="top:1200px;font-size:54px;letter-spacing:2px;color:#FAB817">PETROL EXTREME CLEAN</div>
+   <div class="ar" id="n2" style="top:1280px;font-size:64px">منظّف شامل لنظام الوقود</div>
+   <div class="ar" id="n3" style="top:1372px;font-size:44px;font-weight:400;color:#C0C4C7">من <span class="lat" style="color:#F1F0EC">JLM</span></div>
+   <div class="ar" id="p1" style="top:300px;font-size:70px"><span class="w p1">يعيد</span> <span class="w p1 y">أعلى أداء</span> <span class="w p1">للمحرّك</span></div>
+  </div>
+
+  <!-- the car (shared by scenes 1–4) -->
+  <div id="carw">
+   <svg width="1000" height="400" viewBox="0 0 1000 400">
+    <defs>
+     <linearGradient id="gBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5A5E63"></stop><stop offset=".35" stop-color="#34373B"></stop><stop offset="1" stop-color="#141516"></stop></linearGradient>
+     <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A4148"></stop><stop offset=".55" stop-color="#121417"></stop><stop offset="1" stop-color="#08090A"></stop></linearGradient>
+     <linearGradient id="gFlame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF4C8"></stop><stop offset=".3" stop-color="#FFD25A"></stop><stop offset="1" stop-color="#FAB817" stop-opacity="0"></stop></linearGradient>
+     <radialGradient id="gGlow"><stop offset="0" stop-color="#FAB817" stop-opacity=".75"></stop><stop offset="1" stop-color="#FAB817" stop-opacity="0"></stop></radialGradient>
+     <linearGradient id="gCone" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE7A0" stop-opacity=".55"></stop><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"></stop></linearGradient>
+     <filter id="bloom" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
+    </defs>
+    <!-- thrusters (hover mode) -->
+    <g id="th1" opacity="0"><ellipse cx="210" cy="262" rx="90" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M172 252 C182 292 198 330 210 372 C222 330 238 292 248 252 Z" fill="url(#gFlame)"></path></g>
+    <g id="th2" opacity="0"><ellipse cx="770" cy="262" rx="90" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M732 252 C742 292 758 330 770 372 C782 330 798 292 808 252 Z" fill="url(#gFlame)"></path></g>
+    <!-- headlight cone -->
+    <path id="cone" d="M958 176 L1250 110 L1250 260 Z" fill="url(#gCone)" opacity="0"></path>
+    <!-- body -->
+    <path id="body" d="M40 226 C28 210 26 172 40 150 C60 138 90 132 118 128 C200 110 300 70 420 62 C520 58 590 80 650 116 C740 128 850 138 925 158 C958 168 975 188 972 212 C970 226 962 232 948 234 L852 234 A82 82 0 0 0 688 234 L292 234 A82 82 0 0 0 128 234 L52 232 Z" fill="url(#gBody)" stroke="#C0C4C7" stroke-opacity=".55" stroke-width="2"></path>
+    <path d="M300 214 L680 214" stroke="#0E0F10" stroke-width="10" stroke-linecap="round" opacity=".7"></path>
+    <path d="M175 126 C250 104 330 82 420 78 C500 75 560 92 612 120 C480 124 300 126 175 126 Z" fill="url(#gGlass)" stroke="#C0C4C7" stroke-opacity=".35" stroke-width="1.5"></path>
+    <path d="M432 80 L444 124" stroke="#1E2022" stroke-width="7"></path>
+    <path d="M118 140 C400 128 700 132 930 162" fill="none" stroke="#F1F0EC" stroke-opacity=".35" stroke-width="2"></path>
+    <path d="M444 132 C446 170 448 196 452 214 M664 136 C660 170 658 196 660 214" fill="none" stroke="#0E0F10" stroke-opacity=".8" stroke-width="2.5"></path>
+    <path d="M380 150 h34 M600 152 h34" stroke="#C0C4C7" stroke-opacity=".6" stroke-width="4" stroke-linecap="round"></path>
+    <rect id="fuel" x="140" y="140" width="28" height="20" rx="5" fill="none" stroke="#C0C4C7" stroke-opacity=".6" stroke-width="2"></rect>
+    <!-- lights -->
+    <path id="hlb" d="M902 160 C928 164 950 172 962 182" fill="none" stroke="#FAB817" stroke-width="14" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
+    <path id="hl" d="M902 160 C928 164 950 172 962 182" fill="none" stroke="#FAB817" stroke-width="6" stroke-linecap="round" opacity=".25"></path>
+    <path id="tlb" d="M40 154 C62 144 90 138 116 134" fill="none" stroke="#FAB817" stroke-width="12" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
+    <path id="tl" d="M40 154 C62 144 90 138 116 134" fill="none" stroke="#FAB817" stroke-width="5" stroke-linecap="round" opacity=".25"></path>
+    <!-- energy outline (draws after the treatment) -->
+    <path id="glowb" d="M40 226 C28 210 26 172 40 150 C60 138 90 132 118 128 C200 110 300 70 420 62 C520 58 590 80 650 116 C740 128 850 138 925 158 C958 168 975 188 972 212 C970 226 962 232 948 234 L852 234 A82 82 0 0 0 688 234 L292 234 A82 82 0 0 0 128 234 L52 232 Z" fill="none" stroke="#FAB817" stroke-width="12" opacity=".35" filter="url(#bloom)" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
+    <path id="glow" d="M40 226 C28 210 26 172 40 150 C60 138 90 132 118 128 C200 110 300 70 420 62 C520 58 590 80 650 116 C740 128 850 138 925 158 C958 168 975 188 972 212 C970 226 962 232 948 234 L852 234 A82 82 0 0 0 688 234 L292 234 A82 82 0 0 0 128 234 L52 232 Z" fill="none" stroke="#FAB817" stroke-width="3.5" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
+    <circle id="splash" cx="154" cy="150" r="0" fill="none" stroke="#FAB817" stroke-width="4" opacity="0"></circle>
+    <!-- wheels: outer group folds (hover), inner group spins -->
+    <g id="wr"><circle cx="210" cy="234" r="62" fill="#0C0D0E"></circle><g id="wrs"><circle cx="210" cy="234" r="44" fill="#2E3134" stroke="#C0C4C7" stroke-width="2"></circle><path d="M210 234 L210 192 M210 234 L250 221 M210 234 L235 268 M210 234 L185 268 M210 234 L170 221" stroke="#C0C4C7" stroke-width="7" stroke-linecap="round"></path><circle cx="210" cy="234" r="9" fill="#FAB817"></circle></g></g>
+    <g id="wf"><circle cx="770" cy="234" r="62" fill="#0C0D0E"></circle><g id="wfs"><circle cx="770" cy="234" r="44" fill="#2E3134" stroke="#C0C4C7" stroke-width="2"></circle><path d="M770 234 L770 192 M770 234 L810 221 M770 234 L795 268 M770 234 L745 268 M770 234 L730 221" stroke="#C0C4C7" stroke-width="7" stroke-linecap="round"></path><circle cx="770" cy="234" r="9" fill="#FAB817"></circle></g></g>
+   </svg>
+  </div>
+
+  <!-- the drop poured from the can -->
+  <svg id="dropw" width="1080" height="1920" viewBox="0 0 1080 1920" style="visibility:hidden"><path id="drop" d="M0 -46 C0 -46 -17 -24 -17 -14 A17 17 0 0 0 17 -14 C17 -24 0 -46 0 -46 Z" fill="#FAB817"></path></svg>
+
+  <!-- 3 · TAKE-OFF -->
+  <div id="s3" class="scene">
+   <div class="ar" id="t1" style="top:330px;font-size:60px;color:#C0C4C7">مع <span class="lat" style="color:#F1F0EC">JLM</span></div>
+   <div class="ar" id="t2" style="top:410px;font-size:120px"><span class="w t2">سيارتك</span> <span class="w t2 y">تطير</span></div>
+  </div>
+
+  <!-- 4 · BENEFITS (from the can's label) -->
+  <div id="s4" class="scene">
+   <div class="card" id="k1" style="top:800px"><div class="bar"></div><div class="icw"><svg width="100" height="100" viewBox="0 0 100 100"><path class="ico i1" pathLength="1" d="M26 84 V24 a6 6 0 0 1 6 -6 h22 a6 6 0 0 1 6 6 V84"></path><path class="ico i1" pathLength="1" d="M34 30 h18 v14 h-18 Z"></path><path class="ico i1" pathLength="1" d="M60 42 h8 a6 6 0 0 1 6 6 v22 a5 5 0 0 0 10 0 V38 l-8 -8"></path><path class="ico i1" pathLength="1" d="M18 84 h50"></path></svg></div><div class="t">تنظيف شامل لنظام الوقود</div></div>
+   <div class="card" id="k2" style="top:1030px"><div class="bar"></div><div class="icw"><svg width="100" height="100" viewBox="0 0 100 100"><path class="ico i2" pathLength="1" d="M46 16 C46 16 22 44 22 60 a24 24 0 0 0 48 0 C70 44 46 16 46 16 Z"></path><path class="ico i2" pathLength="1" d="M36 62 a10 10 0 0 0 10 10"></path><path class="ico i2" pathLength="1" d="M80 14 v16 M72 22 h16"></path><path class="ico i2" pathLength="1" d="M84 44 v8 M80 48 h8"></path></svg></div><div class="t">يزيل الرواسب العنيدة</div></div>
+   <div class="card" id="k3" style="top:1260px"><div class="bar"></div><div class="icw"><svg width="100" height="100" viewBox="0 0 100 100"><path class="ico i3" pathLength="1" d="M16 70 A36 36 0 1 1 84 70"></path><path class="ico i3" pathLength="1" d="M50 66 L70 40"></path><path class="ico i3" pathLength="1" d="M50 30 v7 M24 46 l6 4 M76 46 l-6 4"></path><path class="ico i3" pathLength="1" d="M38 82 h24"></path></svg></div><div class="t">يستعيد قوة المحرّك وكفاءته</div></div>
+  </div>
+
+  <!-- 5 · CTA -->
+  <div id="s5" class="scene">
+   <img id="logo5" src="assets/logo_on_dark.png" alt="" style="position:absolute;left:340px;top:230px;width:400px" />
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <circle id="disc5" cx="540" cy="770" r="190" fill="#151617"></circle>
+    <circle id="ring5" cx="540" cy="770" r="190" fill="none" stroke="#FAB817" stroke-width="7" pathLength="1" stroke-dasharray="1 1" transform="rotate(-90 540 770)"></circle>
+   </svg>
+   <div id="can5" class="can" style="left:415px;top:444px;width:250px;height:654px"><img src="assets/extreme-can.png" alt="" /></div>
+   <div class="ar" id="a1" style="top:1175px;font-size:66px"><span class="y">اطلبه الآن</span> من خلال</div>
+   <div id="pill" dir="ltr">jlmstore.com</div>
+   <div class="ar" id="d1" style="top:1470px;font-size:50px;display:flex;justify-content:center;align-items:center;gap:20px;direction:rtl">
+     <span>مع توفّر <span class="y">خدمة التوصيل</span></span>
+     <svg id="truck" viewBox="0 0 100 52" width="100" height="52" style="position:relative"><path pathLength="1" d="M34 38 V8 H82 V38 Z"></path><path pathLength="1" d="M34 16 H20 L8 29 V38 H34"></path><circle pathLength="1" cx="21" cy="42" r="6.5"></circle><circle pathLength="1" cx="68" cy="42" r="6.5"></circle></svg>
+   </div>
+  </div>
+ </div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script>
+<script>
+(function(){
+ var tl = gsap.timeline({paused:true});
+ // background: slow drift for the whole story
+ tl.fromTo("#grain",{scale:1.05,rotation:-2},{scale:1.15,rotation:2,duration:20,ease:"none"},0);
+
+ // ---------- 1 · HOOK (0 – 3.6): the car is revealed by a light sweep, power is low ----------
+ tl.set("#s1,#world,#carw,#mwrap",{autoAlpha:1},0);
+ tl.fromTo("#world",{opacity:0},{opacity:1,duration:.8},0.1);
+ tl.fromTo("#beam",{x:0,opacity:1},{x:1500,opacity:1,duration:1.3,ease:"power1.inOut"},0.15);
+ tl.set("#beam",{opacity:0},1.5);
+ tl.fromTo("#carw",{clipPath:"inset(0% 100% 0% 0%)"},{clipPath:"inset(0% 0% 0% 0%)",duration:1.3,ease:"power1.inOut"},0.15);
+ tl.set("#carw",{clipPath:"none"},1.5);
+ // weak, flickering lights
+ [[1.3,.6],[1.42,.15],[1.55,.5],[1.7,.2],[2.2,.45],[2.3,.18]].forEach(function(f){ tl.set("#hl,#tl",{opacity:f[1]},f[0]); });
+ tl.fromTo(".h1",{opacity:0,y:40},{opacity:1,y:0,duration:.5,ease:"power3.out",stagger:.14},0.5);
+ tl.fromTo("#mlabel,#meter",{opacity:0,y:24},{opacity:1,y:0,duration:.45,ease:"power3.out",stagger:.1},1.2);
+ tl.fromTo("#mfill",{width:"0%"},{width:"34%",duration:.6,ease:"power2.out"},1.5);
+ tl.to(".h1, #mlabel, #meter",{opacity:0,y:-24,duration:.3,ease:"power2.in"},3.2);
+ // the car drives off; the product takes the stage
+ tl.to("#wrs",{rotation:540,svgOrigin:"210 234",duration:.55,ease:"power2.in"},3.2);
+ tl.to("#wfs",{rotation:540,svgOrigin:"770 234",duration:.55,ease:"power2.in"},3.2);
+ tl.to("#carw",{x:1200,duration:.55,ease:"power2.in"},3.2);
+ tl.to("#world",{opacity:0,duration:.4},3.3);
+ tl.set("#s1,#carw",{autoAlpha:0},3.8);
+
+ // ---------- 2 · PRODUCT (3.6 – 6.4) ----------
+ tl.set("#s2",{autoAlpha:1},3.6);
+ tl.fromTo("#disc2",{opacity:0},{opacity:1,duration:.4},3.6);
+ tl.fromTo("#ring2",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},3.6);
+ tl.fromTo("#hair2",{rotation:0,svgOrigin:"540 800",opacity:0},{rotation:40,svgOrigin:"540 800",opacity:1,duration:2.6,ease:"none"},3.6);
+ tl.fromTo("#can2",{y:520,rotation:-10,opacity:0},{y:0,rotation:0,opacity:1,duration:.85,ease:"power3.out"},3.65);
+ tl.fromTo("#sh2",{x:0},{x:900,duration:.8,ease:"power2.inOut"},4.5);
+ tl.fromTo("#n1",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},4.2);
+ tl.fromTo("#n2",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},4.45);
+ tl.fromTo("#n3",{opacity:0,y:20},{opacity:1,y:0,duration:.45,ease:"power3.out"},4.7);
+ tl.to("#n1,#n2,#n3,#disc2,#ring2,#hair2",{opacity:0,duration:.35,ease:"power2.in"},6.2);
+
+ // ---------- 2b · THE POUR (6.4 – 9.2) ----------
+ // the can tilts over the fuel door while the car rolls back in
+ tl.to("#can2",{x:-206,y:-78,scale:.5,rotation:-125,duration:.7,ease:"power3.inOut"},6.35);
+ tl.set("#carw",{autoAlpha:1,x:-1150},6.4);
+ tl.to("#world",{opacity:1,duration:.5},6.4);
+ tl.to("#carw",{x:0,duration:.7,ease:"power3.out"},6.4);
+ tl.fromTo("#wrs",{rotation:0,svgOrigin:"210 234"},{rotation:720,svgOrigin:"210 234",duration:.7,ease:"power3.out",immediateRender:false},6.4);
+ tl.fromTo("#wfs",{rotation:0,svgOrigin:"770 234"},{rotation:720,svgOrigin:"770 234",duration:.7,ease:"power3.out",immediateRender:false},6.4);
+ tl.set("#dropw",{autoAlpha:1},7.1);
+ tl.fromTo("#drop",{x:196,y:836,scale:.5},{x:194,y:1006,scale:1,duration:.38,ease:"power2.in"},7.1);
+ tl.set("#dropw",{autoAlpha:0},7.48);
+ tl.fromTo("#splash",{attr:{r:4},opacity:1},{attr:{r:60},opacity:0,duration:.5,ease:"power2.out"},7.47);
+ tl.to("#fuel",{attr:{stroke:"#FAB817"},duration:.2},7.47);
+ tl.to("#can2",{y:-260,opacity:0,duration:.45,ease:"power2.in"},7.6);
+ // power on: energy runs around the body, the lights come on, the meter fills gold
+ tl.to("#glow,#glowb",{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},7.5);
+ tl.set("#hl,#tl",{opacity:1},7.95);
+ tl.fromTo("#hlb,#tlb,#cone",{opacity:0},{opacity:1,duration:.35,ease:"power2.out"},7.95);
+ tl.fromTo(".p1",{opacity:0,y:30},{opacity:1,y:0,duration:.45,ease:"power3.out",stagger:.12},7.55);
+ tl.fromTo("#mlabel,#meter",{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:"power3.out",immediateRender:false},7.6);
+ tl.fromTo("#mgold",{width:"0%"},{width:"100%",duration:.7,ease:"power2.inOut"},7.95);
+ tl.to(".p1, #mlabel, #meter",{opacity:0,y:-24,duration:.3,ease:"power2.in"},8.9);
+ tl.set("#s2,#mwrap",{autoAlpha:0},9.2);
+
+ // ---------- 3 · TAKE-OFF (9.2 – 13.2) ----------
+ tl.set("#s3",{autoAlpha:1},9.2);
+ tl.fromTo("#t1",{opacity:0,y:24},{opacity:1,y:0,duration:.45,ease:"power3.out"},9.2);
+ tl.fromTo(".t2",{opacity:0,y:50,scale:.9},{opacity:1,y:0,scale:1,duration:.55,ease:"back.out(1.6)",stagger:.18},9.4);
+ // wheels fold flat into hover pads, thrusters ignite
+ tl.to("#wr",{scaleY:.2,y:-8,svgOrigin:"210 234",duration:.45,ease:"power3.inOut"},9.3);
+ tl.to("#wf",{scaleY:.2,y:-8,svgOrigin:"770 234",duration:.45,ease:"power3.inOut"},9.3);
+ tl.fromTo("#th1,#th2",{opacity:0},{opacity:1,duration:.3},9.6);
+ tl.fromTo(".flame",{scaleY:.88,transformOrigin:"50% 0%"},{scaleY:1.12,transformOrigin:"50% 0%",duration:.1,ease:"sine.inOut",yoyo:true,repeat:71},9.6);
+ // lift-off: the camera follows the car up, the city drops away
+ tl.to("#carw",{y:-160,duration:1.1,ease:"power3.inOut"},9.8);
+ tl.to("#carw",{rotation:-5,duration:.55,ease:"power2.out"},9.8);
+ tl.to("#carw",{rotation:0,duration:.8,ease:"sine.inOut"},10.35);
+ tl.to("#shadow",{attr:{rx:200},opacity:0,duration:.8},9.8);
+ tl.to("#world",{y:900,opacity:0,duration:1.5,ease:"power2.in"},10.0);
+ tl.set("#world",{autoAlpha:0},11.6);
+ tl.set("#fly",{autoAlpha:1},10.2);
+ tl.fromTo("#fly",{opacity:0},{opacity:1,duration:.5},10.2);
+ tl.to("#carw",{y:-176,duration:1.0,ease:"sine.inOut",yoyo:true,repeat:1},11.0);
+ tl.to("#t1, .t2",{opacity:0,y:-30,duration:.3,ease:"power2.in"},12.9);
+ tl.set("#s3",{autoAlpha:0},13.2);
+
+ // speed lines + clouds stream past for the whole flight (10.2 – 16.9)
+ [["#sl1",.62,0],["#sl2",.5,.2],["#sl3",.7,.1],["#sl4",.55,.35],["#sl5",.66,.15],["#sl6",.52,.4],["#sl7",.72,.25],["#sl8",.58,.05]].forEach(function(s){
+   var n = Math.floor((16.9 - 10.2 - s[2]) / s[1]);
+   tl.fromTo(s[0],{x:1180},{x:-420,duration:s[1],ease:"none",repeat:n-1},10.2+s[2]);
+ });
+ [["#cl1",2.4,0],["#cl2",3.0,.8],["#cl3",2.2,1.6]].forEach(function(c){
+   var n = Math.floor((16.9 - 10.2 - c[2]) / c[1]);
+   tl.fromTo(c[0],{x:1150},{x:-900,duration:c[1],ease:"none",repeat:n-1},10.2+c[2]);
+ });
+
+ // ---------- 4 · BENEFITS (13.2 – 16.8) ----------
+ tl.to("#carw",{y:-550,scale:.8,duration:.7,ease:"power3.inOut"},13.0);
+ tl.set("#s4",{autoAlpha:1},13.2);
+ ["#k1","#k2","#k3"].forEach(function(k,i){
+   tl.fromTo(k,{opacity:0,x:90},{opacity:1,x:0,duration:.5,ease:"power3.out"},13.45+i*.7);
+   tl.fromTo(k+" .ico",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut"},13.65+i*.7);
+ });
+ tl.to("#carw",{y:-566,duration:.9,ease:"sine.inOut",yoyo:true,repeat:1},14.2);
+ tl.to("#s4 .card",{opacity:0,y:-30,duration:.35,ease:"power2.in",stagger:.05},16.3);
+ tl.set("#s4",{autoAlpha:0},16.8);
+ // the car blasts off out of frame
+ tl.to("#carw",{x:900,y:-1300,scale:.35,rotation:-14,duration:.6,ease:"power3.in"},16.2);
+ tl.set("#carw,#fly",{autoAlpha:0},16.9);
+
+ // ---------- 5 · CTA (16.8 – 20.0) ----------
+ tl.set("#s5",{autoAlpha:1},16.8);
+ tl.fromTo("#disc5",{opacity:0},{opacity:1,duration:.4},16.8);
+ tl.fromTo("#ring5",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},16.8);
+ tl.fromTo("#can5",{scale:.8,opacity:0,y:40},{scale:1,opacity:1,y:0,duration:.7,ease:"power3.out"},16.9);
+ tl.fromTo("#logo5",{opacity:0,y:-24},{opacity:1,y:0,duration:.6,ease:"power3.out"},17.05);
+ tl.fromTo("#a1",{opacity:0,y:28},{opacity:1,y:0,duration:.5,ease:"power3.out"},17.4);
+ tl.fromTo("#pill",{opacity:0,scale:.6},{opacity:1,scale:1,duration:.5,ease:"back.out(1.8)"},17.8);
+ tl.fromTo("#d1",{opacity:0,y:24},{opacity:1,y:0,duration:.5,ease:"power3.out"},18.3);
+ tl.fromTo("#truck path, #truck circle",{attr:{"stroke-dasharray":"1 1","stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut",stagger:.08},18.35);
+ tl.to("#can5",{y:-10,duration:1.4,ease:"sine.inOut"},18.5);
+
+ window.__timelines = window.__timelines || {};
+ window.__timelines["story"] = tl;
+})();
+</script>
+</template>
