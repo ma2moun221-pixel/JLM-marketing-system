@@ -18,8 +18,8 @@ The copy comes from the can's own label (Extreme fuel system cleaning · Restore
 ```
 npx hyperframes@0.8.161 check
 npx hyperframes@0.8.161 render . -o renders/car_video.mp4 -q delivery
-python3 scripts/audio.py          # house track on these cuts + soft SFX → assets/bgm/story_mix.wav
+python3 scripts/audio.py          # own synthwave track (scripts/music.py, needs scipy) + soft SFX → assets/bgm/story_mix.wav
 ffmpeg -i renders/car_video.mp4 -i assets/bgm/story_mix.wav -filter_complex \
-  "[1:a]volume=-3dB,alimiter=limit=0.63:attack=2:release=60:level=false,loudnorm=I=-14:TP=-2.5:LRA=11,aresample=48000,alimiter=limit=0.79:level=false[a]" \
+  "[1:a]volume=-3dB,alimiter=limit=0.63:attack=2:release=60:level=false,loudnorm=I=-14:TP=-2.5:LRA=11,aresample=48000,alimiter=limit=0.79:level=false,volume=-1.5dB[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -t 20 renders/jlm_flying_car.mp4
 ```
