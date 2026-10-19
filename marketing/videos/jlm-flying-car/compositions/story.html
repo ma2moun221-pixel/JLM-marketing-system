@@ -15,6 +15,7 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000;}
 .y{color:#FAB817;} .r{color:#E8452E;}
 .lat{font-family:"Albert Sans";font-weight:800;direction:ltr;}
 svg{position:absolute;left:0;top:0;overflow:visible;}
+.photo{filter:brightness(.92) contrast(1.06);}
 .ico{stroke-dasharray:1 1;fill:none;stroke:#FAB817;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;}
 /* world: skyline + road (moves down when the camera follows the car up) */
 #world{visibility:hidden;}
@@ -111,39 +112,31 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
   <div id="carw">
    <svg width="1000" height="400" viewBox="0 0 1000 400">
     <defs>
-     <linearGradient id="gBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5A5E63"></stop><stop offset=".35" stop-color="#34373B"></stop><stop offset="1" stop-color="#141516"></stop></linearGradient>
-     <linearGradient id="gGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3A4148"></stop><stop offset=".55" stop-color="#121417"></stop><stop offset="1" stop-color="#08090A"></stop></linearGradient>
      <linearGradient id="gFlame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF4C8"></stop><stop offset=".3" stop-color="#FFD25A"></stop><stop offset="1" stop-color="#FAB817" stop-opacity="0"></stop></linearGradient>
      <radialGradient id="gGlow"><stop offset="0" stop-color="#FAB817" stop-opacity=".75"></stop><stop offset="1" stop-color="#FAB817" stop-opacity="0"></stop></radialGradient>
      <linearGradient id="gCone" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE7A0" stop-opacity=".55"></stop><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"></stop></linearGradient>
      <filter id="bloom" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
     </defs>
     <!-- thrusters (hover mode) -->
-    <g id="th1" opacity="0"><ellipse cx="210" cy="262" rx="90" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M172 252 C182 292 198 330 210 372 C222 330 238 292 248 252 Z" fill="url(#gFlame)"></path></g>
-    <g id="th2" opacity="0"><ellipse cx="770" cy="262" rx="90" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M732 252 C742 292 758 330 770 372 C782 330 798 292 808 252 Z" fill="url(#gFlame)"></path></g>
+    <g id="th1" opacity="0"><ellipse cx="230.1" cy="245.4" rx="95" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M190.1 237.4 C200.1 277.4 218.1 315.4 230.1 357.4 C242.1 315.4 260.1 277.4 270.1 237.4 Z" fill="url(#gFlame)"></path></g>
+    <g id="th2" opacity="0"><ellipse cx="806.1" cy="243.6" rx="95" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M766.1 235.6 C776.1 275.6 794.1 313.6 806.1 355.6 C818.1 313.6 836.1 275.6 846.1 235.6 Z" fill="url(#gFlame)"></path></g>
     <!-- headlight cone -->
-    <path id="cone" d="M958 176 L1250 110 L1250 260 Z" fill="url(#gCone)" opacity="0"></path>
-    <!-- body -->
-    <path id="body" d="M40 226 C28 210 26 172 40 150 C60 138 90 132 118 128 C200 110 300 70 420 62 C520 58 590 80 650 116 C740 128 850 138 925 158 C958 168 975 188 972 212 C970 226 962 232 948 234 L852 234 A82 82 0 0 0 688 234 L292 234 A82 82 0 0 0 128 234 L52 232 Z" fill="url(#gBody)" stroke="#C0C4C7" stroke-opacity=".55" stroke-width="2"></path>
-    <path d="M300 214 L680 214" stroke="#0E0F10" stroke-width="10" stroke-linecap="round" opacity=".7"></path>
-    <path d="M175 126 C250 104 330 82 420 78 C500 75 560 92 612 120 C480 124 300 126 175 126 Z" fill="url(#gGlass)" stroke="#C0C4C7" stroke-opacity=".35" stroke-width="1.5"></path>
-    <path d="M432 80 L444 124" stroke="#1E2022" stroke-width="7"></path>
-    <path d="M118 140 C400 128 700 132 930 162" fill="none" stroke="#F1F0EC" stroke-opacity=".35" stroke-width="2"></path>
-    <path d="M444 132 C446 170 448 196 452 214 M664 136 C660 170 658 196 660 214" fill="none" stroke="#0E0F10" stroke-opacity=".8" stroke-width="2.5"></path>
-    <path d="M380 150 h34 M600 152 h34" stroke="#C0C4C7" stroke-opacity=".6" stroke-width="4" stroke-linecap="round"></path>
-    <rect id="fuel" x="140" y="140" width="28" height="20" rx="5" fill="none" stroke="#C0C4C7" stroke-opacity=".6" stroke-width="2"></rect>
+    <path id="cone" d="M958.1 146.3 L1250 76.30000000000001 L1250 226.3 Z" fill="url(#gCone)" opacity="0"></path>
+    <!-- body: the client's side photo, cut out (scripts/prepare_car.py) -->
+    <image href="assets/car/body.png" x="-153.65" y="-218.31" width="1319.43" height="659.72" class="photo"></image>
+    <rect id="fuel" x="199.8" y="90.3" width="42" height="30" rx="6" fill="none" stroke="#FAB817" stroke-opacity="0" stroke-width="3"></rect>
     <!-- lights -->
-    <path id="hlb" d="M902 160 C928 164 950 172 962 182" fill="none" stroke="#FAB817" stroke-width="14" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
-    <path id="hl" d="M902 160 C928 164 950 172 962 182" fill="none" stroke="#FAB817" stroke-width="6" stroke-linecap="round" opacity=".25"></path>
-    <path id="tlb" d="M40 154 C62 144 90 138 116 134" fill="none" stroke="#FAB817" stroke-width="12" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
-    <path id="tl" d="M40 154 C62 144 90 138 116 134" fill="none" stroke="#FAB817" stroke-width="5" stroke-linecap="round" opacity=".25"></path>
+    <path id="hlb" d="M886.7 135.6 L958.1 146.3" fill="none" stroke="#FAB817" stroke-width="16" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
+    <path id="hl" d="M886.7 135.6 L958.1 146.3" fill="none" stroke="#FFE9A8" stroke-width="5" stroke-linecap="round" opacity=".15"></path>
+    <path id="tlb" d="M46.0 104.4 L120.0 113.3" fill="none" stroke="#FAB817" stroke-width="14" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
+    <path id="tl" d="M46.0 104.4 L120.0 113.3" fill="none" stroke="#FAB817" stroke-width="5" stroke-linecap="round" opacity=".15"></path>
     <!-- energy outline (draws after the treatment) -->
-    <path id="glowb" d="M40 226 C28 210 26 172 40 150 C60 138 90 132 118 128 C200 110 300 70 420 62 C520 58 590 80 650 116 C740 128 850 138 925 158 C958 168 975 188 972 212 C970 226 962 232 948 234 L852 234 A82 82 0 0 0 688 234 L292 234 A82 82 0 0 0 128 234 L52 232 Z" fill="none" stroke="#FAB817" stroke-width="12" opacity=".35" filter="url(#bloom)" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
-    <path id="glow" d="M40 226 C28 210 26 172 40 150 C60 138 90 132 118 128 C200 110 300 70 420 62 C520 58 590 80 650 116 C740 128 850 138 925 158 C958 168 975 188 972 212 C970 226 962 232 948 234 L852 234 A82 82 0 0 0 688 234 L292 234 A82 82 0 0 0 128 234 L52 232 Z" fill="none" stroke="#FAB817" stroke-width="3.5" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
-    <circle id="splash" cx="154" cy="150" r="0" fill="none" stroke="#FAB817" stroke-width="4" opacity="0"></circle>
+    <path id="glowb" d="M31.8 177.5 L30.9 204.3 L35.3 214.1 L39.8 217.6 L38.0 223.9 L41.6 227.4 L60.3 232.8 L145.0 242.6 L302.8 241.7 L301.0 250.6 L327.8 248.8 L341.1 245.3 L725.4 249.7 L730.7 247.1 L735.2 247.1 L732.5 240.8 L733.4 239.9 L878.7 239.9 L879.6 240.8 L873.4 256.0 L891.2 257.8 L909.9 250.6 L937.6 248.8 L974.1 234.6 L971.4 230.1 L964.3 225.7 L968.8 222.1 L964.3 215.0 L965.2 209.6 L969.7 203.4 L968.8 198.0 L970.5 195.3 L970.5 181.1 L967.0 170.4 L967.9 151.7 L965.2 149.0 L959.8 136.5 L934.0 120.5 L895.7 108.0 L822.6 94.6 L761.9 87.5 L720.9 84.8 L666.5 53.6 L587.2 13.5 L550.6 4.6 L482.0 -1.7 L443.7 -2.6 L375.9 -0.8 L302.8 6.3 L272.5 13.5 L221.7 29.5 L112.0 70.5 L80.8 75.9 L50.5 77.7 L48.7 79.5 L46.0 90.2 L43.4 115.1 L48.7 122.2 L48.7 124.9 L34.5 162.4 Z" fill="none" stroke="#FAB817" stroke-width="12" stroke-linejoin="round" opacity=".35" filter="url(#bloom)" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
+    <path id="glow" d="M31.8 177.5 L30.9 204.3 L35.3 214.1 L39.8 217.6 L38.0 223.9 L41.6 227.4 L60.3 232.8 L145.0 242.6 L302.8 241.7 L301.0 250.6 L327.8 248.8 L341.1 245.3 L725.4 249.7 L730.7 247.1 L735.2 247.1 L732.5 240.8 L733.4 239.9 L878.7 239.9 L879.6 240.8 L873.4 256.0 L891.2 257.8 L909.9 250.6 L937.6 248.8 L974.1 234.6 L971.4 230.1 L964.3 225.7 L968.8 222.1 L964.3 215.0 L965.2 209.6 L969.7 203.4 L968.8 198.0 L970.5 195.3 L970.5 181.1 L967.0 170.4 L967.9 151.7 L965.2 149.0 L959.8 136.5 L934.0 120.5 L895.7 108.0 L822.6 94.6 L761.9 87.5 L720.9 84.8 L666.5 53.6 L587.2 13.5 L550.6 4.6 L482.0 -1.7 L443.7 -2.6 L375.9 -0.8 L302.8 6.3 L272.5 13.5 L221.7 29.5 L112.0 70.5 L80.8 75.9 L50.5 77.7 L48.7 79.5 L46.0 90.2 L43.4 115.1 L48.7 122.2 L48.7 124.9 L34.5 162.4 Z" fill="none" stroke="#FAB817" stroke-width="3.5" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
+    <circle id="splash" cx="220.8" cy="105.3" r="0" fill="none" stroke="#FAB817" stroke-width="4" opacity="0"></circle>
     <!-- wheels: outer group folds (hover), inner group spins -->
-    <g id="wr"><circle cx="210" cy="234" r="62" fill="#0C0D0E"></circle><g id="wrs"><circle cx="210" cy="234" r="44" fill="#2E3134" stroke="#C0C4C7" stroke-width="2"></circle><path d="M210 234 L210 192 M210 234 L250 221 M210 234 L235 268 M210 234 L185 268 M210 234 L170 221" stroke="#C0C4C7" stroke-width="7" stroke-linecap="round"></path><circle cx="210" cy="234" r="9" fill="#FAB817"></circle></g></g>
-    <g id="wf"><circle cx="770" cy="234" r="62" fill="#0C0D0E"></circle><g id="wfs"><circle cx="770" cy="234" r="44" fill="#2E3134" stroke="#C0C4C7" stroke-width="2"></circle><path d="M770 234 L770 192 M770 234 L810 221 M770 234 L795 268 M770 234 L745 268 M770 234 L730 221" stroke="#C0C4C7" stroke-width="7" stroke-linecap="round"></path><circle cx="770" cy="234" r="9" fill="#FAB817"></circle></g></g>
+    <g id="wr"><g id="wrs"><image href="assets/car/wheel-r.png" x="153.0" y="146.3" width="153.3" height="153.3" class="photo"></image><circle cx="230.1" cy="223.4" r="10" fill="#FAB817" stroke="#1A1B1D" stroke-width="2"></circle></g></g>
+    <g id="wf"><g id="wfs"><image href="assets/car/wheel-f.png" x="728.9" y="144.5" width="153.3" height="153.3" class="photo"></image><circle cx="806.1" cy="221.6" r="10" fill="#FAB817" stroke="#1A1B1D" stroke-width="2"></circle></g></g>
    </svg>
   </div>
 
@@ -201,8 +194,8 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
  tl.fromTo("#mfill",{width:"0%"},{width:"34%",duration:.6,ease:"power2.out"},1.5);
  tl.to(".h1, #mlabel, #meter",{opacity:0,y:-24,duration:.3,ease:"power2.in"},3.2);
  // the car drives off; the product takes the stage
- tl.to("#wrs",{rotation:540,svgOrigin:"210 234",duration:.55,ease:"power2.in"},3.2);
- tl.to("#wfs",{rotation:540,svgOrigin:"770 234",duration:.55,ease:"power2.in"},3.2);
+ tl.to("#wrs",{rotation:540,svgOrigin:"230.1 223.4",duration:.55,ease:"power2.in"},3.2);
+ tl.to("#wfs",{rotation:540,svgOrigin:"806.1 221.6",duration:.55,ease:"power2.in"},3.2);
  tl.to("#carw",{x:1200,duration:.55,ease:"power2.in"},3.2);
  tl.to("#world",{opacity:0,duration:.4},3.3);
  tl.set("#s1,#carw",{autoAlpha:0},3.8);
@@ -221,17 +214,17 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
 
  // ---------- 2b · THE POUR (6.4 – 9.2) ----------
  // the can tilts over the fuel door while the car rolls back in
- tl.to("#can2",{x:-206,y:-78,scale:.5,rotation:-125,duration:.7,ease:"power3.inOut"},6.35);
+ tl.to("#can2",{x:-141,y:-118,scale:.5,rotation:-125,duration:.7,ease:"power3.inOut"},6.35);
  tl.set("#carw",{autoAlpha:1,x:-1150},6.4);
  tl.to("#world",{opacity:1,duration:.5},6.4);
  tl.to("#carw",{x:0,duration:.7,ease:"power3.out"},6.4);
- tl.fromTo("#wrs",{rotation:0,svgOrigin:"210 234"},{rotation:720,svgOrigin:"210 234",duration:.7,ease:"power3.out",immediateRender:false},6.4);
- tl.fromTo("#wfs",{rotation:0,svgOrigin:"770 234"},{rotation:720,svgOrigin:"770 234",duration:.7,ease:"power3.out",immediateRender:false},6.4);
+ tl.fromTo("#wrs",{rotation:0,svgOrigin:"230.1 223.4"},{rotation:720,svgOrigin:"230.1 223.4",duration:.7,ease:"power3.out",immediateRender:false},6.4);
+ tl.fromTo("#wfs",{rotation:0,svgOrigin:"806.1 221.6"},{rotation:720,svgOrigin:"806.1 221.6",duration:.7,ease:"power3.out",immediateRender:false},6.4);
  tl.set("#dropw",{autoAlpha:1},7.1);
- tl.fromTo("#drop",{x:196,y:836,scale:.5},{x:194,y:1006,scale:1,duration:.38,ease:"power2.in"},7.1);
+ tl.fromTo("#drop",{x:261,y:796,scale:.5},{x:260.8,y:963.3,scale:1,duration:.38,ease:"power2.in"},7.1);
  tl.set("#dropw",{autoAlpha:0},7.48);
- tl.fromTo("#splash",{attr:{r:4},opacity:1},{attr:{r:60},opacity:0,duration:.5,ease:"power2.out"},7.47);
- tl.to("#fuel",{attr:{stroke:"#FAB817"},duration:.2},7.47);
+ tl.fromTo("#splash",{attr:{r:4},opacity:1},{attr:{r:60},opacity:0,duration:.5,ease:"power2.out",immediateRender:false},7.47);
+ tl.to("#fuel",{attr:{"stroke-opacity":1},duration:.2},7.47);
  tl.to("#can2",{y:-260,opacity:0,duration:.45,ease:"power2.in"},7.6);
  // power on: energy runs around the body, the lights come on, the meter fills gold
  tl.to("#glow,#glowb",{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},7.5);
@@ -248,8 +241,8 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
  tl.fromTo("#t1",{opacity:0,y:24},{opacity:1,y:0,duration:.45,ease:"power3.out"},9.2);
  tl.fromTo(".t2",{opacity:0,y:50,scale:.9},{opacity:1,y:0,scale:1,duration:.55,ease:"back.out(1.6)",stagger:.18},9.4);
  // wheels fold flat into hover pads, thrusters ignite
- tl.to("#wr",{scaleY:.2,y:-8,svgOrigin:"210 234",duration:.45,ease:"power3.inOut"},9.3);
- tl.to("#wf",{scaleY:.2,y:-8,svgOrigin:"770 234",duration:.45,ease:"power3.inOut"},9.3);
+ tl.to("#wr",{scaleY:.2,y:-8,svgOrigin:"230.1 223.4",duration:.45,ease:"power3.inOut"},9.3);
+ tl.to("#wf",{scaleY:.2,y:-8,svgOrigin:"806.1 221.6",duration:.45,ease:"power3.inOut"},9.3);
  tl.fromTo("#th1,#th2",{opacity:0},{opacity:1,duration:.3},9.6);
  tl.fromTo(".flame",{scaleY:.88,transformOrigin:"50% 0%"},{scaleY:1.12,transformOrigin:"50% 0%",duration:.1,ease:"sine.inOut",yoyo:true,repeat:71},9.6);
  // lift-off: the camera follows the car up, the city drops away

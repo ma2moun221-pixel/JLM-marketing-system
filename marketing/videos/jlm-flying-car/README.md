@@ -1,6 +1,6 @@
 # JLM Petrol Extreme Clean — "Your car flies" 20 s Story
 
-A 1080×1920 HyperFrames motion story with a GSAP timeline in `compositions/story.html`. A sleek, minimal electric-style car (an original vector drawing, no third-party branding) gets Petrol Extreme Clean, lights up in JLM yellow, folds its wheels into hover pads and takes off. All text stays inside the Story safe area.
+A 1080×1920 HyperFrames motion story with a GSAP timeline in `compositions/story.html`. A real sedan (the client's side photo, cut into body + wheel layers by `scripts/prepare_car.py`; the hub-cap logos are covered with JLM-yellow caps) gets Petrol Extreme Clean, lights up in JLM yellow, folds its wheels into hover pads and takes off. All text stays inside the Story safe area.
 
 | Time | Scene |
 |---|---|
@@ -16,6 +16,7 @@ The copy comes from the can's own label (Extreme fuel system cleaning · Restore
 ## Build
 
 ```
+python3 scripts/prepare_car.py     # once: assets/src/car-side.webp → assets/car/ (rembg isnet-general-use, opencv)
 npx hyperframes@0.8.161 check
 npx hyperframes@0.8.161 render . -o renders/car_video.mp4 -q delivery
 python3 scripts/audio.py          # own synthwave track (scripts/music.py, needs scipy) + soft SFX → assets/bgm/story_mix.wav
