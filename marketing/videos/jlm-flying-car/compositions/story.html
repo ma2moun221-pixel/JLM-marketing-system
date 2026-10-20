@@ -15,12 +15,15 @@ html,body{width:1080px;height:1920px;overflow:hidden;background:#000;}
 .y{color:#FAB817;} .r{color:#E8452E;}
 .lat{font-family:"Albert Sans";font-weight:800;direction:ltr;}
 svg{position:absolute;left:0;top:0;overflow:visible;}
-.photo{filter:brightness(.92) contrast(1.06);}
+.photo{filter:brightness(.9) contrast(1.06);}
 .ico{stroke-dasharray:1 1;fill:none;stroke:#FAB817;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;}
-/* world: skyline + road (moves down when the camera follows the car up) */
+/* camera: world + car move together for push-ins and the lift-off shake */
+#cam{transform-origin:50% 58%;}
+/* world: skyline + road (drops away when the camera follows the car up) */
 #world{visibility:hidden;}
 #sky path{fill:#1F2123;stroke:#C0C4C7;stroke-opacity:.16;stroke-width:2;}
 #sky rect{fill:#FAB817;opacity:.28;}
+#dust circle{opacity:0;}
 /* car */
 #carw{position:absolute;left:40px;top:860px;width:1000px;height:400px;visibility:hidden;}
 /* meter */
@@ -47,41 +50,100 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
 #pill{position:absolute;left:290px;top:1330px;width:500px;height:104px;border-radius:52px;background:#FAB817;color:#252729;font-family:"Albert Sans";font-weight:800;font-size:56px;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 44px rgba(250,184,23,.26);}
 #truck path,#truck circle{fill:none;stroke:#FAB817;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;}
 /* light sweep that reveals the car */
-#beam{position:absolute;left:-200px;top:620px;width:160px;height:560px;background:linear-gradient(90deg,rgba(241,240,236,0),rgba(241,240,236,.32),rgba(241,240,236,0));filter:blur(8px);opacity:0;}
+#beam{position:absolute;left:-200px;top:620px;width:160px;height:600px;background:linear-gradient(90deg,rgba(241,240,236,0),rgba(241,240,236,.32),rgba(241,240,236,0));filter:blur(8px);opacity:0;}
 </style>
 <div id="story-root" data-composition-id="story" data-width="1080" data-height="1920">
- <div id="stage" class="clip full" data-start="0" data-duration="20" data-track-index="1">
+ <div id="stage" class="clip full" data-start="0" data-duration="25.5" data-track-index="1">
   <div id="bg" class="full"></div>
   <div id="grain" class="full"></div>
 
-  <!-- world behind the car -->
-  <div id="world" class="full">
-   <svg width="1080" height="1920" viewBox="0 0 1080 1920" style="top:100px">
-    <defs><linearGradient id="gRoad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#18191B"></stop><stop offset=".5" stop-color="#18191B" stop-opacity=".6"></stop><stop offset="1" stop-color="#18191B" stop-opacity="0"></stop></linearGradient><filter id="soft" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="7"></feGaussianBlur></filter></defs>
-    <g id="sky"><path d="M-40 1058 V910 H26 V1058 M32 1058 V917 H122 V1058 M128 1058 V853 H186 V1058 M192 1058 V745 H250 V1058 M256 1058 V861 H322 V1058 M328 1058 V860 H432 V1058 M438 1058 V858 H516 V1058 M522 1058 V858 H612 V1058 M618 1058 V917 H696 V1058 M702 1058 V858 H792 V1058 M798 1058 V743 H902 V1058 M908 1058 V827 H998 V1058 M1004 1058 V841 H1094 V1058 M1100 1058 V754 H1150 V1058"></path><rect x="-10" y="928" width="7" height="11"/><rect x="8" y="1030" width="7" height="11"/><rect x="98" y="935" width="7" height="11"/><rect x="62" y="969" width="7" height="11"/><rect x="304" y="947" width="7" height="11"/><rect x="340" y="878" width="7" height="11"/><rect x="412" y="878" width="7" height="11"/><rect x="486" y="876" width="7" height="11"/><rect x="486" y="978" width="7" height="11"/><rect x="750" y="876" width="7" height="11"/><rect x="864" y="761" width="7" height="11"/><rect x="882" y="761" width="7" height="11"/><rect x="920" y="879" width="7" height="11"/><rect x="1034" y="961" width="7" height="11"/><rect x="1070" y="995" width="7" height="11"/><rect x="1034" y="1029" width="7" height="11"/><rect x="1130" y="772" width="7" height="11"/></g>
-    <rect x="0" y="1058" width="1080" height="1000" fill="url(#gRoad)"></rect>
-    <line x1="0" y1="1058" x2="1080" y2="1058" stroke="#C0C4C7" stroke-opacity=".35" stroke-width="3"></line>
-    <line id="lane" x1="-200" y1="1110" x2="1280" y2="1110" stroke="#C0C4C7" stroke-opacity=".22" stroke-width="5" stroke-dasharray="60 50"></line>
-    <ellipse id="shadow" cx="540" cy="1060" rx="420" ry="14" fill="#000" opacity=".6" filter="url(#soft)"></ellipse>
-   </svg>
-  </div>
+  <div id="cam" class="full">
+   <!-- world behind the car -->
+   <div id="world" class="full">
+    <svg width="1080" height="1920" viewBox="0 0 1080 1920" style="top:100px">
+     <defs>
+      <linearGradient id="gRoad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#18191B"></stop><stop offset=".5" stop-color="#18191B" stop-opacity=".6"></stop><stop offset="1" stop-color="#18191B" stop-opacity="0"></stop></linearGradient>
+      <radialGradient id="gPool"><stop offset="0" stop-color="#FAB817" stop-opacity=".8"></stop><stop offset="1" stop-color="#FAB817" stop-opacity="0"></stop></radialGradient>
+      <filter id="soft" x="-20%" y="-200%" width="140%" height="500%"><feGaussianBlur stdDeviation="7"></feGaussianBlur></filter>
+     </defs>
+     <g id="sky"><path d="M-40 1058 V910 H26 V1058 M32 1058 V917 H122 V1058 M128 1058 V853 H186 V1058 M192 1058 V745 H250 V1058 M256 1058 V861 H322 V1058 M328 1058 V860 H432 V1058 M438 1058 V858 H516 V1058 M522 1058 V858 H612 V1058 M618 1058 V917 H696 V1058 M702 1058 V858 H792 V1058 M798 1058 V743 H902 V1058 M908 1058 V827 H998 V1058 M1004 1058 V841 H1094 V1058 M1100 1058 V754 H1150 V1058"></path><rect x="-10" y="928" width="7" height="11"/><rect x="8" y="1030" width="7" height="11"/><rect x="98" y="935" width="7" height="11"/><rect x="62" y="969" width="7" height="11"/><rect x="304" y="947" width="7" height="11"/><rect x="340" y="878" width="7" height="11"/><rect x="412" y="878" width="7" height="11"/><rect x="486" y="876" width="7" height="11"/><rect x="486" y="978" width="7" height="11"/><rect x="750" y="876" width="7" height="11"/><rect x="864" y="761" width="7" height="11"/><rect x="882" y="761" width="7" height="11"/><rect x="920" y="879" width="7" height="11"/><rect x="1034" y="961" width="7" height="11"/><rect x="1070" y="995" width="7" height="11"/><rect x="1034" y="1029" width="7" height="11"/><rect x="1130" y="772" width="7" height="11"/></g>
+     <rect x="0" y="1058" width="1080" height="1000" fill="url(#gRoad)"></rect>
+     <line x1="0" y1="1058" x2="1080" y2="1058" stroke="#C0C4C7" stroke-opacity=".35" stroke-width="3"></line>
+     <line id="lane" x1="-200" y1="1110" x2="1280" y2="1110" stroke="#C0C4C7" stroke-opacity=".22" stroke-width="5" stroke-dasharray="60 50"></line>
+     <ellipse id="shadow" cx="540" cy="1060" rx="430" ry="14" fill="#000" opacity=".6" filter="url(#soft)"></ellipse>
+     <ellipse class="pool" cx="284" cy="1062" rx="150" ry="22" fill="url(#gPool)" opacity="0"></ellipse>
+     <ellipse class="pool" cx="856" cy="1062" rx="150" ry="22" fill="url(#gPool)" opacity="0"></ellipse>
+     <g id="dust" fill="#8C8F93"><circle cx="300" cy="1056" r="5"></circle><circle cx="360" cy="1058" r="4"></circle><circle cx="250" cy="1057" r="6"></circle><circle cx="420" cy="1056" r="3"></circle><circle cx="210" cy="1058" r="4"></circle><circle cx="820" cy="1056" r="5"></circle><circle cx="880" cy="1058" r="4"></circle><circle cx="760" cy="1057" r="6"></circle><circle cx="930" cy="1056" r="3"></circle><circle cx="700" cy="1058" r="4"></circle><circle cx="540" cy="1057" r="5"></circle><circle cx="600" cy="1056" r="3"></circle></g>
+    </svg>
+   </div>
 
-  <!-- flight layer: clouds + speed lines -->
-  <div id="fly" class="full">
-   <div class="cloud" data-layout-allow-overflow id="cl1" style="left:0;top:520px;width:620px;height:200px"></div>
-   <div class="cloud" data-layout-allow-overflow id="cl2" style="left:0;top:1080px;width:760px;height:240px"></div>
-   <div class="cloud" data-layout-allow-overflow id="cl3" style="left:0;top:1450px;width:540px;height:180px"></div>
-   <div class="sl" id="sl1" style="top:600px;width:260px"></div>
-   <div class="sl" id="sl2" style="top:690px;width:180px"></div>
-   <div class="sl" id="sl3" style="top:880px;width:320px"></div>
-   <div class="sl" id="sl4" style="top:960px;width:200px"></div>
-   <div class="sl" id="sl5" style="top:1040px;width:280px"></div>
-   <div class="sl" id="sl6" style="top:1180px;width:220px"></div>
-   <div class="sl" id="sl7" style="top:1320px;width:300px"></div>
-   <div class="sl" id="sl8" style="top:1500px;width:240px"></div>
-  </div>
+   <!-- flight layer: clouds + speed lines -->
+   <div id="fly" class="full">
+    <div class="cloud" data-layout-allow-overflow id="cl1" style="left:0;top:520px;width:620px;height:200px"></div>
+    <div class="cloud" data-layout-allow-overflow id="cl2" style="left:0;top:1080px;width:760px;height:240px"></div>
+    <div class="cloud" data-layout-allow-overflow id="cl3" style="left:0;top:1450px;width:540px;height:180px"></div>
+    <div class="cloud" data-layout-allow-overflow id="cl4" style="left:0;top:300px;width:900px;height:280px"></div>
+    <div class="sl" id="sl1" style="top:600px;width:260px"></div>
+    <div class="sl" id="sl2" style="top:690px;width:180px"></div>
+    <div class="sl" id="sl3" style="top:880px;width:320px"></div>
+    <div class="sl" id="sl4" style="top:960px;width:200px"></div>
+    <div class="sl" id="sl5" style="top:1040px;width:280px"></div>
+    <div class="sl" id="sl6" style="top:1180px;width:220px"></div>
+    <div class="sl" id="sl7" style="top:1320px;width:300px"></div>
+    <div class="sl" id="sl8" style="top:1500px;width:240px"></div>
+   </div>
 
-  <div id="beam"></div>
+   <div id="beam"></div>
+
+   <!-- the car: the client's side photo cut into layers (scripts/prepare_car.py) -->
+   <div id="carw">
+    <svg width="1000" height="400" viewBox="0 0 1000 400">
+     <defs>
+      <linearGradient id="gFlame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF4C8"></stop><stop offset=".3" stop-color="#FFD25A"></stop><stop offset="1" stop-color="#FAB817" stop-opacity="0"></stop></linearGradient>
+      <radialGradient id="gGlow"><stop offset="0" stop-color="#FAB817" stop-opacity=".75"></stop><stop offset="1" stop-color="#FAB817" stop-opacity="0"></stop></radialGradient>
+      <linearGradient id="gCone" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE7A0" stop-opacity=".55"></stop><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"></stop></linearGradient>
+      <linearGradient id="gTrail1" x1="-300" y1="0" x2="214" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FAB817" stop-opacity="0"></stop><stop offset="1" stop-color="#FFD25A" stop-opacity=".9"></stop></linearGradient><linearGradient id="gTrail2" x1="300" y1="0" x2="786" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FAB817" stop-opacity="0"></stop><stop offset="1" stop-color="#FFD25A" stop-opacity=".9"></stop></linearGradient>
+      <linearGradient id="gRefl" x1="0" y1="296" x2="0" y2="390" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity=".22"></stop><stop offset="1" stop-color="#fff" stop-opacity="0"></stop></linearGradient>
+      <mask id="mRefl" maskUnits="userSpaceOnUse" x="-100" y="296" width="1200" height="110"><rect x="-100" y="296" width="1200" height="110" fill="url(#gRefl)"></rect></mask>
+      <filter id="bloom" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
+      <filter id="cblur" x="-20%" y="-300%" width="140%" height="700%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
+      <filter id="smokeblur" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="5"></feGaussianBlur></filter>
+     </defs>
+     <!-- contact shadow + wet-road reflection (only while on the ground) -->
+     <g id="ground">
+      <ellipse cx="530" cy="296" rx="480" ry="12" fill="#000" opacity=".75" filter="url(#cblur)"></ellipse>
+      <ellipse cx="244.4" cy="296" rx="80" ry="7" fill="#000" opacity=".9" filter="url(#cblur)"></ellipse>
+      <ellipse cx="816.4" cy="296" rx="80" ry="7" fill="#000" opacity=".9" filter="url(#cblur)"></ellipse>
+      <g mask="url(#mRefl)"><g transform="matrix(1 0 0 -1 0 594)"><use href="#sus"></use><use href="#wr"></use><use href="#wf"></use></g></g>
+     </g>
+     <!-- exhaust smoke (the weak engine coughs) -->
+     <g id="smoke" filter="url(#smokeblur)" fill="#9A9DA1"><circle class="pf1" cx="34" cy="236" r="14" opacity="0"></circle><circle class="pf1" cx="30" cy="240" r="10" opacity="0"></circle><circle class="pf1" cx="38" cy="232" r="12" opacity="0"></circle><circle class="pf2" cx="34" cy="236" r="14" opacity="0"></circle><circle class="pf2" cx="30" cy="240" r="10" opacity="0"></circle><circle class="pf2" cx="38" cy="232" r="12" opacity="0"></circle></g>
+     <!-- thruster trails (flight) -->
+     <path class="trail" d="M214 272 H-300" stroke="url(#gTrail1)" stroke-width="7" stroke-linecap="round" opacity="0"></path>
+     <path class="trail" d="M786 268 H300" stroke="url(#gTrail2)" stroke-width="7" stroke-linecap="round" opacity="0"></path>
+     <!-- thrusters (hover mode) -->
+     <g id="th1" opacity="0"><ellipse cx="244.4" cy="252" rx="95" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M204.4 244 C214.4 284 232.4 322 244.4 364 C256.4 322 274.4 284 284.4 244 Z" fill="url(#gFlame)"></path></g>
+     <g id="th2" opacity="0"><ellipse cx="816.4" cy="248" rx="95" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M776.4 240 C786.4 280 804.4 318 816.4 360 C828.4 318 846.4 280 856.4 240 Z" fill="url(#gFlame)"></path></g>
+     <!-- headlight cone -->
+     <path id="cone" d="M961.4 169.4 L1260 100 L1260 250 Z" fill="url(#gCone)" opacity="0"></path>
+     <!-- body on its suspension (pitch) with an idle-vibration layer inside -->
+     <g id="sus"><g id="vib">
+      <image href="assets/car/body.png" x="-69.51" y="-202.13" width="1145.45" height="644.32" class="photo"></image>
+      <rect id="fuel" x="203" y="103" width="42" height="30" rx="6" fill="none" stroke="#FAB817" stroke-opacity="0" stroke-width="3"></rect>
+      <path id="hlb" d="M878.4 153.7 L961.4 169.4" fill="none" stroke="#FAB817" stroke-width="16" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
+      <path id="hl" d="M878.4 153.7 L961.4 169.4" fill="none" stroke="#FFE9A8" stroke-width="5" stroke-linecap="round" opacity=".15"></path>
+      <path id="tlb" d="M46.5 120 L118.1 132.2" fill="none" stroke="#FAB817" stroke-width="14" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
+      <path id="tl" d="M46.5 120 L118.1 132.2" fill="none" stroke="#FAB817" stroke-width="5" stroke-linecap="round" opacity=".15"></path>
+      <path id="glowb" d="M32.1 184.5 L32.1 210.2 L30.7 217.4 L35.7 227.4 L39.3 230.3 L38.6 237.4 L40.0 239.6 L50.0 243.2 L89.4 249.6 L156.7 256.8 L154.6 248.9 L155.3 245.3 L333.5 245.3 L334.3 248.9 L327.8 267.5 L717.3 268.2 L720.9 266.8 L728.7 266.8 L739.5 275.4 L730.9 259.6 L726.6 245.3 L727.3 241.7 L905.6 241.7 L906.3 245.3 L898.4 267.5 L939.9 266.8 L974.3 253.9 L965.7 246.0 L965.7 243.9 L970.7 241.0 L965.7 236.7 L967.1 230.3 L971.4 226.7 L971.4 199.5 L967.8 188.8 L969.3 170.9 L962.1 157.3 L942.8 145.1 L918.4 134.3 L902.7 129.3 L851.1 118.6 L762.4 107.1 L724.4 106.4 L661.4 70.6 L588.4 32.7 L558.3 24.1 L512.5 18.4 L417.3 15.5 L370.1 16.9 L323.5 21.2 L317.8 19.1 L309.9 18.4 L299.9 14.1 L294.2 14.1 L292.0 15.5 L294.2 20.5 L294.2 24.1 L292.0 27.0 L269.1 32.0 L264.8 34.8 L204.7 53.4 L110.2 88.5 L101.6 88.5 L63.6 95.0 L50.0 94.3 L44.3 113.6 L44.3 127.2 L45.8 130.8 L50.0 135.1 L47.9 145.8 Z" fill="none" stroke="#FAB817" stroke-width="12" stroke-linejoin="round" opacity=".35" filter="url(#bloom)" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
+      <path id="glow" d="M32.1 184.5 L32.1 210.2 L30.7 217.4 L35.7 227.4 L39.3 230.3 L38.6 237.4 L40.0 239.6 L50.0 243.2 L89.4 249.6 L156.7 256.8 L154.6 248.9 L155.3 245.3 L333.5 245.3 L334.3 248.9 L327.8 267.5 L717.3 268.2 L720.9 266.8 L728.7 266.8 L739.5 275.4 L730.9 259.6 L726.6 245.3 L727.3 241.7 L905.6 241.7 L906.3 245.3 L898.4 267.5 L939.9 266.8 L974.3 253.9 L965.7 246.0 L965.7 243.9 L970.7 241.0 L965.7 236.7 L967.1 230.3 L971.4 226.7 L971.4 199.5 L967.8 188.8 L969.3 170.9 L962.1 157.3 L942.8 145.1 L918.4 134.3 L902.7 129.3 L851.1 118.6 L762.4 107.1 L724.4 106.4 L661.4 70.6 L588.4 32.7 L558.3 24.1 L512.5 18.4 L417.3 15.5 L370.1 16.9 L323.5 21.2 L317.8 19.1 L309.9 18.4 L299.9 14.1 L294.2 14.1 L292.0 15.5 L294.2 20.5 L294.2 24.1 L292.0 27.0 L269.1 32.0 L264.8 34.8 L204.7 53.4 L110.2 88.5 L101.6 88.5 L63.6 95.0 L50.0 94.3 L44.3 113.6 L44.3 127.2 L45.8 130.8 L50.0 135.1 L47.9 145.8 Z" fill="none" stroke="#FAB817" stroke-width="3.5" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
+      <circle id="splash" cx="224" cy="117.9" r="0" fill="none" stroke="#FAB817" stroke-width="4" opacity="0"></circle>
+     </g></g>
+     <!-- wheels: outer group folds (hover), inner group spins; a blurred copy fades in at speed -->
+     <g id="wr"><g id="wrs"><image href="assets/car/wheel-r.png" x="174.6" y="160.1" width="138.9" height="138.9" class="photo"></image><image class="wblur photo" href="assets/car/wheel-r-blur.png" x="174.6" y="160.1" width="138.9" height="138.9" opacity="0"></image><circle cx="244.4" cy="229.9" r="11" fill="#FAB817" stroke="#1A1B1D" stroke-width="2"></circle></g></g>
+     <g id="wf"><g id="wfs"><image href="assets/car/wheel-f.png" x="746.6" y="156.5" width="138.9" height="138.9" class="photo"></image><image class="wblur photo" href="assets/car/wheel-f-blur.png" x="746.6" y="156.5" width="138.9" height="138.9" opacity="0"></image><circle cx="816.4" cy="226.3" r="11" fill="#FAB817" stroke="#1A1B1D" stroke-width="2"></circle></g></g>
+    </svg>
+   </div>
+  </div>
 
   <!-- 1 · HOOK -->
   <div id="s1" class="scene">
@@ -108,38 +170,6 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
    <div class="ar" id="p1" style="top:300px;font-size:70px"><span class="w p1">يعيد</span> <span class="w p1 y">أعلى أداء</span> <span class="w p1">للمحرّك</span></div>
   </div>
 
-  <!-- the car (shared by scenes 1–4) -->
-  <div id="carw">
-   <svg width="1000" height="400" viewBox="0 0 1000 400">
-    <defs>
-     <linearGradient id="gFlame" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF4C8"></stop><stop offset=".3" stop-color="#FFD25A"></stop><stop offset="1" stop-color="#FAB817" stop-opacity="0"></stop></linearGradient>
-     <radialGradient id="gGlow"><stop offset="0" stop-color="#FAB817" stop-opacity=".75"></stop><stop offset="1" stop-color="#FAB817" stop-opacity="0"></stop></radialGradient>
-     <linearGradient id="gCone" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE7A0" stop-opacity=".55"></stop><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"></stop></linearGradient>
-     <filter id="bloom" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="6"></feGaussianBlur></filter>
-    </defs>
-    <!-- thrusters (hover mode) -->
-    <g id="th1" opacity="0"><ellipse cx="230.1" cy="245.4" rx="95" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M190.1 237.4 C200.1 277.4 218.1 315.4 230.1 357.4 C242.1 315.4 260.1 277.4 270.1 237.4 Z" fill="url(#gFlame)"></path></g>
-    <g id="th2" opacity="0"><ellipse cx="806.1" cy="243.6" rx="95" ry="30" fill="url(#gGlow)"></ellipse><path class="flame" d="M766.1 235.6 C776.1 275.6 794.1 313.6 806.1 355.6 C818.1 313.6 836.1 275.6 846.1 235.6 Z" fill="url(#gFlame)"></path></g>
-    <!-- headlight cone -->
-    <path id="cone" d="M958.1 146.3 L1250 76.30000000000001 L1250 226.3 Z" fill="url(#gCone)" opacity="0"></path>
-    <!-- body: the client's side photo, cut out (scripts/prepare_car.py) -->
-    <image href="assets/car/body.png" x="-153.65" y="-218.31" width="1319.43" height="659.72" class="photo"></image>
-    <rect id="fuel" x="199.8" y="90.3" width="42" height="30" rx="6" fill="none" stroke="#FAB817" stroke-opacity="0" stroke-width="3"></rect>
-    <!-- lights -->
-    <path id="hlb" d="M886.7 135.6 L958.1 146.3" fill="none" stroke="#FAB817" stroke-width="16" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
-    <path id="hl" d="M886.7 135.6 L958.1 146.3" fill="none" stroke="#FFE9A8" stroke-width="5" stroke-linecap="round" opacity=".15"></path>
-    <path id="tlb" d="M46.0 104.4 L120.0 113.3" fill="none" stroke="#FAB817" stroke-width="14" stroke-linecap="round" filter="url(#bloom)" opacity="0"></path>
-    <path id="tl" d="M46.0 104.4 L120.0 113.3" fill="none" stroke="#FAB817" stroke-width="5" stroke-linecap="round" opacity=".15"></path>
-    <!-- energy outline (draws after the treatment) -->
-    <path id="glowb" d="M31.8 177.5 L30.9 204.3 L35.3 214.1 L39.8 217.6 L38.0 223.9 L41.6 227.4 L60.3 232.8 L145.0 242.6 L302.8 241.7 L301.0 250.6 L327.8 248.8 L341.1 245.3 L725.4 249.7 L730.7 247.1 L735.2 247.1 L732.5 240.8 L733.4 239.9 L878.7 239.9 L879.6 240.8 L873.4 256.0 L891.2 257.8 L909.9 250.6 L937.6 248.8 L974.1 234.6 L971.4 230.1 L964.3 225.7 L968.8 222.1 L964.3 215.0 L965.2 209.6 L969.7 203.4 L968.8 198.0 L970.5 195.3 L970.5 181.1 L967.0 170.4 L967.9 151.7 L965.2 149.0 L959.8 136.5 L934.0 120.5 L895.7 108.0 L822.6 94.6 L761.9 87.5 L720.9 84.8 L666.5 53.6 L587.2 13.5 L550.6 4.6 L482.0 -1.7 L443.7 -2.6 L375.9 -0.8 L302.8 6.3 L272.5 13.5 L221.7 29.5 L112.0 70.5 L80.8 75.9 L50.5 77.7 L48.7 79.5 L46.0 90.2 L43.4 115.1 L48.7 122.2 L48.7 124.9 L34.5 162.4 Z" fill="none" stroke="#FAB817" stroke-width="12" stroke-linejoin="round" opacity=".35" filter="url(#bloom)" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
-    <path id="glow" d="M31.8 177.5 L30.9 204.3 L35.3 214.1 L39.8 217.6 L38.0 223.9 L41.6 227.4 L60.3 232.8 L145.0 242.6 L302.8 241.7 L301.0 250.6 L327.8 248.8 L341.1 245.3 L725.4 249.7 L730.7 247.1 L735.2 247.1 L732.5 240.8 L733.4 239.9 L878.7 239.9 L879.6 240.8 L873.4 256.0 L891.2 257.8 L909.9 250.6 L937.6 248.8 L974.1 234.6 L971.4 230.1 L964.3 225.7 L968.8 222.1 L964.3 215.0 L965.2 209.6 L969.7 203.4 L968.8 198.0 L970.5 195.3 L970.5 181.1 L967.0 170.4 L967.9 151.7 L965.2 149.0 L959.8 136.5 L934.0 120.5 L895.7 108.0 L822.6 94.6 L761.9 87.5 L720.9 84.8 L666.5 53.6 L587.2 13.5 L550.6 4.6 L482.0 -1.7 L443.7 -2.6 L375.9 -0.8 L302.8 6.3 L272.5 13.5 L221.7 29.5 L112.0 70.5 L80.8 75.9 L50.5 77.7 L48.7 79.5 L46.0 90.2 L43.4 115.1 L48.7 122.2 L48.7 124.9 L34.5 162.4 Z" fill="none" stroke="#FAB817" stroke-width="3.5" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1" stroke-dashoffset="1"></path>
-    <circle id="splash" cx="220.8" cy="105.3" r="0" fill="none" stroke="#FAB817" stroke-width="4" opacity="0"></circle>
-    <!-- wheels: outer group folds (hover), inner group spins -->
-    <g id="wr"><g id="wrs"><image href="assets/car/wheel-r.png" x="153.0" y="146.3" width="153.3" height="153.3" class="photo"></image><circle cx="230.1" cy="223.4" r="10" fill="#FAB817" stroke="#1A1B1D" stroke-width="2"></circle></g></g>
-    <g id="wf"><g id="wfs"><image href="assets/car/wheel-f.png" x="728.9" y="144.5" width="153.3" height="153.3" class="photo"></image><circle cx="806.1" cy="221.6" r="10" fill="#FAB817" stroke="#1A1B1D" stroke-width="2"></circle></g></g>
-   </svg>
-  </div>
-
   <!-- the drop poured from the can -->
   <svg id="dropw" width="1080" height="1920" viewBox="0 0 1080 1920" style="visibility:hidden"><path id="drop" d="M0 -46 C0 -46 -17 -24 -17 -14 A17 17 0 0 0 17 -14 C17 -24 0 -46 0 -46 Z" fill="#FAB817"></path></svg>
 
@@ -163,7 +193,7 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
     <circle id="disc5" cx="540" cy="770" r="190" fill="#151617"></circle>
     <circle id="ring5" cx="540" cy="770" r="190" fill="none" stroke="#FAB817" stroke-width="7" pathLength="1" stroke-dasharray="1 1" transform="rotate(-90 540 770)"></circle>
    </svg>
-   <div id="can5" class="can" style="left:415px;top:444px;width:250px;height:654px"><img src="assets/extreme-can.png" alt="" /></div>
+   <div id="can5" class="can" style="left:415px;top:444px;width:250px;height:654px"><img src="assets/extreme-can.png" alt="" /><div class="sheen"><i id="sh5" data-layout-allow-overflow></i></div></div>
    <div class="ar" id="a1" style="top:1175px;font-size:66px"><span class="y">اطلبه الآن</span> من خلال</div>
    <div id="pill" dir="ltr">jlmstore.com</div>
    <div class="ar" id="d1" style="top:1470px;font-size:50px;display:flex;justify-content:center;align-items:center;gap:20px;direction:rtl">
@@ -177,122 +207,156 @@ svg{position:absolute;left:0;top:0;overflow:visible;}
 <script>
 (function(){
  var tl = gsap.timeline({paused:true});
+ var WR = "244.4 229.9", WF = "816.4 226.3", MID = "520 200";
+ // text in: rise + de-blur (cinematic)
+ function txt(sel, at, st){ tl.fromTo(sel,{opacity:0,y:36,filter:"blur(10px)"},{opacity:1,y:0,filter:"blur(0px)",duration:.6,ease:"power3.out",stagger:st||0},at); }
  // background: slow drift for the whole story
- tl.fromTo("#grain",{scale:1.05,rotation:-2},{scale:1.15,rotation:2,duration:20,ease:"none"},0);
+ tl.fromTo("#grain",{scale:1.05,rotation:-2},{scale:1.15,rotation:2,duration:25.5,ease:"none"},0);
 
- // ---------- 1 · HOOK (0 – 3.6): the car is revealed by a light sweep, power is low ----------
+ // ---------- 1 · HOOK (0 – 4.8): a tired car, coughing smoke, low power ----------
  tl.set("#s1,#world,#carw,#mwrap",{autoAlpha:1},0);
+ tl.fromTo("#cam",{scale:1},{scale:1.045,duration:4.3,ease:"sine.inOut"},0);
  tl.fromTo("#world",{opacity:0},{opacity:1,duration:.8},0.1);
  tl.fromTo("#beam",{x:0,opacity:1},{x:1500,opacity:1,duration:1.3,ease:"power1.inOut"},0.15);
  tl.set("#beam",{opacity:0},1.5);
- tl.fromTo("#carw",{clipPath:"inset(0% 100% 0% 0%)"},{clipPath:"inset(0% 0% 0% 0%)",duration:1.3,ease:"power1.inOut"},0.15);
+ tl.fromTo("#carw",{clipPath:"inset(-20% 100% -20% 0%)"},{clipPath:"inset(-20% 0% -20% 0%)",duration:1.3,ease:"power1.inOut"},0.15);
  tl.set("#carw",{clipPath:"none"},1.5);
- // weak, flickering lights
- [[1.3,.6],[1.42,.15],[1.55,.5],[1.7,.2],[2.2,.45],[2.3,.18]].forEach(function(f){ tl.set("#hl,#tl",{opacity:f[1]},f[0]); });
- tl.fromTo(".h1",{opacity:0,y:40},{opacity:1,y:0,duration:.5,ease:"power3.out",stagger:.14},0.5);
- tl.fromTo("#mlabel,#meter",{opacity:0,y:24},{opacity:1,y:0,duration:.45,ease:"power3.out",stagger:.1},1.2);
- tl.fromTo("#mfill",{width:"0%"},{width:"34%",duration:.6,ease:"power2.out"},1.5);
- tl.to(".h1, #mlabel, #meter",{opacity:0,y:-24,duration:.3,ease:"power2.in"},3.2);
- // the car drives off; the product takes the stage
- tl.to("#wrs",{rotation:540,svgOrigin:"230.1 223.4",duration:.55,ease:"power2.in"},3.2);
- tl.to("#wfs",{rotation:540,svgOrigin:"806.1 221.6",duration:.55,ease:"power2.in"},3.2);
- tl.to("#carw",{x:1200,duration:.55,ease:"power2.in"},3.2);
- tl.to("#world",{opacity:0,duration:.4},3.3);
- tl.set("#s1,#carw",{autoAlpha:0},3.8);
+ [[1.3,.6],[1.42,.12],[1.55,.5],[1.7,.18],[2.3,.08],[2.45,.4],[3.3,.06],[3.45,.35],[3.9,.15]].forEach(function(f){ tl.set("#hl,#tl",{opacity:f[1]},f[0]); });
+ txt(".h1",0.5,.14);
+ tl.fromTo("#mlabel,#meter",{opacity:0,y:24},{opacity:1,y:0,duration:.5,ease:"power3.out",stagger:.1},1.3);
+ tl.fromTo("#mfill",{width:"0%"},{width:"34%",duration:.7,ease:"power2.out"},1.6);
+ tl.to("#mfill",{width:"26%",duration:.25,ease:"power2.in"},2.3);
+ tl.to("#mfill",{width:"34%",duration:.4,ease:"power2.out"},2.55);
+ // idle shiver + two coughs with a puff of dark smoke
+ tl.fromTo("#vib",{y:0},{y:.7,duration:.05,ease:"none",yoyo:true,repeat:13},1.5);
+ [[2.3,".pf1"],[3.3,".pf2"]].forEach(function(c){
+   tl.to("#vib",{y:3.5,duration:.08,ease:"power2.out"},c[0]);
+   tl.to("#vib",{y:0,duration:.45,ease:"elastic.out(1,.35)"},c[0]+.08);
+   tl.fromTo(c[1],{opacity:.85,scale:.8,x:0,y:0,transformOrigin:"50% 50%"},{opacity:0,scale:4.2,x:-95,y:-46,duration:1.5,ease:"power2.out",stagger:.07,immediateRender:false},c[0]+.02);
+ });
+ tl.fromTo("#vib",{y:0},{y:.6,duration:.05,ease:"none",yoyo:true,repeat:7,immediateRender:false},3.85);
+ tl.to(".h1, #mlabel, #meter",{opacity:0,y:-24,filter:"blur(8px)",duration:.35,ease:"power2.in"},4.25);
+ // pulls away: rear squats, wheels blur
+ tl.to("#sus",{rotation:-1.6,svgOrigin:MID,duration:.3,ease:"power2.out"},4.35);
+ tl.to("#sus",{rotation:0,svgOrigin:MID,duration:.4,ease:"sine.inOut"},4.65);
+ tl.to("#wrs",{rotation:900,svgOrigin:WR,duration:.7,ease:"power2.in"},4.35);
+ tl.to("#wfs",{rotation:900,svgOrigin:WF,duration:.7,ease:"power2.in"},4.35);
+ tl.to(".wblur",{opacity:1,duration:.3},4.5);
+ tl.to("#carw",{x:1250,duration:.7,ease:"power2.in"},4.35);
+ tl.to("#world",{opacity:0,duration:.45},4.55);
+ tl.set("#s1,#carw",{autoAlpha:0},5.1);
 
- // ---------- 2 · PRODUCT (3.6 – 6.4) ----------
- tl.set("#s2",{autoAlpha:1},3.6);
- tl.fromTo("#disc2",{opacity:0},{opacity:1,duration:.4},3.6);
- tl.fromTo("#ring2",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},3.6);
- tl.fromTo("#hair2",{rotation:0,svgOrigin:"540 800",opacity:0},{rotation:40,svgOrigin:"540 800",opacity:1,duration:2.6,ease:"none"},3.6);
- tl.fromTo("#can2",{y:520,rotation:-10,opacity:0},{y:0,rotation:0,opacity:1,duration:.85,ease:"power3.out"},3.65);
- tl.fromTo("#sh2",{x:0},{x:900,duration:.8,ease:"power2.inOut"},4.5);
- tl.fromTo("#n1",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},4.2);
- tl.fromTo("#n2",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},4.45);
- tl.fromTo("#n3",{opacity:0,y:20},{opacity:1,y:0,duration:.45,ease:"power3.out"},4.7);
- tl.to("#n1,#n2,#n3,#disc2,#ring2,#hair2",{opacity:0,duration:.35,ease:"power2.in"},6.2);
+ // ---------- 2 · PRODUCT (4.8 – 8.4) ----------
+ tl.set("#s2",{autoAlpha:1},4.8);
+ tl.fromTo("#disc2",{opacity:0,scale:.85,svgOrigin:"540 800"},{opacity:1,scale:1,svgOrigin:"540 800",duration:.6,ease:"power3.out"},4.8);
+ tl.fromTo("#ring2",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.8,ease:"power2.inOut"},4.8);
+ tl.fromTo("#hair2",{rotation:0,svgOrigin:"540 800",opacity:0},{rotation:45,svgOrigin:"540 800",opacity:1,duration:3.4,ease:"none"},4.8);
+ tl.fromTo("#can2",{y:560,rotation:-12,opacity:0},{y:0,rotation:0,opacity:1,duration:1.0,ease:"power3.out"},4.85);
+ tl.fromTo("#can2",{scale:1},{scale:1.04,duration:2.4,ease:"sine.inOut",immediateRender:false},5.85);
+ tl.fromTo("#sh2",{x:0},{x:900,duration:.9,ease:"power2.inOut"},5.7);
+ txt("#n1",5.35); txt("#n2",5.6); txt("#n3",5.85);
+ tl.to("#n1,#n2,#n3,#disc2,#ring2,#hair2",{opacity:0,duration:.4,ease:"power2.in"},8.2);
 
- // ---------- 2b · THE POUR (6.4 – 9.2) ----------
- // the can tilts over the fuel door while the car rolls back in
- tl.to("#can2",{x:-141,y:-118,scale:.5,rotation:-125,duration:.7,ease:"power3.inOut"},6.35);
- tl.set("#carw",{autoAlpha:1,x:-1150},6.4);
- tl.to("#world",{opacity:1,duration:.5},6.4);
- tl.to("#carw",{x:0,duration:.7,ease:"power3.out"},6.4);
- tl.fromTo("#wrs",{rotation:0,svgOrigin:"230.1 223.4"},{rotation:720,svgOrigin:"230.1 223.4",duration:.7,ease:"power3.out",immediateRender:false},6.4);
- tl.fromTo("#wfs",{rotation:0,svgOrigin:"806.1 221.6"},{rotation:720,svgOrigin:"806.1 221.6",duration:.7,ease:"power3.out",immediateRender:false},6.4);
- tl.set("#dropw",{autoAlpha:1},7.1);
- tl.fromTo("#drop",{x:261,y:796,scale:.5},{x:260.8,y:963.3,scale:1,duration:.38,ease:"power2.in"},7.1);
- tl.set("#dropw",{autoAlpha:0},7.48);
- tl.fromTo("#splash",{attr:{r:4},opacity:1},{attr:{r:60},opacity:0,duration:.5,ease:"power2.out",immediateRender:false},7.47);
- tl.to("#fuel",{attr:{"stroke-opacity":1},duration:.2},7.47);
- tl.to("#can2",{y:-260,opacity:0,duration:.45,ease:"power2.in"},7.6);
+ // ---------- 2b · THE POUR (8.4 – 12.4) ----------
+ tl.fromTo("#cam",{scale:1},{scale:1.035,duration:4.0,ease:"sine.inOut",immediateRender:false},8.4);
+ tl.to("#can2",{x:-141,y:-118,scale:.5,rotation:-125,duration:.85,ease:"power3.inOut"},8.3);
+ tl.set("#carw",{autoAlpha:1,x:-1250},8.4);
+ tl.set(".wblur",{opacity:1},8.4);
+ tl.to("#world",{opacity:1,duration:.6},8.4);
+ tl.to("#carw",{x:0,duration:.95,ease:"power3.out"},8.4);
+ tl.fromTo("#wrs",{rotation:0,svgOrigin:WR},{rotation:1080,svgOrigin:WR,duration:.95,ease:"power3.out",immediateRender:false},8.4);
+ tl.fromTo("#wfs",{rotation:0,svgOrigin:WF},{rotation:1080,svgOrigin:WF,duration:.95,ease:"power3.out",immediateRender:false},8.4);
+ tl.to(".wblur",{opacity:0,duration:.45},8.75);
+ // brakes: the nose dips, then the body settles on its springs
+ tl.to("#sus",{rotation:1.5,svgOrigin:MID,duration:.22,ease:"power2.out"},9.12);
+ tl.to("#sus",{rotation:0,svgOrigin:MID,duration:.8,ease:"elastic.out(1,.4)"},9.34);
+ tl.set("#dropw",{autoAlpha:1},9.3);
+ tl.fromTo("#drop",{x:262,y:796,scale:.5},{x:264,y:976,scale:1,duration:.4,ease:"power2.in"},9.3);
+ tl.set("#dropw",{autoAlpha:0},9.7);
+ tl.fromTo("#splash",{attr:{r:4},opacity:1},{attr:{r:60},opacity:0,duration:.55,ease:"power2.out",immediateRender:false},9.69);
+ tl.to("#fuel",{attr:{"stroke-opacity":1},duration:.2},9.69);
+ tl.to("#can2",{y:-280,opacity:0,duration:.5,ease:"power2.in"},9.85);
  // power on: energy runs around the body, the lights come on, the meter fills gold
- tl.to("#glow,#glowb",{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},7.5);
- tl.set("#hl,#tl",{opacity:1},7.95);
- tl.fromTo("#hlb,#tlb,#cone",{opacity:0},{opacity:1,duration:.35,ease:"power2.out"},7.95);
- tl.fromTo(".p1",{opacity:0,y:30},{opacity:1,y:0,duration:.45,ease:"power3.out",stagger:.12},7.55);
- tl.fromTo("#mlabel,#meter",{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:"power3.out",immediateRender:false},7.6);
- tl.fromTo("#mgold",{width:"0%"},{width:"100%",duration:.7,ease:"power2.inOut"},7.95);
- tl.to(".p1, #mlabel, #meter",{opacity:0,y:-24,duration:.3,ease:"power2.in"},8.9);
- tl.set("#s2,#mwrap",{autoAlpha:0},9.2);
+ tl.to("#glow,#glowb",{attr:{"stroke-dashoffset":0},duration:.9,ease:"power2.inOut"},9.75);
+ tl.set("#hl,#tl",{opacity:1},10.35);
+ tl.fromTo("#hlb,#tlb,#cone",{opacity:0},{opacity:1,duration:.4,ease:"power2.out"},10.35);
+ tl.fromTo("#vib",{y:0},{y:-2,duration:.12,ease:"power2.out",yoyo:true,repeat:1,immediateRender:false},10.35);
+ txt(".p1",9.8,.12);
+ tl.fromTo("#mlabel,#meter",{opacity:0,y:24,filter:"blur(0px)"},{opacity:1,y:0,filter:"blur(0px)",duration:.45,ease:"power3.out",immediateRender:false},9.9);
+ tl.fromTo("#mgold",{width:"0%"},{width:"100%",duration:.8,ease:"power2.inOut"},10.35);
+ tl.to(".p1, #mlabel, #meter",{opacity:0,y:-24,filter:"blur(8px)",duration:.35,ease:"power2.in"},12.05);
+ tl.set("#s2,#mwrap",{autoAlpha:0},12.4);
 
- // ---------- 3 · TAKE-OFF (9.2 – 13.2) ----------
- tl.set("#s3",{autoAlpha:1},9.2);
- tl.fromTo("#t1",{opacity:0,y:24},{opacity:1,y:0,duration:.45,ease:"power3.out"},9.2);
- tl.fromTo(".t2",{opacity:0,y:50,scale:.9},{opacity:1,y:0,scale:1,duration:.55,ease:"back.out(1.6)",stagger:.18},9.4);
- // wheels fold flat into hover pads, thrusters ignite
- tl.to("#wr",{scaleY:.2,y:-8,svgOrigin:"230.1 223.4",duration:.45,ease:"power3.inOut"},9.3);
- tl.to("#wf",{scaleY:.2,y:-8,svgOrigin:"806.1 221.6",duration:.45,ease:"power3.inOut"},9.3);
- tl.fromTo("#th1,#th2",{opacity:0},{opacity:1,duration:.3},9.6);
- tl.fromTo(".flame",{scaleY:.88,transformOrigin:"50% 0%"},{scaleY:1.12,transformOrigin:"50% 0%",duration:.1,ease:"sine.inOut",yoyo:true,repeat:71},9.6);
- // lift-off: the camera follows the car up, the city drops away
- tl.to("#carw",{y:-160,duration:1.1,ease:"power3.inOut"},9.8);
- tl.to("#carw",{rotation:-5,duration:.55,ease:"power2.out"},9.8);
- tl.to("#carw",{rotation:0,duration:.8,ease:"sine.inOut"},10.35);
- tl.to("#shadow",{attr:{rx:200},opacity:0,duration:.8},9.8);
- tl.to("#world",{y:900,opacity:0,duration:1.5,ease:"power2.in"},10.0);
- tl.set("#world",{autoAlpha:0},11.6);
- tl.set("#fly",{autoAlpha:1},10.2);
- tl.fromTo("#fly",{opacity:0},{opacity:1,duration:.5},10.2);
- tl.to("#carw",{y:-176,duration:1.0,ease:"sine.inOut",yoyo:true,repeat:1},11.0);
- tl.to("#t1, .t2",{opacity:0,y:-30,duration:.3,ease:"power2.in"},12.9);
- tl.set("#s3",{autoAlpha:0},13.2);
+ // ---------- 3 · TAKE-OFF (12.4 – 17.2) ----------
+ tl.set("#s3",{autoAlpha:1},12.4);
+ tl.to("#cam",{scale:1,duration:.6,ease:"sine.inOut"},12.4);
+ txt("#t1",12.4);
+ tl.fromTo(".t2",{opacity:0,y:60,scale:.88,filter:"blur(12px)"},{opacity:1,y:0,scale:1,filter:"blur(0px)",duration:.7,ease:"back.out(1.5)",stagger:.2},12.6);
+ // wheels fold flat into hover pads, thrusters ignite and light the road
+ tl.to("#wr",{scaleY:.2,y:-8,svgOrigin:WR,duration:.5,ease:"power3.inOut"},12.55);
+ tl.to("#wf",{scaleY:.2,y:-8,svgOrigin:WF,duration:.5,ease:"power3.inOut"},12.55);
+ tl.fromTo("#th1,#th2",{opacity:0},{opacity:1,duration:.35},12.95);
+ tl.fromTo(".pool",{opacity:0},{opacity:1,duration:.4},12.95);
+ tl.fromTo(".flame",{scaleY:.88,transformOrigin:"50% 0%"},{scaleY:1.12,transformOrigin:"50% 0%",duration:.1,ease:"sine.inOut",yoyo:true,repeat:83},12.95);
+ // lift-off: a small camera shake, dust blows out, the camera follows the car up
+ [[13.0,6,-4],[13.06,-5,3],[13.12,4,-3],[13.18,-3,2],[13.24,2,-1],[13.3,0,0]].forEach(function(k){ tl.to("#cam",{x:k[1],y:k[2],duration:.06,ease:"none"},k[0]); });
+ tl.fromTo("#dust circle",{opacity:.7,x:0,y:0},{opacity:0,x:function(i){return (i%5<3?-1:1)*(80+i*14);},y:function(i){return -10-(i%4)*12;},duration:1.0,ease:"power2.out",immediateRender:false},13.0);
+ tl.to("#ground",{opacity:0,duration:.35},13.0);
+ tl.to("#carw",{y:-160,duration:1.2,ease:"power3.inOut"},13.0);
+ tl.to("#carw",{rotation:-5,duration:.6,ease:"power2.out"},13.0);
+ tl.to("#carw",{rotation:0,duration:.8,ease:"sine.inOut"},13.6);
+ tl.to("#shadow",{attr:{rx:200},opacity:0,duration:.8},13.0);
+ tl.to("#world",{y:900,opacity:0,duration:1.6,ease:"power2.in"},13.2);
+ tl.set("#world",{autoAlpha:0},14.9);
+ tl.set("#fly",{autoAlpha:1},13.4);
+ tl.fromTo("#fly",{opacity:0},{opacity:1,duration:.6},13.4);
+ tl.fromTo(".trail",{opacity:0},{opacity:.75,duration:.5},13.6);
+ tl.fromTo(".trail",{scaleX:.9,transformOrigin:"100% 50%"},{scaleX:1.1,transformOrigin:"100% 50%",duration:.15,ease:"sine.inOut",yoyo:true,repeat:47},13.6);
+ // cruising: gentle bob and bank
+ tl.to("#carw",{y:-180,duration:1.25,ease:"sine.inOut",yoyo:true,repeat:1},14.4);
+ tl.to("#carw",{rotation:1.5,duration:1.25,ease:"sine.inOut",yoyo:true,repeat:1},14.4);
+ tl.to("#t1, .t2",{opacity:0,y:-30,filter:"blur(8px)",duration:.35,ease:"power2.in"},16.85);
+ tl.set("#s3",{autoAlpha:0},17.2);
 
- // speed lines + clouds stream past for the whole flight (10.2 – 16.9)
+ // speed lines + clouds stream past for the whole flight (13.4 – 21.4)
  [["#sl1",.62,0],["#sl2",.5,.2],["#sl3",.7,.1],["#sl4",.55,.35],["#sl5",.66,.15],["#sl6",.52,.4],["#sl7",.72,.25],["#sl8",.58,.05]].forEach(function(s){
-   var n = Math.floor((16.9 - 10.2 - s[2]) / s[1]);
-   tl.fromTo(s[0],{x:1180},{x:-420,duration:s[1],ease:"none",repeat:n-1},10.2+s[2]);
+   var n = Math.floor((21.4 - 13.4 - s[2]) / s[1]);
+   tl.fromTo(s[0],{x:1180},{x:-420,duration:s[1],ease:"none",repeat:n-1},13.4+s[2]);
  });
- [["#cl1",2.4,0],["#cl2",3.0,.8],["#cl3",2.2,1.6]].forEach(function(c){
-   var n = Math.floor((16.9 - 10.2 - c[2]) / c[1]);
-   tl.fromTo(c[0],{x:1150},{x:-900,duration:c[1],ease:"none",repeat:n-1},10.2+c[2]);
+ [["#cl1",2.4,0],["#cl2",3.0,.8],["#cl3",2.2,1.6],["#cl4",4.0,.4]].forEach(function(c){
+   var n = Math.floor((21.4 - 13.4 - c[2]) / c[1]);
+   tl.fromTo(c[0],{x:1150},{x:-1000,duration:c[1],ease:"none",repeat:n-1},13.4+c[2]);
  });
 
- // ---------- 4 · BENEFITS (13.2 – 16.8) ----------
- tl.to("#carw",{y:-550,scale:.8,duration:.7,ease:"power3.inOut"},13.0);
- tl.set("#s4",{autoAlpha:1},13.2);
+ // ---------- 4 · BENEFITS (17.2 – 21.3) ----------
+ tl.to("#carw",{y:-550,scale:.8,duration:.75,ease:"power3.inOut"},16.9);
+ tl.set("#s4",{autoAlpha:1},17.2);
  ["#k1","#k2","#k3"].forEach(function(k,i){
-   tl.fromTo(k,{opacity:0,x:90},{opacity:1,x:0,duration:.5,ease:"power3.out"},13.45+i*.7);
-   tl.fromTo(k+" .ico",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut"},13.65+i*.7);
+   tl.fromTo(k,{opacity:0,x:110,filter:"blur(8px)"},{opacity:1,x:0,filter:"blur(0px)",duration:.6,ease:"power3.out"},17.4+i*.7);
+   tl.fromTo(k+" .ico",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},17.6+i*.7);
  });
- tl.to("#carw",{y:-566,duration:.9,ease:"sine.inOut",yoyo:true,repeat:1},14.2);
- tl.to("#s4 .card",{opacity:0,y:-30,duration:.35,ease:"power2.in",stagger:.05},16.3);
- tl.set("#s4",{autoAlpha:0},16.8);
+ tl.to("#carw",{y:-568,duration:1.6,ease:"sine.inOut",yoyo:true,repeat:1},17.65);
+ tl.to("#carw",{rotation:-1.2,duration:1.6,ease:"sine.inOut",yoyo:true,repeat:1},17.65);
+ tl.to("#s4 .card",{opacity:0,y:-30,filter:"blur(8px)",duration:.35,ease:"power2.in",stagger:.05},20.9);
+ tl.set("#s4",{autoAlpha:0},21.35);
  // the car blasts off out of frame
- tl.to("#carw",{x:900,y:-1300,scale:.35,rotation:-14,duration:.6,ease:"power3.in"},16.2);
- tl.set("#carw,#fly",{autoAlpha:0},16.9);
+ tl.to(".trail",{opacity:1,duration:.2},20.85);
+ tl.to("#carw",{x:900,y:-1300,scale:.35,rotation:-14,duration:.6,ease:"power3.in"},20.85);
+ tl.set("#carw,#fly",{autoAlpha:0},21.5);
 
- // ---------- 5 · CTA (16.8 – 20.0) ----------
- tl.set("#s5",{autoAlpha:1},16.8);
- tl.fromTo("#disc5",{opacity:0},{opacity:1,duration:.4},16.8);
- tl.fromTo("#ring5",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},16.8);
- tl.fromTo("#can5",{scale:.8,opacity:0,y:40},{scale:1,opacity:1,y:0,duration:.7,ease:"power3.out"},16.9);
- tl.fromTo("#logo5",{opacity:0,y:-24},{opacity:1,y:0,duration:.6,ease:"power3.out"},17.05);
- tl.fromTo("#a1",{opacity:0,y:28},{opacity:1,y:0,duration:.5,ease:"power3.out"},17.4);
- tl.fromTo("#pill",{opacity:0,scale:.6},{opacity:1,scale:1,duration:.5,ease:"back.out(1.8)"},17.8);
- tl.fromTo("#d1",{opacity:0,y:24},{opacity:1,y:0,duration:.5,ease:"power3.out"},18.3);
- tl.fromTo("#truck path, #truck circle",{attr:{"stroke-dasharray":"1 1","stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut",stagger:.08},18.35);
- tl.to("#can5",{y:-10,duration:1.4,ease:"sine.inOut"},18.5);
+ // ---------- 5 · CTA (21.3 – 25.5) ----------
+ tl.set("#s5",{autoAlpha:1},21.3);
+ tl.fromTo("#disc5",{opacity:0,scale:.85,svgOrigin:"540 770"},{opacity:1,scale:1,svgOrigin:"540 770",duration:.6,ease:"power3.out"},21.3);
+ tl.fromTo("#ring5",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.8,ease:"power2.inOut"},21.3);
+ tl.fromTo("#can5",{scale:.8,opacity:0,y:50},{scale:1,opacity:1,y:0,duration:.8,ease:"power3.out"},21.4);
+ tl.fromTo("#logo5",{opacity:0,y:-24,filter:"blur(8px)"},{opacity:1,y:0,filter:"blur(0px)",duration:.6,ease:"power3.out"},21.6);
+ txt("#a1",22.0);
+ tl.fromTo("#pill",{opacity:0,scale:.6},{opacity:1,scale:1,duration:.55,ease:"back.out(1.8)"},22.4);
+ txt("#d1",22.9);
+ tl.fromTo("#truck path, #truck circle",{attr:{"stroke-dasharray":"1 1","stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut",stagger:.08},22.95);
+ tl.fromTo("#sh5",{x:0},{x:900,duration:.9,ease:"power2.inOut"},23.3);
+ tl.to("#can5",{y:-12,duration:2.0,ease:"sine.inOut"},23.2);
+ tl.fromTo("#ring5",{scale:1,svgOrigin:"540 770"},{scale:1.04,svgOrigin:"540 770",duration:1.0,ease:"sine.inOut",yoyo:true,repeat:1,immediateRender:false},23.3);
 
  window.__timelines = window.__timelines || {};
  window.__timelines["story"] = tl;

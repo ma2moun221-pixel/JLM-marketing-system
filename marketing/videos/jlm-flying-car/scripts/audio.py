@@ -1,9 +1,9 @@
-"""Soundtrack for the 20 s flying-car story (Petrol Extreme Clean): music + soft SFX, mixed.
+"""Soundtrack for the 25.5 s flying-car story (Petrol Extreme Clean): music + soft SFX, mixed.
 
     python3 scripts/audio.py            # writes assets/bgm/story_mix.wav
 
 The music is this story's own track (scripts/music.py: cinematic synthwave, 120 BPM,
-D minor) built on the cuts: heartbeat drone → arpeggio under the product → build and a
+D minor, 25.5 s) built on the cuts: heartbeat drone → arpeggio under the product → build and a
 breath before the drop on the lift-off → side-chained supersaws under the flight → cadence
 under the CTA. SFX are the shared soft JLM set, placed on the on-screen beats.
 """
@@ -18,16 +18,17 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import music as M  # noqa: E402
 
 SR = 48000
-TOTAL = 20.0
+TOTAL = 25.5
 
 # (time, sfx, volume)
 CUES = [
-    (0.15, "whoosh", 0.35), (1.50, "pop", 0.25), (3.20, "swoosh", 0.45), (3.65, "impact", 0.35),
-    (4.50, "swoosh", 0.25), (4.55, "ding", 0.30), (6.35, "swoosh", 0.40), (6.40, "whoosh", 0.35),
-    (7.45, "plop", 0.50), (7.95, "chime", 0.35), (9.30, "pop", 0.30), (9.50, "pop", 0.30),
-    (9.80, "whoosh", 0.45), (13.00, "swoosh", 0.35), (13.45, "pop", 0.45),
-    (14.15, "pop", 0.45), (14.85, "pop", 0.45), (16.25, "whoosh", 0.45), (16.85, "impact", 0.20),
-    (17.80, "pop", 0.50), (17.85, "ding", 0.30), (18.35, "whoosh", 0.25), (19.10, "chime", 0.45),
+    (0.15, "whoosh", 0.35), (1.60, "pop", 0.25), (2.30, "thump", 0.30), (3.30, "thump", 0.30),
+    (4.35, "whoosh", 0.45), (4.85, "impact", 0.30), (5.70, "swoosh", 0.25), (5.75, "ding", 0.30),
+    (8.30, "swoosh", 0.35), (8.40, "whoosh", 0.40), (9.15, "thump", 0.20), (9.69, "plop", 0.50),
+    (10.35, "chime", 0.35), (12.55, "pop", 0.30), (12.75, "pop", 0.30), (13.00, "whoosh", 0.45),
+    (16.90, "swoosh", 0.35), (17.40, "pop", 0.45), (18.10, "pop", 0.45), (18.80, "pop", 0.45),
+    (20.85, "whoosh", 0.45), (21.35, "impact", 0.20), (22.40, "pop", 0.50), (22.45, "ding", 0.30),
+    (22.95, "whoosh", 0.25), (23.30, "swoosh", 0.20), (23.70, "chime", 0.45),
 ]
 
 

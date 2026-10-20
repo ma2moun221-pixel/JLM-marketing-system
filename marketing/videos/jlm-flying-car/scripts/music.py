@@ -2,13 +2,13 @@
 
     python3 scripts/music.py            # preview: writes assets/bgm/music.wav
 
-120 BPM, D minor (Dm–B♭–F–C). The bar grid is shifted so the lift-off (9.8 s) lands on
+120 BPM, D minor (Dm–B♭–F–C). The bar grid is shifted so the lift-off (13 s) lands on
 a downbeat:
-  0–3.8    dark drone, heartbeat sub pulse, soft ticks (the weak car)
-  3.8–7.8  the pad opens, plucked arpeggio with delay, light kick (the product)
-  7.8–9.8  build: snare roll, filter sweep, riser, a short breath before the drop (the pour)
-  9.8–16.8 drop: four-on-the-floor, side-chained supersaw chords, sub bass, lead hook (the flight)
-  16.8–20  B♭–C–Dm cadence under the CTA, ring-out
+  0–5      dark drone, heartbeat sub pulse, soft ticks (the weak car)
+  5–9      the pad opens, plucked arpeggio with delay, light kick (the product)
+  9–13     build: filter sweep, snare roll, riser, a short breath before the drop (the pour)
+  13–21    drop: four-on-the-floor, side-chained supersaw chords, sub bass, lead hook (the flight)
+  21–25.5  B♭–C–Dm cadence under the CTA, ring-out
 Needs numpy + scipy.
 """
 import wave
@@ -21,23 +21,23 @@ ROOT = Path(__file__).resolve().parents[1]
 SR = 48000
 BPM = 120
 BEAT = 60 / BPM
-GRID0 = -0.2                    # beat grid origin: downbeats at 1.8, 3.8, … 9.8
-TOTAL = 20.0
+GRID0 = -1.0                    # beat grid origin: downbeats at 1, 3, … 13
+TOTAL = 25.5
 RNG = np.random.default_rng(7)
 
-T_PRODUCT, T_BUILD, T_GAP, T_DROP, T_FILL, T_CTA, T_END = 3.8, 7.8, 9.65, 9.8, 16.3, 16.8, 18.8
+T_PRODUCT, T_BUILD, T_GAP, T_DROP, T_FILL, T_CTA, T_END = 5.0, 9.0, 12.85, 13.0, 20.5, 21.0, 23.0
 
 DM, BB, F, C = (62, 65, 69), (58, 62, 65), (60, 65, 69), (60, 64, 67)
 # (start, end, chord, bass root)
-CHORDS = [(0.0, 3.8, DM, 38), (3.8, 5.8, DM, 38), (5.8, 7.8, BB, 34), (7.8, 8.8, F, 41), (8.8, 9.8, C, 36),
-          (9.8, 11.8, DM, 38), (11.8, 13.8, BB, 34), (13.8, 15.8, F, 41), (15.8, 16.8, C, 36),
-          (16.8, 17.8, BB, 34), (17.8, 18.8, C, 36), (18.8, 20.0, DM, 38)]
+CHORDS = [(0.0, 5.0, DM, 38), (5.0, 7.0, DM, 38), (7.0, 9.0, BB, 34), (9.0, 11.0, F, 41), (11.0, 13.0, C, 36),
+          (13.0, 15.0, DM, 38), (15.0, 17.0, BB, 34), (17.0, 19.0, F, 41), (19.0, 21.0, C, 36),
+          (21.0, 22.0, BB, 34), (22.0, 23.0, C, 36), (23.0, 25.5, DM, 38)]
 # lead hook: (time, midi, beats)
-LEAD = [(9.8, 69, 1), (10.3, 74, 1), (10.8, 77, .5), (11.05, 76, .5), (11.3, 74, 1),
-        (11.8, 70, 1), (12.3, 74, 1), (12.8, 77, 1), (13.3, 79, 1),
-        (13.8, 81, 1.5), (14.55, 79, .5), (14.8, 77, 1), (15.3, 76, 1),
-        (15.8, 76, 1), (16.3, 79, 1),
-        (16.8, 77, 2), (17.8, 79, 2), (18.8, 81, 2.4)]
+LEAD = [(13.0, 69, 1), (13.5, 74, 1), (14.0, 77, .5), (14.25, 76, .5), (14.5, 74, 1),
+        (15.0, 70, 1), (15.5, 74, 1), (16.0, 77, 1), (16.5, 79, 1),
+        (17.0, 81, 1.5), (17.75, 79, .5), (18.0, 77, 1), (18.5, 76, 1),
+        (19.0, 76, 1), (19.5, 79, 1), (20.0, 81, 1), (20.5, 79, 1),
+        (21.0, 77, 2), (22.0, 79, 2), (23.0, 81, 4)]
 
 
 def hz(m):
@@ -237,7 +237,7 @@ def build():
         elif s < T_BUILD:
             p, g = (pad(ch, dur, 1500), pad(ch, dur, 1500)), 1.15
         elif s < T_DROP:
-            u0, u1 = (s - T_BUILD) / 2, (e - T_BUILD) / 2
+            u0, u1 = (s - T_BUILD) / (T_DROP - T_BUILD), (e - T_BUILD) / (T_DROP - T_BUILD)
             p, g = (pad(ch, dur, 1500 * (5.0 ** u0), 1500 * (5.0 ** u1)), pad(ch, dur, 1500 * (5.0 ** u0), 1500 * (5.0 ** u1))), 1.2
         elif s < T_END:
             p, g = (pad(ch, dur, 6500), pad(ch, dur, 6500)), 1.5
@@ -283,10 +283,10 @@ def build():
         add(send, ld, t, 0.45)
 
     # drums
-    for t in (0.3, 1.3, 2.3, 3.3):                        # heartbeat
+    for t in (0.3, 1.3, 2.3, 3.3, 4.3):                   # heartbeat
         add(drm, thump(), t, 0.3)
         add(drm, thump(), t + 0.24, 0.17)
-    for t, _ in beats(1.8, T_PRODUCT, BEAT / 2):
+    for t, _ in beats(1.0, T_PRODUCT, BEAT / 2):
         add(drm, tick(), t, 0.5, 0.3)
     for t, b in beats(T_PRODUCT, T_BUILD):
         if b in (0, 2):
@@ -296,12 +296,13 @@ def build():
     for t, _ in beats(T_PRODUCT, T_BUILD, BEAT / 4):
         add(drm, shaker(), t, 0.33, -0.3)
     for t, _ in beats(T_BUILD, T_GAP):
-        add(drm, K, t, 0.4 + 0.3 * (t - T_BUILD) / 2)
-    roll = [(T_BUILD, 8.8, BEAT / 2), (8.8, 9.3, BEAT / 4), (9.3, T_GAP, BEAT / 8)]
+        add(drm, K, t, 0.4 + 0.3 * (t - T_BUILD) / (T_DROP - T_BUILD))
+    R0 = T_DROP - 2.0
+    roll = [(R0, R0 + 1.0, BEAT / 2), (R0 + 1.0, R0 + 1.5, BEAT / 4), (R0 + 1.5, T_GAP, BEAT / 8)]
     for a, b_, st in roll:
         t = a
         while t < b_ - 1e-6:
-            add(drm, snare(), t, 0.15 + 0.5 * (t - T_BUILD) / 1.85)
+            add(drm, snare(), t, 0.15 + 0.5 * (t - R0) / 1.85)
             t += st
     for t, b in beats(T_DROP, T_FILL):
         add(drm, K, t, 0.7)
@@ -325,7 +326,7 @@ def build():
     add(drm, K, T_END, 0.55)
 
     # fx
-    add(fx, riser(2.0), T_BUILD, 0.9)
+    add(fx, riser(2.0), T_DROP - 2.0, 0.9)
     add(fx, riser(0.5), T_FILL, 0.6)
     for at, g in ((T_DROP, 0.7), (T_CTA, 0.55), (T_END, 0.3)):
         add(fx, impact(), at, g)
