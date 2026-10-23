@@ -33,15 +33,15 @@ CAT = {"oil": "#B8935C", "service": "#3F72AA", "petrol": GREEN}
 STORIES = [
     {   # 1 · opening
         "kind": "intro",
-        "tag": "حملة الشتاء",
+        "tag": "منتجات JLM",
         "headline": "منتجات رح تساعد<br>سيارتك في <span class='y'>الشتاء</span>",
-        "body": "جهّز سيارتك للبرد والمطر مع منتجات JLM المناسبة.",
+        "body": "منتجات JLM المناسبة لسيارتك في البرد والمطر.",
     },
     {   # 2 · 5W-30 — label: "5W30 · Premium Grade Performance Oil · Synthetic";
         # SAE J300: the "W" grade is the winter (low-temperature) viscosity rating
         "kind": "product", "img": "oil_5w30.png", "h": 600, "cat": "oil", "cat_ar": "زيت المحرّك",
         "tag": "المحرّك",
-        "headline": "الصبح البارد<br>بدّه <span class='y'>زيت مناسب</span>",
+        "headline": "الصباح البارد<br>بدّه <span class='y'>زيت مناسب</span>",
         "name": "5W-30 Premium Grade Performance Oil",
         "benefit": "زيت اصطناعي بدرجة لزوجة 5W-30",
         "support": "حرف W يعني Winter: تصنيف SAE لأداء الزيت في درجات الحرارة المنخفضة.",
@@ -59,7 +59,7 @@ STORIES = [
         # chambers · Prevents new deposits across the fuel system · Perfect for routine fuel system care"
         "kind": "product", "img": "petrol_fuel_system_cleaner.png", "h": 640, "cat": "petrol", "cat_ar": "بنزين",
         "tag": "نظام الوقود",
-        "headline": "قبل الشتاء<br>نظّف <span class='y'>نظام الوقود</span>",
+        "headline": "حافظ على نظافة<br><span class='y'>نظام الوقود</span>",
         "name": "Fuel System Cleaner · Petrol",
         "benefit": "ينظّف البخاخات وغرف الاحتراق بعمق",
         "support": "مناسب للعناية الدورية بنظام الوقود، ويمنع تكوّن رواسب جديدة.",
