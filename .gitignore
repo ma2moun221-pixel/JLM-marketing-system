@@ -50,3 +50,25 @@ next-env.d.ts
 
 # locally-stored uploaded knowledge-base files (swap for Vercel Blob/S3 in prod)
 /uploads
+
+# Python
+__pycache__/
+*.py[cod]
+
+# fonts are kept once in brand/jlm/fonts
+/marketing/videos/*/assets/fonts/
+/marketing/videos/*/out/*.wav
+
+# review stills (regenerated)
+/marketing/videos/*/review/
+/marketing/videos/*/out/*_tmp.mp4
+/marketing/videos/jlm-care-icons/out/mov/
+/marketing/videos/jlm-penetrating-oil/.hyperframes/artifacts/
+/marketing/videos/jlm-penetrating-oil/renders/*_tmp*
+/marketing/videos/jlm-penetrating-oil/node_modules/
+/marketing/videos/jlm-penetrating-oil/node_modules/
+/marketing/videos/jlm-penetrating-oil/package-lock.json
+/marketing/videos/jlm-penetrating-oil/renders/work-*/
+/marketing/videos/jlm-penetrating-oil/renders/.*transaction*/
+/marketing/videos/jlm-penetrating-oil/.hyperframes/render-outputs.json
+/marketing/videos/jlm-penetrating-oil/.hyperframes/video-state.json

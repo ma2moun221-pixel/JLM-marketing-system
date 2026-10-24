@@ -1,0 +1,222 @@
+<template>
+<style>
+@font-face{font-family:"Albert Sans";font-weight:100 900;font-display:block;src:url("assets/fonts/AlbertSans-Regular.ttf") format("truetype");}
+@font-face{font-family:"HNA";font-weight:700;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Bold.ttf") format("truetype");}
+@font-face{font-family:"HNA";font-weight:400;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Regular.ttf") format("truetype");}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000;}
+#story-root{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:#1E2022;}
+.full{position:absolute;left:0;top:0;width:1080px;height:1920px;}
+#bg{background:radial-gradient(1100px 1300px at 50% 42%, #2C2E31 0%, #232527 55%, #161718 100%);}
+#grain{opacity:.05;background-image:url("assets/gears_yellow.webp");background-size:1600px auto;background-position:center;mix-blend-mode:screen;filter:grayscale(1) contrast(2);}
+.scene{position:absolute;left:0;top:0;width:1080px;height:1920px;visibility:hidden;}
+.ar{font-family:"HNA";font-weight:700;color:#F1F0EC;direction:rtl;text-align:center;position:absolute;left:0;width:1080px;}
+.w{display:inline-block;}
+.y{color:#FAB817;} .r{color:#E8452E;}
+.lat{font-family:"Albert Sans";font-weight:800;direction:ltr;}
+svg{position:absolute;left:0;top:0;overflow:visible;}
+.gearline{fill:none;stroke:#C0C4C7;stroke-width:6;stroke-linejoin:round;}
+.dot,.dot3{fill:#3B2E22;stroke:#1A140E;stroke-width:3;}
+.ico{fill:none;stroke:#FAB817;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;}
+/* product */
+.can{position:absolute;width:380px;height:841px;}
+.can img{width:100%;height:100%;display:block;filter:drop-shadow(0 30px 40px rgba(0,0,0,.55));}
+.sheen{position:absolute;inset:0;-webkit-mask-image:url("assets/atf-can.png");mask-image:url("assets/atf-can.png");-webkit-mask-size:100% 100%;mask-size:100% 100%;overflow:hidden;}
+.sheen i{position:absolute;top:-20%;left:-60%;width:40%;height:140%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));transform:skewX(-18deg);}
+/* cards */
+.card{position:absolute;left:60px;width:960px;height:190px;border-radius:28px;background:rgba(18,19,20,.86);border:2px solid rgba(192,196,199,.25);}
+.card .bar{position:absolute;right:0;top:24px;width:8px;height:142px;border-radius:4px;background:#FAB817;}
+.card .icw{position:absolute;right:40px;top:35px;width:120px;height:120px;border-radius:60px;background:#26282B;border:3px solid #FAB817;}
+.card .icw svg{left:10px;top:10px;}
+.card .t{position:absolute;right:190px;left:30px;top:0;height:190px;display:flex;align-items:center;justify-content:flex-start;font-family:"HNA";font-weight:700;font-size:47px;color:#F1F0EC;direction:rtl;line-height:1.25;white-space:nowrap;}
+/* gauge */
+#gauge{position:absolute;left:240px;top:1500px;width:600px;height:44px;border-radius:22px;border:3px solid #C0C4C7;overflow:hidden;}
+#gold{position:absolute;left:0;top:0;height:100%;width:0;background:linear-gradient(90deg,#FFD25A,#FAB817);}
+#old{position:absolute;right:0;top:0;height:100%;width:100%;background:#4A3A2A;}
+/* cta */
+#pill{position:absolute;left:290px;top:1365px;width:500px;height:104px;border-radius:52px;background:#FAB817;color:#252729;font-family:"Albert Sans";font-weight:800;font-size:56px;display:flex;align-items:center;justify-content:center;box-shadow:0 18px 44px rgba(250,184,23,.26);}
+#truck path,#truck circle{fill:none;stroke:#FAB817;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;}
+/* wipe */
+#wipe{position:absolute;left:-2300px;top:-100px;width:1500px;height:2200px;background:#FAB817 url("assets/gears_yellow.webp") center/1400px auto;transform:skewX(-14deg);}
+</style>
+<div id="story-root" data-composition-id="story" data-width="1080" data-height="1920">
+ <div id="stage" class="clip full" data-start="0" data-duration="20" data-track-index="1">
+  <div id="bg" class="full"></div>
+  <div id="grain" class="full"></div>
+
+  <!-- 1 · HOOK -->
+  <div id="s1" class="scene">
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <g id="g1"><path class="gearline" d="M770.0 820.0 L802.3 849.6 L797.4 878.7 L757.1 896.0 L747.2 919.8 L763.5 960.5 L746.4 984.6 L702.6 982.6 L683.4 999.8 L680.5 1043.5 L654.5 1057.9 L616.0 1037.1 L591.2 1044.2 L569.6 1082.3 L540.0 1084.0 L514.2 1048.6 L488.8 1044.2 L452.8 1069.2 L425.5 1057.9 L417.6 1014.7 L396.6 999.8 L353.3 1006.7 L333.6 984.6 L345.3 942.4 L332.8 919.8 L290.8 907.2 L282.6 878.7 L311.4 845.8 L310.0 820.0 L277.7 790.4 L282.6 761.3 L322.9 744.0 L332.8 720.2 L316.5 679.5 L333.6 655.4 L377.4 657.4 L396.6 640.2 L399.5 596.5 L425.5 582.1 L464.0 602.9 L488.8 595.8 L510.4 557.7 L540.0 556.0 L565.8 591.4 L591.2 595.8 L627.2 570.8 L654.5 582.1 L662.4 625.3 L683.4 640.2 L726.7 633.3 L746.4 655.4 L734.7 697.6 L747.2 720.2 L789.2 732.8 L797.4 761.3 L768.6 794.2 Z"></path><path class="gearline" d="M632 820 A92 92 0 1 1 448 820 A92 92 0 1 1 632 820 Z"></path>
+    <g id="dots1"><circle class="dot" cx="552" cy="953" r="26"></circle>
+<circle class="dot" cx="409" cy="837" r="14"></circle>
+<circle class="dot" cx="345" cy="959" r="15"></circle>
+<circle class="dot" cx="573" cy="1007" r="22"></circle>
+<circle class="dot" cx="582" cy="596" r="22"></circle>
+<circle class="dot" cx="593" cy="1055" r="22"></circle>
+<circle class="dot" cx="585" cy="682" r="23"></circle>
+<circle class="dot" cx="483" cy="1046" r="25"></circle>
+<circle class="dot" cx="710" cy="923" r="26"></circle>
+<circle class="dot" cx="397" cy="815" r="29"></circle>
+<circle class="dot" cx="495" cy="1058" r="23"></circle>
+<circle class="dot" cx="698" cy="827" r="23"></circle>
+<circle class="dot" cx="648" cy="668" r="27"></circle>
+<circle class="dot" cx="400" cy="893" r="28"></circle>
+<circle class="dot" cx="624" cy="956" r="15"></circle>
+<circle class="dot" cx="697" cy="908" r="22"></circle></g></g>
+    <circle id="iris" cx="540" cy="820" r="300" fill="none" stroke="#FAB817" stroke-width="8" opacity="0"></circle>
+   </svg>
+   <div class="ar" style="top:1215px;font-size:98px;line-height:1.2"><span class="w h1">بقايا</span> <span class="w h1">و<span class="r">مخلفات</span></span></div>
+   <div class="ar" style="top:1355px;font-size:62px;font-weight:700"><span class="w h2">سائل</span> <span class="w h2">ناقل</span> <span class="w h2">الحركة</span> <span class="w h2">القديم؟</span></div>
+  </div>
+
+  <!-- 2 · PRODUCT -->
+  <div id="s2" class="scene">
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <circle id="disc2" cx="540" cy="820" r="300" fill="#1A1B1D"></circle>
+    <circle id="ring2" cx="540" cy="820" r="300" fill="none" stroke="#FAB817" stroke-width="8" pathLength="1" stroke-dasharray="1 1" transform="rotate(-90 540 820)"></circle>
+    <circle id="hair2" cx="540" cy="820" r="346" fill="none" stroke="#C0C4C7" stroke-width="2" stroke-opacity=".5" pathLength="100" stroke-dasharray="22 3"></circle>
+   </svg>
+   <div id="can2" class="can" style="left:350px;top:400px"><img src="assets/atf-can.png" alt="" /><div class="sheen"><i id="sh2"></i></div></div>
+   <div class="ar lat" id="n1" style="top:1325px;font-size:50px;letter-spacing:2px;color:#FAB817">AUTOMATIC TRANSMISSION FLUSH</div>
+   <div class="ar" id="n2" style="top:1400px;font-size:62px">منظّف ناقل الحركة الأوتوماتيكي</div>
+   <div class="ar" id="n3" style="top:1488px;font-size:44px;font-weight:400;color:#C0C4C7">من <span class="lat" style="color:#F1F0EC">JLM</span></div>
+  </div>
+
+  <!-- 3 · CLEANS OLD FLUID -->
+  <div id="s3" class="scene">
+   <div class="ar" style="top:300px;font-size:64px;line-height:1.35"><span class="w c1">يضمن</span> <span class="w c1 y">إزالة</span> <span class="w c1">جميع</span> <span class="w c1">بقايا</span> <span class="w c1">ومخلفات</span><br><span class="w c1">سائل</span> <span class="w c1">ناقل</span> <span class="w c1">الحركة</span> <span class="w c1">القديم</span></div>
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <defs><clipPath id="cleanclip"><circle id="cleanc" cx="540" cy="820" r="0"></circle></clipPath></defs>
+    <g id="g3"><g id="g3r"><path class="gearline" d="M770.0 820.0 L802.3 849.6 L797.4 878.7 L757.1 896.0 L747.2 919.8 L763.5 960.5 L746.4 984.6 L702.6 982.6 L683.4 999.8 L680.5 1043.5 L654.5 1057.9 L616.0 1037.1 L591.2 1044.2 L569.6 1082.3 L540.0 1084.0 L514.2 1048.6 L488.8 1044.2 L452.8 1069.2 L425.5 1057.9 L417.6 1014.7 L396.6 999.8 L353.3 1006.7 L333.6 984.6 L345.3 942.4 L332.8 919.8 L290.8 907.2 L282.6 878.7 L311.4 845.8 L310.0 820.0 L277.7 790.4 L282.6 761.3 L322.9 744.0 L332.8 720.2 L316.5 679.5 L333.6 655.4 L377.4 657.4 L396.6 640.2 L399.5 596.5 L425.5 582.1 L464.0 602.9 L488.8 595.8 L510.4 557.7 L540.0 556.0 L565.8 591.4 L591.2 595.8 L627.2 570.8 L654.5 582.1 L662.4 625.3 L683.4 640.2 L726.7 633.3 L746.4 655.4 L734.7 697.6 L747.2 720.2 L789.2 732.8 L797.4 761.3 L768.6 794.2 Z"></path><path class="gearline" d="M632 820 A92 92 0 1 1 448 820 A92 92 0 1 1 632 820 Z"></path>
+    <g id="dots3"><circle class="dot3" cx="552" cy="953" r="26"></circle>
+<circle class="dot3" cx="409" cy="837" r="14"></circle>
+<circle class="dot3" cx="345" cy="959" r="15"></circle>
+<circle class="dot3" cx="573" cy="1007" r="22"></circle>
+<circle class="dot3" cx="582" cy="596" r="22"></circle>
+<circle class="dot3" cx="593" cy="1055" r="22"></circle>
+<circle class="dot3" cx="585" cy="682" r="23"></circle>
+<circle class="dot3" cx="483" cy="1046" r="25"></circle>
+<circle class="dot3" cx="710" cy="923" r="26"></circle>
+<circle class="dot3" cx="397" cy="815" r="29"></circle>
+<circle class="dot3" cx="495" cy="1058" r="23"></circle>
+<circle class="dot3" cx="698" cy="827" r="23"></circle>
+<circle class="dot3" cx="648" cy="668" r="27"></circle>
+<circle class="dot3" cx="400" cy="893" r="28"></circle>
+<circle class="dot3" cx="624" cy="956" r="15"></circle>
+<circle class="dot3" cx="697" cy="908" r="22"></circle></g>
+    <g clip-path="url(#cleanclip)"><path d="M770.0 820.0 L802.3 849.6 L797.4 878.7 L757.1 896.0 L747.2 919.8 L763.5 960.5 L746.4 984.6 L702.6 982.6 L683.4 999.8 L680.5 1043.5 L654.5 1057.9 L616.0 1037.1 L591.2 1044.2 L569.6 1082.3 L540.0 1084.0 L514.2 1048.6 L488.8 1044.2 L452.8 1069.2 L425.5 1057.9 L417.6 1014.7 L396.6 999.8 L353.3 1006.7 L333.6 984.6 L345.3 942.4 L332.8 919.8 L290.8 907.2 L282.6 878.7 L311.4 845.8 L310.0 820.0 L277.7 790.4 L282.6 761.3 L322.9 744.0 L332.8 720.2 L316.5 679.5 L333.6 655.4 L377.4 657.4 L396.6 640.2 L399.5 596.5 L425.5 582.1 L464.0 602.9 L488.8 595.8 L510.4 557.7 L540.0 556.0 L565.8 591.4 L591.2 595.8 L627.2 570.8 L654.5 582.1 L662.4 625.3 L683.4 640.2 L726.7 633.3 L746.4 655.4 L734.7 697.6 L747.2 720.2 L789.2 732.8 L797.4 761.3 L768.6 794.2 Z" fill="none" stroke="#FAB817" stroke-width="8" stroke-linejoin="round"></path><path d="M632 820 A92 92 0 1 1 448 820 A92 92 0 1 1 632 820 Z" fill="none" stroke="#FAB817" stroke-width="8"></path></g></g></g>
+    <circle id="wave" cx="540" cy="820" r="0" fill="none" stroke="#FAB817" stroke-width="10" opacity="0"></circle>
+   </svg>
+   <div class="ar" style="top:1390px;font-size:60px"><span class="w c2">قبل</span> <span class="w c2">استبداله</span> <span class="w c2">بسائل</span> <span class="w c2 y">جديد</span></div>
+   <div id="gauge"><div id="old"></div><div id="gold"></div></div>
+  </div>
+
+  <!-- 4 · RESULTS -->
+  <div id="s4" class="scene">
+   <div class="ar y" id="res" style="top:330px;font-size:64px">نتيجة لذلك</div>
+   <div class="card" id="k1" style="top:560px"><div class="bar"></div><div class="icw"><svg width="100" height="100" viewBox="0 0 100 100"><path class="ico i1" pathLength="1" d="M42 18 a8 8 0 0 1 16 0 v40 a16 16 0 1 1 -16 0 Z"></path><path class="ico i1" pathLength="1" d="M50 66 V36"></path><path class="ico i1" pathLength="1" d="M68 22 h12 M68 34 h8 M68 46 h12"></path></svg></div><div class="t">يعمل ناقل الحركة بشكل أكثر برودة</div></div>
+   <div class="card" id="k2" style="top:800px"><div class="bar"></div><div class="icw"><svg width="100" height="100" viewBox="0 0 100 100"><path class="ico i2" pathLength="1" d="M60.0 60.0 L66.5 65.3 L64.9 70.3 L56.6 71.1 L54.1 74.1 L55.0 82.4 L50.3 84.9 L43.9 79.6 L40.0 80.0 L34.7 86.5 L29.7 84.9 L28.9 76.6 L25.9 74.1 L17.6 75.0 L15.1 70.3 L20.4 63.9 L20.0 60.0 L13.5 54.7 L15.1 49.7 L23.4 48.9 L25.9 45.9 L25.0 37.6 L29.7 35.1 L36.1 40.4 L40.0 40.0 L45.3 33.5 L50.3 35.1 L51.1 43.4 L54.1 45.9 L62.4 45.0 L64.9 49.7 L59.6 56.1 Z"></path><path class="ico i2" pathLength="1" d="M82.4 37.8 L86.1 44.1 L82.9 47.9 L76.1 45.5 L72.9 46.7 L69.3 53.0 L64.4 52.2 L63.1 45.0 L60.5 42.8 L53.2 42.9 L51.5 38.2 L57.0 33.5 L57.6 30.2 L53.9 23.9 L57.1 20.1 L63.9 22.5 L67.1 21.3 L70.7 15.0 L75.6 15.8 L76.9 23.0 L79.5 25.2 L86.8 25.1 L88.5 29.8 L83.0 34.5 Z"></path></svg></div><div class="t">حماية الكلاتشات والتروس</div></div>
+   <div class="card" id="k3" style="top:1040px"><div class="bar"></div><div class="icw"><svg width="100" height="100" viewBox="0 0 100 100"><path class="ico i3" pathLength="1" d="M50 12 L80 24 V50 C80 70 66 82 50 90 C34 82 20 70 20 50 V24 Z"></path><path class="ico i3" pathLength="1" d="M36 52 L46 62 L66 40"></path></svg></div><div class="t">أقصى قدر من الحماية من التآكل</div></div>
+  </div>
+
+  <!-- 5 · CTA -->
+  <div id="s5" class="scene">
+   <img id="logo5" src="assets/logo_on_dark.png" alt="" style="position:absolute;left:340px;top:250px;width:400px" />
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <circle id="disc5" cx="540" cy="800" r="210" fill="#1A1B1D"></circle>
+    <circle id="ring5" cx="540" cy="800" r="210" fill="none" stroke="#FAB817" stroke-width="7" pathLength="1" stroke-dasharray="1 1" transform="rotate(-90 540 800)"></circle>
+   </svg>
+   <div id="can5" class="can" style="left:405px;top:500px;width:270px;height:598px"><img src="assets/atf-can.png" alt="" /></div>
+   <div class="ar" id="a1" style="top:1205px;font-size:66px"><span class="y">اطلبه الآن</span> من خلال</div>
+   <div id="pill" dir="ltr">jlmstore.com</div>
+   <div class="ar" id="d1" style="top:1500px;font-size:50px;display:flex;justify-content:center;align-items:center;gap:20px;direction:rtl">
+     <span>مع توفّر <span class="y">خدمة التوصيل</span></span>
+     <svg id="truck" viewBox="0 0 100 52" width="100" height="52" style="position:relative"><path pathLength="1" d="M34 38 V8 H82 V38 Z"></path><path pathLength="1" d="M34 16 H20 L8 29 V38 H34"></path><circle pathLength="1" cx="21" cy="42" r="6.5"></circle><circle pathLength="1" cx="68" cy="42" r="6.5"></circle></svg>
+   </div>
+  </div>
+
+  <div id="wipe"></div>
+ </div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script>
+<script>
+(function(){
+ var tl = gsap.timeline({paused:true});
+ function S(id){return document.getElementById(id);}
+ function Q(sel){return document.querySelectorAll(sel);}
+ // 20 s cut: every caption stays up long enough to read (≈1.5–2 s after it lands)
+ // background: slow drift for the whole story
+ tl.fromTo("#grain",{scale:1.05,rotation:-2},{scale:1.15,rotation:2,duration:20,ease:"none"},0);
+
+ // ---------- 1 · HOOK (0 – 3.4) ----------
+ tl.set("#s1",{autoAlpha:1},0);
+ tl.fromTo("#g1",{scale:.6,opacity:0,rotation:-40,svgOrigin:"540 820"},{scale:1,opacity:1,rotation:0,svgOrigin:"540 820",duration:.9,ease:"power3.out"},0);
+ tl.to("#g1",{rotation:30,svgOrigin:"540 820",duration:2.0,ease:"none"},.9);
+ tl.fromTo("#dots1 circle",{scale:0,transformOrigin:"50% 50%"},{scale:1,duration:.35,ease:"back.out(2)",stagger:.045},.35);
+ tl.fromTo(".h1",{opacity:0,y:40},{opacity:1,y:0,duration:.5,ease:"power3.out",stagger:.15},.3);
+ tl.fromTo(".h2",{opacity:0,y:30},{opacity:1,y:0,duration:.45,ease:"power3.out",stagger:.09},.75);
+ // iris: the gear's rim becomes the yellow ring that frames the product
+ tl.to(".h1,.h2",{opacity:0,y:-30,duration:.3,ease:"power2.in"},2.95);
+ tl.to("#g1",{scale:1.5,opacity:0,rotation:120,svgOrigin:"540 820",duration:.5,ease:"power2.in"},2.9);
+ tl.fromTo("#iris",{attr:{r:240},opacity:0},{attr:{r:300},opacity:1,duration:.5,ease:"power2.inOut"},2.9);
+ tl.set("#s1",{autoAlpha:0},3.4);
+
+ // ---------- 2 · PRODUCT (3.35 – 7.6) ----------
+ tl.set("#s2",{autoAlpha:1},3.35);
+ tl.set("#ring2",{attr:{"stroke-dashoffset":0}},3.35);
+ tl.fromTo("#disc2",{opacity:0},{opacity:1,duration:.4},3.35);
+ tl.fromTo("#hair2",{rotation:0,svgOrigin:"540 820",opacity:0},{rotation:50,svgOrigin:"540 820",opacity:1,duration:4.3,ease:"none"},3.35);
+ tl.fromTo("#can2",{y:520,rotation:-10,opacity:0},{y:0,rotation:0,opacity:1,duration:.85,ease:"power3.out"},3.4);
+ tl.fromTo("#sh2",{x:0},{x:1000,duration:.8,ease:"power2.inOut"},4.25);
+ tl.fromTo("#n1",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},4.0);
+ tl.fromTo("#n2",{opacity:0,y:30},{opacity:1,y:0,duration:.5,ease:"power3.out"},4.25);
+ tl.fromTo("#n3",{opacity:0,y:20},{opacity:1,y:0,duration:.45,ease:"power3.out"},4.5);
+ tl.to("#can2",{y:-14,duration:2.2,ease:"sine.inOut"},4.9);
+ // yellow gear-pattern wipe → scene 3
+ tl.fromTo("#wipe",{x:0},{x:3700,duration:.8,ease:"power2.inOut"},7.2);
+ tl.set("#s2",{autoAlpha:0},7.6);
+
+ // ---------- 3 · CLEANS THE OLD FLUID (7.6 – 12.45) ----------
+ tl.set("#s3",{autoAlpha:1},7.6);
+ tl.fromTo(".c1",{opacity:0,y:30},{opacity:1,y:0,duration:.4,ease:"power3.out",stagger:.07},7.7);
+ tl.fromTo("#g3",{scale:.85,opacity:0,svgOrigin:"540 820"},{scale:1,opacity:1,svgOrigin:"540 820",duration:.5,ease:"power3.out"},7.65);
+ tl.fromTo("#g3r",{rotation:0,svgOrigin:"540 820"},{rotation:60,svgOrigin:"540 820",duration:4.8,ease:"none"},7.65);
+ // a gold wave sweeps out from the hub: deposits dissolve, the gear turns gold
+ tl.fromTo("#wave",{attr:{r:60},opacity:1},{attr:{r:330},opacity:0,duration:1.2,ease:"power2.out"},8.7);
+ tl.fromTo("#cleanc",{attr:{r:0}},{attr:{r:300},duration:1.2,ease:"power2.out"},8.7);
+ tl.to("#dots3 circle",{scale:0,opacity:0,transformOrigin:"50% 50%",duration:.4,ease:"power2.in",stagger:{each:.06,from:"center"}},8.75);
+ tl.fromTo(".c2",{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:"power3.out",stagger:.08},10.0);
+ tl.fromTo("#gauge",{opacity:0,y:20},{opacity:1,y:0,duration:.35},10.05);
+ tl.fromTo("#old",{width:"100%"},{width:"0%",duration:.6,ease:"power2.in"},10.4);
+ tl.fromTo("#gold",{width:"0%"},{width:"100%",duration:.65,ease:"power2.out"},10.9);
+ tl.to("#s3 .ar, #gauge, #g3",{opacity:0,y:-20,duration:.3,ease:"power2.in"},12.1);
+ tl.set("#s3",{autoAlpha:0},12.45);
+
+ // ---------- 4 · RESULTS (12.45 – 16.7) ----------
+ tl.set("#s4",{autoAlpha:1},12.45);
+ tl.fromTo("#res",{opacity:0,y:24},{opacity:1,y:0,duration:.4,ease:"power3.out"},12.5);
+ ["#k1","#k2","#k3"].forEach(function(k,i){
+   tl.fromTo(k,{opacity:0,x:90},{opacity:1,x:0,duration:.5,ease:"power3.out"},12.75+i*.8);
+   tl.fromTo(k+" .ico",{attr:{"stroke-dasharray":"1 1","stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut"},13.0+i*.8);
+ });
+ tl.to("#s4 .card, #res",{opacity:0,y:-30,duration:.35,ease:"power2.in",stagger:.05},16.25);
+ tl.set("#s4",{autoAlpha:0},16.7);
+
+ // ---------- 5 · CTA (16.6 – 20.0) ----------
+ tl.set("#s5",{autoAlpha:1},16.6);
+ tl.fromTo("#disc5",{opacity:0},{opacity:1,duration:.4},16.6);
+ tl.fromTo("#ring5",{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.7,ease:"power2.inOut"},16.6);
+ tl.fromTo("#can5",{scale:.8,opacity:0,y:40},{scale:1,opacity:1,y:0,duration:.7,ease:"power3.out"},16.7);
+ tl.fromTo("#logo5",{opacity:0,y:-24},{opacity:1,y:0,duration:.6,ease:"power3.out"},16.85);
+ tl.fromTo("#a1",{opacity:0,y:28},{opacity:1,y:0,duration:.5,ease:"power3.out"},17.2);
+ tl.fromTo("#pill",{opacity:0,scale:.6},{opacity:1,scale:1,duration:.5,ease:"back.out(1.8)"},17.6);
+ tl.fromTo("#d1",{opacity:0,y:24},{opacity:1,y:0,duration:.5,ease:"power3.out"},18.1);
+ tl.fromTo("#truck path, #truck circle",{attr:{"stroke-dasharray":"1 1","stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:.6,ease:"power2.inOut",stagger:.08},18.15);
+ tl.to("#can5",{y:-10,duration:1.6,ease:"sine.inOut"},18.3);
+
+ window.__timelines = window.__timelines || {};
+ window.__timelines["story"] = tl;
+})();
+</script>
+</template>
