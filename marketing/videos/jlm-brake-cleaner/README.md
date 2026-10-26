@@ -10,6 +10,8 @@ The client's 16 s clip (presenter + brake b-roll + product shot), edited in **Cl
 - **Light icons:** two linked pairs drawn as thin glowing lines — صوت بالبريك → أتربة وغبار (cause),
   بريك كلينر → بريك نظيف (solution) — plus a small `JLM Brake Cleaner` tag on the product shot.
   Each icon gives one soft tick (≈ −40 dBFS).
+- The logo is drawn from logo_on_dark.png with the file's faint grey box removed (only the mark and
+  letters keep their alpha), so it sits straight on the video.
 - Gentle 1.00 → 1.05 zoom per shot (the last shot is framed closer, 1.27×, so the clip's own
   «السعر لا يشمل التوصيل» badge is cut out), the JLM logo top-left, and the CTA end card over the
   blurred, darkened video:
