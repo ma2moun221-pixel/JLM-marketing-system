@@ -10,7 +10,8 @@ The client's 16 s clip (presenter + brake b-roll + product shot), edited in **Cl
 - **Light icons:** two linked pairs drawn as thin glowing lines — صوت بالبريك → أتربة وغبار (cause),
   بريك كلينر → بريك نظيف (solution) — plus a small `JLM Brake Cleaner` tag on the product shot.
   Each icon gives one soft tick (≈ −40 dBFS).
-- Gentle 1.00 → 1.05 zoom per shot, the JLM logo top-left, and the black CTA end card:
+- Gentle 1.00 → 1.05 zoom per shot (the last shot is framed closer, 1.27×, so the clip's own
+  «السعر لا يشمل التوصيل» badge is cut out), the JLM logo top-left, and the black CTA end card:
   logo · Brake Cleaner · «اطلبه الآن من خلال» · jlmstore.com (with a sheen) · «مع توفّر خدمة التوصيل».
 - Voice kept as recorded; loudness −14 LUFS.
 

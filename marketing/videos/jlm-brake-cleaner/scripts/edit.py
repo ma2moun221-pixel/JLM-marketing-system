@@ -356,8 +356,12 @@ def zoom(f, t):
     s0, s1 = CUTS[k], CUTS[k + 1]
     sc = 1 + 0.05 * ease((t - s0) / (s1 - s0))
     ay = 0.32 * H if k in (0, 3) else 0.5 * H          # presenter shots keep the face in place
+    if k == 3:
+        # closer framing for the last shot, anchored at the top: the clip's own yellow price badge
+        # (rows ≥ 79.7 % of the frame from 13 s on) stays below the visible area
+        sc, ay = 1.27 + 0.04 * ease((t - s0) / (s1 - s0)), 0.0
     M = np.float32([[sc, 0, W / 2 * (1 - sc)], [0, sc, ay * (1 - sc)]])
-    return cv2.warpAffine(f, M, (W, H), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REFLECT)
+    return cv2.warpAffine(f, M, (W, H), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REFLECT)
 
 
 def main():
