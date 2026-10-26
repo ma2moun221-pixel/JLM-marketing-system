@@ -8,7 +8,7 @@ Style (brand/jlm/EDIT_STYLES.md §1 + §5, VIDEO_STYLE.md):
 - One-line karaoke captions at 66 % height (moved above the can on the product shot).
 - Two linked icon pairs under the caption, drawn as thin glowing lines: noise → dust (cause),
   Brake Cleaner → clean brake (solution). A small product tag on the product shot.
-- Soft 1.00 → 1.05 breathing zoom per shot, JLM logo top-left, black CTA end card
+- Soft 1.00 → 1.05 breathing zoom per shot, JLM logo top-left, CTA end card over the blurred video
   (اطلبه الآن من خلال jlmstore.com · مع توفّر خدمة التوصيل). Icon ticks ≈ −40 dBFS.
 Shared pieces (badges, icons, end-card parts, audio bed) come from jlm-care-edit/scripts/edit_v3.py.
 """
@@ -33,7 +33,7 @@ W, H, FPS = 1080, 1920, 30
 YEL, WHT, RED, GREY, CHA = V.YEL, V.WHT, V.RED, V.GREY, V.CHA
 SIL = (192, 196, 199)
 SRC_DUR = 16.0
-END_T = 15.95                      # black CTA card starts (right after «لكل البلاد»)
+END_T = 15.95                      # CTA card starts (right after «لكل البلاد»)
 DUR = 19.6
 CUTS = [0.0, 4.133, 8.7, 11.033, SRC_DUR]
 PRODUCT_SHOT = (8.7, 11.033)
@@ -303,7 +303,7 @@ def product_tag():
 
 
 class EndCard:
-    """Black CTA: logo, «JLM Brake Cleaner», «اطلبه الآن من خلال», jlmstore.com pill with a sheen,
+    """CTA over the defocused, darkened video: logo, «JLM Brake Cleaner», «اطلبه الآن من خلال», jlmstore.com pill with a sheen,
     «مع توفّر خدمة التوصيل» with the truck drawing itself."""
 
     def __init__(self, t0):
@@ -321,8 +321,11 @@ class EndCard:
         b = ease((t - self.t0) / 0.35)
         if b <= 0:
             return False
-        f *= 1 - b
-        f += b * (np.array([0.03, 0.032, 0.035], np.float32) + self.vign * np.array([1.0, 0.75, 0.15], np.float32))
+        # the video stays behind the CTA, defocused and darkened, so the logo sits in the scene
+        small = cv2.resize(f, (W // 6, H // 6), interpolation=cv2.INTER_AREA)
+        bg = cv2.resize(cv2.GaussianBlur(small, (0, 0), 1 + 4 * b), (W, H), interpolation=cv2.INTER_CUBIC)
+        bg = bg * (1 - 0.62 * b) + self.vign * np.array([1.0, 0.75, 0.15], np.float32) * b
+        f[:] = f * (1 - b) + bg * b
         t0 = self.t0 + 0.15
         q = ease((t - t0) / 0.45)
         R.over(f, self.logo, (W - self.logo.shape[1]) / 2, 0.20 * H - self.logo.shape[0] / 2 + 14 * (1 - q), q)
@@ -408,7 +411,7 @@ def main():
             raw = src.stdout.read(W * H * 3)
             if len(raw) == W * H * 3:
                 last = np.frombuffer(raw, np.uint8).reshape(H, W, 3).astype(np.float32) / 255
-        f = zoom(last, min(t, SRC_DUR - 1e-3)) if t < END_T + 0.4 else last * 0
+        f = zoom(last, min(t, SRC_DUR - 1e-3))          # the last frame holds under the end card
         if t < END_T + 0.4:
             hook.draw(f, t)
             if tag_t[0] <= t < tag_t[1]:
