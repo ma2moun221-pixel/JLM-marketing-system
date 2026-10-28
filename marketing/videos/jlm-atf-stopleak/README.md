@@ -36,7 +36,7 @@ product stage by stage. `scripts/film.py` cuts five Pexels clips the client pick
 | 0 – 2.5 s | gear shift that jolts twice (camera shake, red flashes): «ناقل الحركة ينزلق؟ أو يسرّب الزيت؟» |
 | 2.5 – 5.5 s | inside the gearbox (CGI gears), cold grade: تسرّب · انزلاق · استهلاك للزيت |
 | 5.5 – 8.5 s | the can, hero-lit with a light sweep: مانع تسرّب زيت الجير / ATF Stop Leak & Conditioner |
-| 8.5 – 12.5 s | ١ رجّ العلبة جيداً (the can shakes) → ٢ أضفه إلى سائل ناقل الحركة (pour under the bonnet, funnel in slow motion) |
+| 8.5 – 12.5 s | ١ رجّ العلبة جيداً (the can is shaken by hand: up-and-down arc, tilt, motion blur) → ٢ أضفه إلى سائل ناقل الحركة (pour under the bonnet, funnel in slow motion) |
 | 12.5 – 15 s | ٣ قُد السيارة 15 دقيقة — time-lapse drive with a 0 → 15 timer |
 | 15 – 17.5 s | the same shift, now smooth and warm: تبديل سلس وهادئ بين الغيارات · ويطيل عمر ناقل الحركة · *CVT / DSG note |
 | 17.5 – 20 s | CTA: logo, can, اطلبه الآن من خلال jlmstore.com, مع توفّر خدمة التوصيل |

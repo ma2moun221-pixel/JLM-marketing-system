@@ -255,6 +255,13 @@ def timer(f, t, t0, cx, cy):
     R.over(f, lab, cx - lab.shape[1] / 2, cy + 18, a)
 
 
+def shake_pose(lt):
+    """A hand shaking the can: up and down along a short arc, tilting with the stroke, easing in and out."""
+    env = ease(lt / 0.2) * (1 - ease((lt - 0.75) / 0.25))
+    ph = 2 * math.pi * 2.3 * lt
+    return 24 * math.sin(ph + 0.6) * env, -72 * math.sin(ph) * env, 11 * math.cos(ph) * env
+
+
 # ---------------------------------------------------------------- render ---
 def frame(shots, t, n, logo, tr, end_bits):
     k = max(i for i, e in enumerate(EDL) if e[0] <= t)
@@ -317,15 +324,16 @@ def frame(shots, t, n, logo, tr, end_bits):
         if t < 9.5:
             lt = t - 8.5
             glow(f, W / 2, 860, 0.8)
-            ang = 13 * math.sin(lt * 2 * math.pi * 3.2) * ease(lt / 0.15)
             can = can_cached(820)
-            acc = None
-            for j, da in enumerate((-4, 0, 4)):          # motion blur of the shake
-                l2, x, y = R.warp_premul(can, 1.0, W / 2, 860, (can.shape[1] / 2, can.shape[0] / 2))
-                M = cv2.getRotationMatrix2D((W / 2 - x, 860 - y), ang + da * math.cos(lt * 20), 1.0)
-                l3 = cv2.warpAffine(l2, M, (l2.shape[1], l2.shape[0]))
-                acc = l3 if acc is None else acc + l3
-            R.over(f, acc / 3, x, y)
+            ch, cw = can.shape[:2]
+            acc = np.zeros((H, W, 4), np.float32)
+            for j in range(6):                            # real motion blur: 6 samples across half a frame
+                dx, dy, ang = shake_pose(lt + (j / 5 - 0.5) / FPS / 2)
+                M = cv2.getRotationMatrix2D((cw / 2, ch / 2), ang, 1.0)
+                M[0, 2] += W / 2 + dx - cw / 2
+                M[1, 2] += 860 + dy - ch / 2
+                acc += cv2.warpAffine(can, M, (W, H), flags=cv2.INTER_LINEAR)
+            R.over(f, acc / 6, 0, 0)
         punch(f, step_chip("١", "رجّ العلبة جيداً"), t, 8.55, 9.4, 1430)
         punch(f, step_chip("٢", "أضفه إلى سائل ناقل الحركة"), t, 9.55, 12.3, 1430)
     elif t < 15.0:
