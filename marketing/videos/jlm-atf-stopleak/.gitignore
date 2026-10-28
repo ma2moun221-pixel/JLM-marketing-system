@@ -1,0 +1,7 @@
+.hyperframes/
+node_modules
+renders/atf_video.mp4
+renders/work-*
+renders/.hf-*
+renders/.*-transaction-*
+assets/bgm/music.wav
