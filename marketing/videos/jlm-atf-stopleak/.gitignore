@@ -5,3 +5,5 @@ renders/work-*
 renders/.hf-*
 renders/.*-transaction-*
 assets/bgm/music.wav
+assets/footage/
+build/

@@ -24,3 +24,29 @@ npx --yes hyperframes@0.8.161 render -o renders/atf_video.mp4 -q delivery --quie
 ffmpeg -i renders/atf_video.mp4 -i assets/bgm/story_mix.wav -filter_complex "[1:a]volume=-3dB,alimiter=limit=0.63:attack=2:release=60:level=false,loudnorm=I=-14:TP=-2.5:LRA=11,aresample=48000,alimiter=limit=0.79:attack=1:release=50:level=false,volume=-1.5dB[a]" \
   -map 0:v -map "[a]" -c:v copy -c:a aac -b:a 192k -t 20 -movflags +faststart renders/jlm_atf_stop_leak_story.mp4
 ```
+
+## v2 — cinematic film on real footage (`renders/jlm_atf_stop_leak_film.mp4`)
+
+The client asked for a strong film on real footage, no schematic over it, where the viewer lives the
+product stage by stage. `scripts/film.py` cuts five Pexels clips the client picked (kept in
+`assets/footage/`, not committed) with the product photo:
+
+| time | stage |
+|---|---|
+| 0 – 2.5 s | gear shift that jolts twice (camera shake, red flashes): «ناقل الحركة ينزلق؟ أو يسرّب الزيت؟» |
+| 2.5 – 5.5 s | inside the gearbox (CGI gears), cold grade: تسرّب · انزلاق · استهلاك للزيت |
+| 5.5 – 8.5 s | the can, hero-lit with a light sweep: مانع تسرّب زيت الجير / ATF Stop Leak & Conditioner |
+| 8.5 – 12.5 s | ١ رجّ العلبة جيداً (the can shakes) → ٢ أضفه إلى سائل ناقل الحركة (pour under the bonnet, funnel in slow motion) |
+| 12.5 – 15 s | ٣ قُد السيارة 15 دقيقة — time-lapse drive with a 0 → 15 timer |
+| 15 – 17.5 s | the same shift, now smooth and warm: تبديل سلس وهادئ بين الغيارات · ويطيل عمر ناقل الحركة · *CVT / DSG note |
+| 17.5 – 20 s | CTA: logo, can, اطلبه الآن من خلال jlmstore.com, مع توفّر خدمة التوصيل |
+
+Car-brand badges in the stock clips (FIAT on the steering wheel, STI on the console) are cropped out of
+frame. Cuts sit on a 120 BPM grid with zoom-blur whips and a warm light flash; cold grade for the problem,
+warm JLM gold after the product. Music (`scripts/music_film.py`) uses the flying-car synth voices:
+tension → dark pulse → impact on the product → full beat through the steps → major lift → CTA.
+
+```bash
+python3 scripts/music_film.py
+python3 scripts/film.py --out renders/jlm_atf_stop_leak_film.mp4
+```
