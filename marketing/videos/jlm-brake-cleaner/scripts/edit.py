@@ -199,10 +199,11 @@ def _disc_ok():
 V.ICONS.update({"speaker": _speaker, "dust": _dust, "spray": _spray, "disc_ok": _disc_ok})
 
 
-def logo_layer(width, shadow=0.35):
+def logo_layer(width, shadow=0.0):
     """logo_on_dark.png without the faint grey box the file carries (alpha 1–40 over the whole
     canvas, plus a hairline frame): keep only the alpha that belongs to the mark and the letters,
-    so the logo sits straight on the video."""
+    so the logo sits straight on the video. No drop shadow by default: a soft shadow fills the gaps
+    between the letters and reads as a dark box behind the logo."""
     im = np.array(Image.open(E.KIT / "logos/logo_on_dark.png").convert("RGBA"))
     a = im[..., 3]
     keep = cv2.dilate((a > 128).astype(np.uint8), np.ones((5, 5), np.uint8))
@@ -212,7 +213,8 @@ def logo_layer(width, shadow=0.35):
     lay = R.to_premul(np.array(im))
     pad = 20
     out = np.zeros((lay.shape[0] + 2 * pad, lay.shape[1] + 2 * pad, 4), np.float32)
-    out[pad + 3:pad + 3 + lay.shape[0], pad:pad + lay.shape[1], 3] = cv2.GaussianBlur(lay[..., 3], (0, 0), 6) * shadow
+    if shadow:
+        out[pad + 3:pad + 3 + lay.shape[0], pad:pad + lay.shape[1], 3] = cv2.GaussianBlur(lay[..., 3], (0, 0), 6) * shadow
     R.paste_into(out, lay, pad, pad)
     return out
 
