@@ -10,9 +10,9 @@ One service, lived step by step (cuts on a 120 BPM grid, zoom-blur whips with a 
   8.5  ٢ اترك المحرك دائراً 15 دقيقة (0 → 15 timer)
  11.0  ٣ أفرغ زيت المحرك واستبدل فلتر الزيت (under the car)
  14.5  أداء أفضل · استهلاك أقل للوقود
- 16.5  5W-30, hero-lit — زيت محرك تخليقي بالكامل · مواصفة A5/B5 · احتكاك منخفض
+ 16.5  5W-30, hero-lit — زيت محرك مناسب · A5/B5 · احتكاك منخفض
  19.5  ٤ ضع الزيت الجديد حسب تعليمات المركبة (golden pour, slow motion)
- 22.0  ٥ افحص المستوى بالديبستيك — وتجنّب الملء الزائد
+ 22.0  ٥ افحص مستوى الزيت — وتجنّب الملء الزائد
  24.5  كفاءة أعلى في استهلاك الوقود · مع حماية عالية للمحرك
  27.0  CTA — both products, اطلبهما الآن من خلال jlmstore.com, مع توفّر خدمة التوصيل
 Shared look (grade, grain, whips, kinetic type, step chips, timer) comes from jlm-atf-stopleak/scripts/film.py.
@@ -162,7 +162,7 @@ def frame(shots, t, n, logo, tr, bits):
     elif t < 19.5:
         hero(f, "oil", 640, t - 16.5, cy=860)
         punch(f, latin("5W-30", 120, YEL), t, 17.0, 19.25, 1340)
-        punch(f, line((("زيت", WHT), ("محرك", WHT), ("تخليقي", YEL), ("بالكامل", YEL)), 62), t, 17.3, 19.25, 1475)
+        punch(f, line((("زيت", WHT), ("محرك", WHT), ("مناسب", YEL)), 66), t, 17.3, 19.25, 1475)
         punch(f, bits["spec"], t, 17.7, 19.25, 1600)
     elif t < 24.5:
         shade(f, 1250, 1800, 0.6)
@@ -170,7 +170,7 @@ def frame(shots, t, n, logo, tr, bits):
             punch(f, A.step_chip("٤", "ضع الزيت الجديد"), t, 19.55, 21.8, 1430)
             punch(f, small("حسب تعليمات المركبة"), t, 19.85, 21.8, 1560)
         else:
-            punch(f, A.step_chip("٥", "افحص المستوى بالديبستيك"), t, 22.05, 24.3, 1430)
+            punch(f, A.step_chip("٥", "افحص مستوى الزيت"), t, 22.05, 24.3, 1430)
             punch(f, small("وتجنّب الملء الزائد"), t, 22.4, 24.3, 1560)
     elif t < 27.0:
         shade(f, 1050, 1800, 0.6)
