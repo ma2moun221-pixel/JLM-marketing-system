@@ -91,7 +91,7 @@ PAGES = {
 <div id="glow"></div>
 <img id="can" src="../assets/product_cut.png">
 <div id="pts">
- <div class="pt"><b>1</b><span>يغلق الثقوب الصغيرة في الرادياتور والبرابيج ومضخات التبريد</span></div>
+ <div class="pt"><b>1</b><span>يغلق الثقوب الصغيرة في الرادياتور ومضخات التبريد</span></div>
  <div class="pt"><b>2</b><span>ينظّفها من الأكسدة</span></div>
  <div class="pt"><b>3</b><span>ينعش اللبادات ويقلّل التسريب</span></div>
 </div>
