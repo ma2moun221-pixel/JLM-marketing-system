@@ -2,8 +2,8 @@
 
     python3 scripts/render.py        # writes out/jlm_5w30_launch.png
 
-Built from scratch (no stock or third-party photo): a night runway, a curved concrete ramp with JLM-yellow
-LED edges and a steel truss, the client's 5W-30 bottle (assets/oil5w30.png, cut out earlier) tilted for
+Built from scratch (no stock or third-party photo): a night runway, one continuous concrete track (a flat run-out on
+the ground that rises into a curved ramp) with JLM-yellow LED edges and a steel truss, the client's 5W-30 bottle (assets/oil5w30.png, cut out earlier) tilted for
 take-off with a warm rim light, four thrust jets and a billowing smoke plume lit from inside, then the copy
 in the JLM fonts: «انطلق بأداء أعلى» / «زيت محرك JLM 5W-30», the logo and jlmstore.com.
 """
@@ -55,14 +55,6 @@ def background():
         x += RNG.uniform(-12, 12)
         c = WARM if RNG.random() < 0.6 else np.array([1.0, 0.85, 0.6])
         cv2.circle(lights, (int(x), int(HOR + RNG.uniform(-6, 2))), int(RNG.uniform(2, 4)), (c * RNG.uniform(.5, 1)).tolist(), -1, cv2.LINE_AA)
-    for k in range(9):                                       # yellow centre-line marks receding
-        t = k / 9
-        y0 = HOR + 8 + (H - HOR) * t ** 1.6
-        y1 = HOR + 8 + (H - HOR) * ((k + .45) / 9) ** 1.6
-        w = 2 + 12 * t
-        x = 470 - 140 * t
-        cv2.fillConvexPoly(lights, np.array([[x - w, y0], [x + w, y0], [x + w * 1.4 - 40, y1], [x - w * 1.4 - 40, y1]], np.int32),
-                           (YEL * 0.35).tolist(), cv2.LINE_AA)
     f += cv2.GaussianBlur(lights, (0, 0), 1.0) + cv2.GaussianBlur(lights, (0, 0), 12) * 1.5
     return f
 
@@ -74,18 +66,26 @@ def bez(p, t):
 
 def ramp(f):
     """Curved concrete ramp rising from the ground on the right, LED edges in JLM yellow, steel truss behind."""
-    P = [(905, 1175), (1045, 860), (985, 560), (780, 450)]
-    t = np.linspace(0, 1, 140)
-    c = bez(P, t)
-    d = np.gradient(c, axis=0)
+    # one continuous track: a flat run-out on the ground coming towards the camera, a smooth quarter-pipe
+    # foot, then the curve rising and bending back over the scene (as in a real launch ramp)
+    P = [(905, 1172), (1060, 860), (990, 560), (780, 450)]
+    t_up = np.linspace(0, 1, 140)
+    up = bez(P, t_up)
+    s_g = np.linspace(0, 1, 40)[:-1]
+    g0, g1 = np.array([760.0, H + 60.0]), np.array([905.0, 1172.0])
+    ground = g0 + (g1 - g0) * (s_g ** 0.8)[:, None]
+    c = np.concatenate([ground, up])
+    t = np.concatenate([np.zeros(len(ground)), t_up])
+    d = np.gradient(cv2.GaussianBlur(c.reshape(-1, 1, 2), (1, 9), 0).reshape(-1, 2), axis=0)
     n = np.stack([-d[:, 1], d[:, 0]], 1)
     n /= np.linalg.norm(n, axis=1, keepdims=True)
-    w = 175 * (1 - t) + 95 * t
+    w = np.concatenate([360 - 185 * s_g ** 0.8, 175 * (1 - t_up) + 95 * t_up])
     L = c - n * w[:, None] / 2
     Rr = c + n * w[:, None] / 2
     # truss behind (to the right / outside of the curve)
     truss = np.zeros((H, W), np.float32)
-    for k in range(0, len(t) - 6, 6):
+    k0 = len(ground)
+    for k in range(k0, len(t) - 6, 6):
         a, b = Rr[k], Rr[k + 6]
         a2, b2 = a + n[k] * 70, b + n[k + 6] * 70
         for p, q in ((a2, b2), (a, a2), (a, b2)):
@@ -100,7 +100,7 @@ def ramp(f):
     shade = 0.42 + 0.35 * noise(10, 3, 5) * 0.4
     across = np.zeros((H, W), np.float32)
     for k in range(len(t)):            # brighter in the middle of the lane, darker near the top
-        cv2.line(across, tuple(np.int32(L[k])), tuple(np.int32(Rr[k])), 0.75 + 0.25 * (1 - t[k]), 8)
+        cv2.line(across, tuple(np.int32(L[k])), tuple(np.int32(Rr[k])), 0.75 + 0.25 * (1 - t[k]), 10)
     surf = (shade * cv2.GaussianBlur(across, (0, 0), 3))[..., None] * np.array([0.78, 0.77, 0.75])
     f[:] = f * (1 - m[..., None]) + surf * m[..., None]
     # lane line and LED edges
