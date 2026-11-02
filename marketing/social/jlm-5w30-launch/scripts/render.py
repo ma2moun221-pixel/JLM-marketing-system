@@ -1,6 +1,7 @@
 """JLM 5W-30 «launch» post (1080×1350): the bottle takes off like a rocket beside a lit, curved ramp at night.
 
-    python3 scripts/render.py        # writes out/jlm_5w30_launch.png
+    python3 scripts/render.py          # post 1080×1350 → out/jlm_5w30_launch.png
+    python3 scripts/render.py story    # Instagram story 1080×1920 → out/jlm_5w30_launch_story.png
 
 Built from scratch (no stock or third-party photo): a night runway, one continuous concrete track (a flat run-out on
 the ground that rises into a curved ramp) with JLM-yellow LED edges and a steel truss, the client's 5W-30 bottle (assets/oil5w30.png, cut out earlier) tilted for
@@ -21,8 +22,12 @@ sys.path.insert(0, str(REPO / "marketing/videos/jlm-care-edit/scripts"))
 import edit_v3 as V  # noqa: E402
 
 E, R = V.E, V.R
-W, H = 1080, 1350
-HOR = 1150
+STORY = len(sys.argv) > 1 and sys.argv[1] == "story"
+W, H = (1080, 1920) if STORY else (1080, 1350)
+HOR = 1480 if STORY else 1150          # horizon; the whole scene below the copy moves with it
+DY = HOR - 1150                        # scene offset from the post layout
+TY = 150 if STORY else 0               # copy pushed below Instagram's top bar on a story
+BOT = 230 if STORY else 52             # pill kept above the story's reply bar
 YEL = np.array([250, 184, 23], np.float32) / 255
 WARM = np.array([1.0, 0.62, 0.22], np.float32)
 RNG = np.random.default_rng(12)
@@ -68,11 +73,11 @@ def ramp(f):
     """Curved concrete ramp rising from the ground on the right, LED edges in JLM yellow, steel truss behind."""
     # one continuous track: a flat run-out on the ground coming towards the camera, a smooth quarter-pipe
     # foot, then the curve rising and bending back over the scene (as in a real launch ramp)
-    P = [(905, 1172), (1060, 860), (990, 560), (780, 450)]
+    P = [(905, 1172 + DY), (1060, 860 + DY), (990, 560 + DY), (780, 450 + DY)]
     t_up = np.linspace(0, 1, 140)
     up = bez(P, t_up)
     s_g = np.linspace(0, 1, 40)[:-1]
-    g0, g1 = np.array([760.0, H + 60.0]), np.array([905.0, 1172.0])
+    g0, g1 = np.array([760.0, H + 60.0]), np.array([905.0, 1172.0 + DY])
     ground = g0 + (g1 - g0) * (s_g ** 0.8)[:, None]
     c = np.concatenate([ground, up])
     t = np.concatenate([np.zeros(len(ground)), t_up])
@@ -90,8 +95,8 @@ def ramp(f):
         a2, b2 = a + n[k] * 70, b + n[k + 6] * 70
         for p, q in ((a2, b2), (a, a2), (a, b2)):
             cv2.line(truss, tuple(np.int32(p)), tuple(np.int32(q)), 1.0, 3, cv2.LINE_AA)
-    cv2.line(truss, (1040, 400), (1040, HOR), 1.0, 5, cv2.LINE_AA)
-    cv2.line(truss, (1000, 520), (1000, HOR), 1.0, 4, cv2.LINE_AA)
+    cv2.line(truss, (1040, 400 + DY), (1040, HOR), 1.0, 5, cv2.LINE_AA)
+    cv2.line(truss, (1000, 520 + DY), (1000, HOR), 1.0, 4, cv2.LINE_AA)
     f[:] = f * (1 - truss[..., None] * 0.9) + truss[..., None] * np.array([0.16, 0.16, 0.17]) * 0.9
     # surface
     poly = np.concatenate([L, Rr[::-1]]).astype(np.int32)
@@ -123,7 +128,7 @@ def ramp(f):
 
 def bottle():
     im = Image.open(ROOT / "assets/oil5w30.png").convert("RGBA")
-    h = 520
+    h = 580 if STORY else 520
     im = im.resize((int(im.width * h / im.height), h), Image.LANCZOS)
     a = np.array(im).astype(np.float32) / 255
     rgb, al = a[..., :3], a[..., 3]
@@ -164,6 +169,8 @@ def thrust_and_smoke(f, M, size):
     cv2.ellipse(mask, (330, HOR + 30), (520, 150), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
     cv2.ellipse(mask, (60, HOR + 80), (300, 140), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
     cv2.ellipse(mask, (640, HOR + 90), (260, 110), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
+    if STORY:                          # the taller frame: the smoke bank rolls on to the bottom edge
+        cv2.ellipse(mask, (260, H - 60), (460, 200), 0, 0, 360, 1.0, -1, cv2.LINE_AA)
     mask = cv2.GaussianBlur(mask, (0, 0), 28)
     n = noise(160, 6, 9)
     n2 = noise(60, 4, 21)
@@ -195,17 +202,17 @@ def thrust_and_smoke(f, M, size):
 def text(f):
     logo = Image.open(ROOT / "assets/logo.png")
     logo = R.to_premul(np.array(logo.resize((220, int(logo.height * 220 / logo.width)), Image.LANCZOS)))
-    R.over(f, logo, W - 220 - 56, 56)
+    R.over(f, logo, W - 220 - 56, 56 + TY)
     YEL8 = (250, 184, 23)
     h1 = E.T.line([("انطلق", (241, 240, 236)), ("بأداء", (241, 240, 236)), ("أعلى", YEL8)], 92, bold=True, shadow=True, pad=20)
-    R.over(f, h1, W - h1.shape[1] - 36, 150)
+    R.over(f, h1, W - h1.shape[1] - 36, 150 + TY)
     h2 = E.T.line([("زيت", (192, 196, 199)), ("محرك", (192, 196, 199))], 46, bold=False, shadow=True, pad=14)
     lat = R.latin_layer("JLM 5W-30", 48, YEL8, 800, 0.02)
     x = W - 56
-    R.over(f, h2, x - h2.shape[1] + 14, 268)
-    R.over(f, lat, x - h2.shape[1] - lat.shape[1] - 4, 268 + (h2.shape[0] - lat.shape[0]) // 2 + 2)
+    R.over(f, h2, x - h2.shape[1] + 14, 268 + TY)
+    R.over(f, lat, x - h2.shape[1] - lat.shape[1] - 4, 268 + TY + (h2.shape[0] - lat.shape[0]) // 2 + 2)
     pill = V.url_pill(40)
-    R.over(f, pill, W - pill.shape[1] - 56, H - pill.shape[0] - 52)
+    R.over(f, pill, W - pill.shape[1] - 56, H - pill.shape[0] - BOT)
 
 
 def main():
@@ -214,16 +221,17 @@ def main():
     ramp(f)
     lay = bottle()
     # bottle first (behind the jets' glow), then jets/smoke drawn over its base, then the bottle again on top
-    M, size = place_rotated(f.copy(), lay, 330, 640, 8)
+    M, size = place_rotated(f.copy(), lay, 330, 640 + DY, 8)
     thrust_and_smoke(f, M, size)
-    place_rotated(f, lay, 330, 640, 8)
+    place_rotated(f, lay, 330, 640 + DY, 8)
     vig = 1 - 0.45 * np.clip(np.hypot((xx - W / 2) / W, (yy - H * 0.55) / H) * 1.5, 0, 1) ** 2
     f *= vig[..., None]
     f += (RNG.normal(0, 0.012, (H, W, 1))).astype(np.float32)
     text(f)
     img = (np.clip(f, 0, 1) ** (1 / 1.05) * 255 + 0.5).astype(np.uint8)
-    Image.fromarray(img).save(ROOT / "out/jlm_5w30_launch.png")
-    print("wrote out/jlm_5w30_launch.png")
+    name = "out/jlm_5w30_launch_story.png" if STORY else "out/jlm_5w30_launch.png"
+    Image.fromarray(img).save(ROOT / name)
+    print("wrote", name)
 
 
 if __name__ == "__main__":
