@@ -1,0 +1,308 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+    }
+    [id="01-intro-bg"] {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      background: #141516;
+    }
+    [id="01-intro-stage"] {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+    [id="01-intro-svg"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: visible;
+    }
+    [id="01-intro-ring"] {
+      fill: none;
+      stroke: #fab817;
+      stroke-width: 8;
+      stroke-linecap: butt;
+    }
+    [id^="01-intro-arc-"] {
+      fill: none;
+      stroke: #c0c4c7;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+    [id="01-intro-glow"] {
+      position: absolute;
+      /* 900x900 halo centred on (540, 900) */
+      left: 90px;
+      top: 450px;
+      width: 900px;
+      height: 900px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at 50% 50%,
+        rgba(232, 158, 0, 0.95) 0%,
+        rgba(232, 158, 0, 0.45) 32%,
+        rgba(232, 158, 0, 0.12) 55%,
+        rgba(232, 158, 0, 0) 70%
+      );
+      opacity: 0;
+      z-index: 1;
+    }
+    [id="01-intro-logo"] {
+      position: absolute;
+      /* width 560, height 560*500/1534 = 182.53; centred on (540, 900) */
+      left: 260px;
+      top: 808.735px;
+      width: 560px;
+      height: 182.53px;
+      opacity: 0;
+      z-index: 2;
+    }
+    [id="01-intro-tip"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 64px;
+      height: 64px;
+      margin-left: -32px;
+      margin-top: -32px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at 50% 50%,
+        #fff3c9 0%,
+        #fab817 18%,
+        rgba(250, 184, 23, 0.35) 34%,
+        rgba(250, 184, 23, 0) 62%
+      );
+      opacity: 0;
+      z-index: 3;
+    }
+  </style>
+
+  <div
+    id="root"
+    data-composition-id="01-intro"
+    data-start="0"
+    data-duration="3.2"
+    data-width="1080"
+    data-height="1920"
+  >
+    <div
+      id="01-intro-bg"
+      class="clip"
+      data-start="0"
+      data-duration="3.2"
+      data-track-index="0"
+    ></div>
+
+    <div
+      id="01-intro-stage"
+      class="clip"
+      data-start="0"
+      data-duration="3.2"
+      data-track-index="1"
+    >
+      <svg
+        id="01-intro-svg"
+        viewBox="0 0 1080 1920"
+        width="1080"
+        height="1920"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <!-- silver orbit hairlines (r 520 / r 560), drawn counter-clockwise -->
+        <g id="01-intro-orbit-a" opacity="0.25">
+          <path id="01-intro-arc-a" d="M 540 380" />
+        </g>
+        <g id="01-intro-orbit-b" opacity="0.25">
+          <path id="01-intro-arc-b" d="M 540 1460" />
+        </g>
+        <!-- master circle C: centre (540, 900), r 470, 8px #FAB817; path starts at 12 o'clock, runs clockwise -->
+        <path
+          id="01-intro-ring"
+          d="M 540 430 A 470 470 0 1 1 540 1370 A 470 470 0 1 1 540 430 Z"
+        />
+      </svg>
+
+      <div id="01-intro-glow"></div>
+      <img id="01-intro-logo" src="assets/logo_on_dark.png" alt="JLM Liquid Tools" />
+      <div id="01-intro-tip"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+
+      var CX = 540;
+      var CY = 900;
+      var R = 470;
+
+      // ---- geometry helpers (deterministic) ----
+      function pt(r, deg) {
+        var a = (deg * Math.PI) / 180;
+        return [CX + r * Math.cos(a), CY + r * Math.sin(a)];
+      }
+      // counter-clockwise arc (screen space) from startDeg sweeping spanDeg degrees
+      function ccwArc(r, startDeg, spanDeg) {
+        var s = pt(r, startDeg);
+        var e = pt(r, startDeg - spanDeg);
+        var large = spanDeg > 180 ? 1 : 0;
+        return (
+          "M " + s[0].toFixed(2) + " " + s[1].toFixed(2) +
+          " A " + r + " " + r + " 0 " + large + " 0 " + e[0].toFixed(2) + " " + e[1].toFixed(2)
+        );
+      }
+
+      var arcA = document.getElementById("01-intro-arc-a");
+      var arcB = document.getElementById("01-intro-arc-b");
+      var ring = document.getElementById("01-intro-ring");
+      var tip = document.getElementById("01-intro-tip");
+      var glow = document.getElementById("01-intro-glow");
+      var logo = document.getElementById("01-intro-logo");
+      var orbitA = document.getElementById("01-intro-orbit-a");
+      var orbitB = document.getElementById("01-intro-orbit-b");
+
+      // r 520: from 12 o'clock, 300deg CCW.  r 560: from 6 o'clock, 220deg CCW.
+      arcA.setAttribute("d", ccwArc(520, -90, 300));
+      arcB.setAttribute("d", ccwArc(560, 90, 220));
+
+      function prepDash(p) {
+        var len = p.getTotalLength() + 2;
+        p.style.strokeDasharray = len + " " + len;
+        p.style.strokeDashoffset = String(len);
+        return len;
+      }
+      var ringLen = prepDash(ring);
+      var lenA = prepDash(arcA);
+      var lenB = prepDash(arcB);
+
+      // ===== Scene 1 (0.0–1.1s): ring C self-draws clockwise from 12 o'clock =====
+      var RING_START = 0.1;
+      var RING_DUR = 0.95;
+      var draw = { p: 0 };
+      tl.fromTo(
+        draw,
+        { p: 0 },
+        {
+          p: 1,
+          duration: RING_DUR,
+          ease: "power2.out",
+          onUpdate: function () {
+            if (draw.p >= 1) {
+              // closed: a plain solid stroke, no dash seam (exact handoff ring)
+              ring.style.strokeDasharray = "none";
+              ring.style.strokeDashoffset = "0";
+            } else {
+              ring.style.strokeDasharray = ringLen + " " + ringLen;
+              ring.style.strokeDashoffset = String(ringLen * (1 - draw.p));
+            }
+            var xy = pt(R, -90 + 360 * draw.p);
+            tip.style.transform = "translate(" + xy[0] + "px," + xy[1] + "px)";
+          },
+        },
+        RING_START
+      );
+      // the glowing pen tip rides the draw, then dissolves as the ring closes
+      tl.fromTo(tip, { opacity: 0 }, { opacity: 1, duration: 0.12, ease: "power1.out" }, RING_START);
+      tl.fromTo(tip, { opacity: 1 }, { opacity: 0, duration: 0.3, ease: "power1.in", immediateRender: false }, RING_START + RING_DUR - 0.2);
+
+      // silver orbit hairlines draw counter-clockwise just behind it
+      tl.fromTo(
+        arcA,
+        { strokeDashoffset: lenA },
+        { strokeDashoffset: 0, duration: 0.8, ease: "power2.out" },
+        0.25
+      );
+      tl.fromTo(
+        arcB,
+        { strokeDashoffset: lenB },
+        { strokeDashoffset: 0, duration: 0.75, ease: "power2.out" },
+        0.4
+      );
+      // slow counter-rotation of the orbits (inner faster than outer), one linear pass
+      tl.fromTo(
+        orbitA,
+        { rotation: 0, svgOrigin: "540 900" },
+        { rotation: -28, svgOrigin: "540 900", duration: 2.8, ease: "none" },
+        0.25
+      );
+      tl.fromTo(
+        orbitB,
+        { rotation: 0, svgOrigin: "540 900" },
+        { rotation: 16, svgOrigin: "540 900", duration: 2.65, ease: "none" },
+        0.4
+      );
+
+      // ===== Scene 2 (1.0–2.2s): logo resolves inside the ring + glow bloom =====
+      var LOGO_START = 1.0;
+      var LOGO_DUR = 0.75;
+      tl.fromTo(
+        logo,
+        { opacity: 0, scale: 0.92, filter: "blur(8px)" },
+        { opacity: 1, scale: 1, filter: "blur(0px)", duration: LOGO_DUR, ease: "power3.out" },
+        LOGO_START
+      );
+      var GLOW_PEAK = 0.3;
+      tl.fromTo(
+        glow,
+        { opacity: 0, scale: 0.85 },
+        { opacity: GLOW_PEAK, scale: 1, duration: LOGO_DUR, ease: "power2.out" },
+        LOGO_START
+      );
+      // bounded breathe during the short hold (finite phase tween, starts at rest)
+      var phase = { p: 0 };
+      tl.fromTo(
+        phase,
+        { p: 0 },
+        {
+          p: Math.PI,
+          duration: 0.45,
+          ease: "none",
+          onUpdate: function () {
+            var s = Math.sin(phase.p);
+            gsap.set(glow, { opacity: GLOW_PEAK + s * 0.04, scale: 1 + s * 0.02 });
+          },
+        },
+        LOGO_START + LOGO_DUR
+      );
+
+      // ===== Scene 3 (2.2–3.2s): logo + orbits leave, ring C waits alone =====
+      tl.fromTo(
+        logo,
+        { opacity: 1, scale: 1, filter: "blur(0px)" },
+        { opacity: 0, scale: 0.9, filter: "blur(0px)", duration: 0.65, ease: "power2.inOut", immediateRender: false },
+        2.2
+      );
+      tl.fromTo(
+        glow,
+        { opacity: GLOW_PEAK, scale: 1 },
+        { opacity: 0, scale: 0.9, duration: 0.6, ease: "power2.inOut", immediateRender: false },
+        2.2
+      );
+      tl.fromTo(
+        [orbitA, orbitB],
+        { opacity: 0.25 },
+        { opacity: 0, duration: 0.7, ease: "power2.inOut", immediateRender: false },
+        2.25
+      );
+
+      // hard-lock the handoff pose by 3.1s: ring only, logo/glow/orbits fully gone
+      tl.set([logo, glow, tip, orbitA, orbitB], { opacity: 0 }, 3.05);
+      tl.set({}, {}, 3.2);
+
+      window.__timelines["01-intro"] = tl;
+    })();
+  </script>
+</template>

@@ -1,0 +1,513 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face{font-family:"Albert Sans";font-weight:100 900;font-style:normal;font-display:block;src:url("assets/fonts/AlbertSans-Regular.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:700;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Bold.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:400;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Regular.ttf") format("truetype");}
+
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: "Helvetica Neue LT Arabic", "Albert Sans", sans-serif;
+    }
+    [id="06-usage-1-bg"] {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+      background: #141516;
+    }
+    [id="06-usage-1-stage"] {
+      position: absolute;
+      inset: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+    /* full-canvas wrappers so every transform-origin is in frame pixels */
+    [id="06-usage-1-arm1"],
+    [id="06-usage-1-arm2"],
+    [id="06-usage-1-settle"],
+    [id="06-usage-1-shake"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+    /* CAN shifted left of CAN@HERO: centre (330, 980), height 1000 -> width 350.833, top-left (154.583, 480) */
+    [id="06-usage-1-can"] {
+      position: absolute;
+      left: 154.583px;
+      top: 480px;
+      width: 350.833px;
+      height: 1000px;
+      filter: drop-shadow(0 0 7px rgba(250, 184, 23, 0.3));
+    }
+
+    /* ---- title ---- */
+    [id="06-usage-1-title"] {
+      position: absolute;
+      right: 64px;
+      top: 200px;
+      width: 900px;
+      text-align: right;
+      color: #f1f0ec;
+      font-family: "Helvetica Neue LT Arabic", sans-serif;
+      font-weight: 700;
+      font-size: 74px;
+      line-height: 1.15;
+      white-space: nowrap;
+    }
+    [id="06-usage-1-rule"] {
+      position: absolute;
+      right: 64px;
+      top: 312px;
+      width: 112px;
+      height: 6px;
+      background: #fab817;
+      transform-origin: 100% 50%;
+    }
+
+    /* ---- steps ---- */
+    [class~="06-usage-1-step"] {
+      position: absolute;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 22px;
+      color: #f1f0ec;
+      font-family: "Helvetica Neue LT Arabic", sans-serif;
+      font-weight: 400;
+      font-size: 44px;
+      line-height: 1.42;
+    }
+    [id="06-usage-1-step1"],
+    [id="06-usage-1-step2"] {
+      right: 64px;
+      top: 548px;
+      width: 508px;
+    }
+    [id="06-usage-1-step3"] {
+      left: 96px;
+      right: 64px;
+      top: 1292px;
+      justify-content: flex-start;
+    }
+    [class~="06-usage-1-disc"] {
+      flex: 0 0 64px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #fab817;
+      color: #141516;
+      font-family: "Helvetica Neue LT Arabic", sans-serif;
+      font-weight: 700;
+      font-size: 38px;
+      line-height: 64px;
+      text-align: center;
+      margin-top: -1px;
+    }
+    [class~="06-usage-1-txt"] {
+      flex: 1 1 auto;
+      text-align: right;
+    }
+
+    /* ---- bolt lens (CROP masked r 292, image width 600, centred (540, 900)) ---- */
+    [id="06-usage-1-bolt"] {
+      position: absolute;
+      left: 248px;
+      top: 608px;
+      width: 584px;
+      height: 584px;
+      clip-path: circle(292px at 50% 50%);
+      overflow: hidden;
+    }
+    [id="06-usage-1-crop"] {
+      position: absolute;
+      left: -8px;
+      top: -12.545px;
+      width: 600px;
+      height: 609.09px;
+    }
+    [id="06-usage-1-sheen"] {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(250, 184, 23, 0.16) 0%,
+          rgba(250, 184, 23, 0.08) 44%,
+          rgba(255, 222, 130, 0.2) 56%,
+          rgba(250, 184, 23, 0.09) 70%,
+          rgba(250, 184, 23, 0.14) 100%
+        );
+    }
+    [id="06-usage-1-glint"] {
+      position: absolute;
+      left: -200px;
+      top: -200px;
+      width: 160px;
+      height: 984px;
+      background: linear-gradient(90deg, rgba(255, 236, 180, 0) 0%, rgba(255, 236, 180, 0.42) 50%, rgba(255, 236, 180, 0) 100%);
+      opacity: 0;
+    }
+
+    /* ---- spray mist ---- */
+    [id="06-usage-1-spray"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+    [class~="06-usage-1-p"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: 50%;
+      background: #fab817;
+      opacity: 0;
+    }
+
+    /* ---- timer ---- */
+    [id="06-usage-1-svg"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: visible;
+    }
+    [id="06-usage-1-ring"] {
+      fill: none;
+      stroke: #fab817;
+      stroke-width: 8;
+      stroke-linecap: butt;
+    }
+    [class~="06-usage-1-tick"] {
+      stroke: #c0c4c7;
+      stroke-width: 4;
+      stroke-linecap: round;
+    }
+    [id="06-usage-1-handline"] {
+      stroke: #fab817;
+      stroke-width: 5;
+      stroke-linecap: round;
+    }
+
+    /* ---- incoming wipe band (handoff_in) ---- */
+    [id="06-usage-1-band"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3000px;
+      height: 1920px;
+      background: #fab817;
+    }
+  </style>
+
+  <div
+    id="root"
+    data-composition-id="06-usage-1"
+    data-start="0"
+    data-duration="10.18"
+    data-width="1080"
+    data-height="1920"
+  >
+    <div id="06-usage-1-bg" class="clip" data-start="0" data-duration="10.18" data-track-index="0"></div>
+
+    <div id="06-usage-1-stage" class="clip" data-start="0" data-duration="10.18" data-track-index="1">
+      <!-- title -->
+      <div id="06-usage-1-title" dir="rtl" lang="ar">طريقة الاستخدام</div>
+      <div id="06-usage-1-rule"></div>
+
+      <!-- the can: arm1 (tilt arc) > arm2 (exit arc) > settle > shake > img -->
+      <div id="06-usage-1-arm1">
+        <div id="06-usage-1-arm2">
+          <div id="06-usage-1-settle">
+            <div id="06-usage-1-shake">
+              <img id="06-usage-1-can" src="assets/penetrating-oil-can.png" alt="JLM Penetrating Oil" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- steps (user's copy) -->
+      <div id="06-usage-1-step1" class="06-usage-1-step" dir="rtl" lang="ar">
+        <span class="06-usage-1-disc">١</span>
+        <span class="06-usage-1-txt">رجّ العبوة جيدًا قبل الاستخدام</span>
+      </div>
+      <div id="06-usage-1-step2" class="06-usage-1-step" dir="rtl" lang="ar">
+        <span class="06-usage-1-disc">٢</span>
+        <span class="06-usage-1-txt">رشّ الزيت مباشرة على المنطقة المستهدفة</span>
+      </div>
+
+      <!-- bolt lens -->
+      <div id="06-usage-1-bolt">
+        <img id="06-usage-1-crop" src="assets/label-bolt-nut.png" alt="" />
+        <div id="06-usage-1-sheen"></div>
+        <div id="06-usage-1-glint"></div>
+      </div>
+
+      <!-- spray mist particles are generated here -->
+      <div id="06-usage-1-spray"></div>
+
+      <!-- timer ring, ticks, clock hand -->
+      <svg id="06-usage-1-svg" viewBox="0 0 1080 1920" width="1080" height="1920" xmlns="http://www.w3.org/2000/svg">
+        <g id="06-usage-1-ticks"></g>
+        <!-- r 300 around (540, 900): starts at 12 o'clock, runs clockwise -->
+        <path id="06-usage-1-ring" d="M 540 600 A 300 300 0 1 1 540 1200 A 300 300 0 1 1 540 600 Z" />
+        <g id="06-usage-1-hand">
+          <line id="06-usage-1-handline" x1="540" y1="900" x2="540" y2="818" />
+          <circle cx="540" cy="900" r="9" fill="#FAB817" />
+        </g>
+      </svg>
+
+      <div id="06-usage-1-step3" class="06-usage-1-step" dir="rtl" lang="ar">
+        <span class="06-usage-1-disc">٣</span>
+        <span class="06-usage-1-txt">اترك المنتج يتغلغل لمدة بضع دقائق، اعتمادًا على مستوى التآكل</span>
+      </div>
+
+      <div id="06-usage-1-band"></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      var DUR = 10.18;
+      var SVGNS = "http://www.w3.org/2000/svg";
+      function $(id) {
+        return document.getElementById("06-usage-1-" + id);
+      }
+
+      // ---------- deterministic helpers ----------
+      var seed = 60601;
+      function rnd() {
+        seed = (seed * 1664525 + 1013904223) % 4294967296;
+        return seed / 4294967296;
+      }
+      function rot(v, deg) {
+        // screen space (y down): positive = clockwise
+        var a = (deg * Math.PI) / 180, c = Math.cos(a), s = Math.sin(a);
+        return [c * v[0] - s * v[1], s * v[0] + c * v[1]];
+      }
+      function rotAbout(p, piv, deg) {
+        var r = rot([p[0] - piv[0], p[1] - piv[1]], deg);
+        return [piv[0] + r[0], piv[1] + r[1]];
+      }
+
+      var band = $("band"), title = $("title"), rule = $("rule");
+      var arm1 = $("arm1"), arm2 = $("arm2"), settle = $("settle"), shake = $("shake"), can = $("can");
+      var step1 = $("step1"), step2 = $("step2"), step3 = $("step3");
+      var bolt = $("bolt"), sheen = $("sheen"), glint = $("glint"), spray = $("spray");
+      var ring = $("ring"), ticksG = $("ticks"), hand = $("hand");
+
+      // ---------- can geometry ----------
+      var C0 = [330, 980];             // can centre (scene 1)
+      var S_SCALE = 1000 / 2400;       // 0.416667
+      var CAN_TL = [330 - (842 * S_SCALE) / 2, 980 - 500];
+      var N0 = [CAN_TL[0] + 634 * S_SCALE, CAN_TL[1] + 79 * S_SCALE]; // nozzle tip (native 634, 79)
+      var TILT = 25;                   // clockwise: top leans right, nozzle aims down-right at the bolt
+      var C1 = [305, 1090];            // can centre after the tilt arc
+      // pivot P so that rotating C0 about P by TILT lands on C1 (circular arc, not a slide)
+      var a = (TILT * Math.PI) / 180, cs = Math.cos(a), sn = Math.sin(a);
+      var RC0 = rot(C0, TILT);
+      var bx = C1[0] - RC0[0], by = C1[1] - RC0[1];
+      // (I - R) P = C1 - R C0 ; I - R = [[1-c, s], [-s, 1-c]]
+      var m11 = 1 - cs, m12 = sn, m21 = -sn, m22 = 1 - cs;
+      var det = m11 * m22 - m12 * m21;
+      var P = [(m22 * bx - m12 * by) / det, (-m21 * bx + m11 * by) / det];
+      var N1 = rotAbout(N0, P, TILT); // nozzle during the spray
+      // exit arc: rotate about a low screen pivot S; arm2 lives inside arm1, so use S in arm1-local space
+      var S = [700, 2400];
+      var Q = rotAbout(S, P, -TILT);
+
+      gsap.set(arm1, { transformOrigin: P[0] + "px " + P[1] + "px" });
+      gsap.set(arm2, { transformOrigin: Q[0] + "px " + Q[1] + "px" });
+      gsap.set(settle, { transformOrigin: "330px 1480px" });
+      gsap.set(shake, { transformOrigin: "330px 980px" });
+
+      // =========== Scene 1 (0.0–1.6s): wipe out, title, can ===========
+      // band: right edge slanted 14deg; covers x 0–1080 at t=0, leaves past the left edge by 0.55s
+      tl.fromTo(
+        band,
+        { x: -1672, skewX: 14, transformOrigin: "50% 50%" },
+        { x: -3239, skewX: 14, duration: 0.55, ease: "none" },
+        0
+      );
+      tl.set(band, { opacity: 0 }, 0.56);
+
+      tl.fromTo(
+        settle,
+        { rotation: -4, y: 0 },
+        { rotation: 0, y: 0, duration: 1.2, ease: "power3.out" },
+        0.05
+      );
+      tl.fromTo(
+        title,
+        { opacity: 0, y: 34 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" },
+        0.2
+      );
+      tl.fromTo(rule, { scaleX: 0 }, { scaleX: 1, duration: 0.7, ease: "power3.out" }, 0.55);
+
+      // =========== Scene 2 (1.8–3.5s): step 1 + the shake ===========
+      function stepIn(el, t) {
+        var disc = el.children[0], txt = el.children[1];
+        tl.fromTo(disc, { scale: 0.3, rotation: -120, opacity: 0 }, { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, t);
+        tl.fromTo(txt, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, t + 0.08);
+      }
+      function stepOut(el, t, d) {
+        tl.fromTo(el, { opacity: 1, y: 0 }, { opacity: 0, y: -36, duration: d || 0.35, ease: "power2.in", immediateRender: false }, t);
+      }
+      stepIn(step1, 1.8);
+
+      // rotation oscillation ±7deg, 6 cycles, decaying (1.85–3.45s)
+      var SH0 = 1.85, SHD = 1.6, HALF = SHD / 12, amp = 7, sign = 1, tt = SH0;
+      tl.fromTo(shake, { rotation: 0, y: 0 }, { rotation: 7, y: -8, duration: HALF / 2, ease: "sine.out" }, tt);
+      tt += HALF / 2;
+      for (var k = 1; k < 12; k++) {
+        amp *= 0.86;
+        sign = -sign;
+        tl.to(shake, { rotation: sign * amp, y: sign * -8 * (amp / 7), duration: HALF, ease: "sine.inOut" }, tt);
+        tt += HALF;
+      }
+      tl.to(shake, { rotation: 0, y: 0, duration: HALF / 2 + 0.05, ease: "sine.out" }, tt);
+
+      // =========== Scene 3 (3.7–7.0s): step 2, tilt, lens, spray, sheen ===========
+      stepOut(step1, 3.7, 0.28);
+      gsap.set(step2, { opacity: 1 });
+      stepIn(step2, 3.95);
+
+      tl.fromTo(arm1, { rotation: 0 }, { rotation: TILT, duration: 0.65, ease: "power2.inOut" }, 3.7);
+
+      // lens: r 200 at (790, 1180) => offset (250, 280), scale 200/292
+      var LS = 200 / 292;
+      tl.fromTo(
+        bolt,
+        { x: 250, y: 280, scale: 0.2, rotation: -40, opacity: 0 },
+        { x: 250, y: 280, scale: LS, rotation: 0, opacity: 1, duration: 0.7, ease: "power3.out" },
+        3.9
+      );
+
+      // oil sheen spreads from the impact side of the bolt
+      tl.fromTo(
+        sheen,
+        { clipPath: "circle(0% at 36% 34%)", opacity: 1 },
+        { clipPath: "circle(110% at 36% 34%)", duration: 2.5, ease: "power1.out" },
+        4.45
+      );
+      gsap.set(glint, { rotation: 35, x: 0, opacity: 0 });
+      tl.fromTo(glint, { x: 0, opacity: 0.9 }, { x: 1000, opacity: 0.9, duration: 0.9, ease: "power2.inOut", immediateRender: false }, 6.3);
+      tl.set(glint, { opacity: 0 }, 7.2);
+
+      // spray mist (seeded): from the nozzle onto the bolt, 4.15–6.75s
+      var PN = 260, TGT = [772, 1158];
+      for (var i = 0; i < PN; i++) {
+        var sz = 3 + rnd() * 5;
+        if (rnd() < 0.07) sz = 9;
+        var p = document.createElement("div");
+        p.className = "06-usage-1-p";
+        p.style.width = sz.toFixed(2) + "px";
+        p.style.height = sz.toFixed(2) + "px";
+        p.style.marginLeft = (-sz / 2).toFixed(2) + "px";
+        p.style.marginTop = (-sz / 2).toFixed(2) + "px";
+        spray.appendChild(p);
+
+        var t0 = 4.15 + (i / PN) * 2.45 + rnd() * 0.04;
+        var d = 0.5 + rnd() * 0.32;
+        var ang = rnd() * Math.PI * 2, rad = Math.sqrt(rnd()) * 165;
+        var tx = TGT[0] + Math.cos(ang) * rad, ty = TGT[1] + Math.sin(ang) * rad;
+        var sx = N1[0] + (rnd() - 0.5) * 6, sy = N1[1] + (rnd() - 0.5) * 6;
+        var peak = 0.7 + rnd() * 0.3;
+
+        tl.fromTo(p, { x: sx }, { x: tx, duration: d, ease: "power4.out" }, t0);
+        tl.fromTo(p, { y: sy }, { y: ty, duration: d, ease: "none" }, t0);
+        tl.fromTo(p, { scale: 0.5 }, { scale: 1.6, duration: d, ease: "none" }, t0);
+        tl.fromTo(p, { opacity: 0 }, { opacity: peak, duration: 0.06, ease: "none" }, t0);
+        tl.fromTo(p, { opacity: peak }, { opacity: 0, duration: 0.2, ease: "power1.in", immediateRender: false }, t0 + d - 0.2);
+      }
+
+      // =========== Scene 4 (7.4–10.18s): soak timer ===========
+      stepOut(step2, 7.4, 0.3);
+      gsap.set(step3, { opacity: 1 });
+      stepIn(step3, 7.85);
+
+      // can arcs out to the left and fades
+      tl.fromTo(arm2, { rotation: 0 }, { rotation: -30, duration: 0.85, ease: "sine.in" }, 7.4);
+      tl.fromTo(can, { opacity: 1 }, { opacity: 0, duration: 0.6, ease: "power1.in" }, 7.5);
+
+      // lens arcs to centre and grows to r 292
+      tl.fromTo(bolt, { x: 250 }, { x: 0, duration: 1.0, ease: "power2.inOut", immediateRender: false }, 7.4);
+      tl.fromTo(bolt, { y: 280 }, { y: 0, duration: 1.0, ease: "power3.out", immediateRender: false }, 7.4);
+      tl.fromTo(bolt, { scale: LS }, { scale: 1, duration: 1.0, ease: "power2.inOut", immediateRender: false }, 7.4);
+
+      // timer ring sweeps clockwise from 12 o'clock, closed by 9.9s
+      var RING_T0 = 7.9, RING_T1 = 9.9;
+      var LEN = ring.getTotalLength() + 2;
+      ring.style.strokeDasharray = LEN + " " + LEN;
+      ring.style.strokeDashoffset = String(LEN);
+      var draw = { p: 0 };
+      tl.fromTo(
+        draw,
+        { p: 0 },
+        {
+          p: 1,
+          duration: RING_T1 - RING_T0,
+          ease: "none",
+          onUpdate: function () {
+            if (draw.p >= 1) {
+              ring.style.strokeDasharray = "none";
+              ring.style.strokeDashoffset = "0";
+            } else {
+              ring.style.strokeDasharray = LEN + " " + LEN;
+              ring.style.strokeDashoffset = String(LEN * (1 - draw.p));
+            }
+          },
+        },
+        RING_T0
+      );
+
+      // tick marks at every 30deg, revealed as the sweep reaches them
+      var ticks = [];
+      for (var j = 0; j < 12; j++) {
+        var ta = ((-90 + j * 30) * Math.PI) / 180;
+        var ln = document.createElementNS(SVGNS, "line");
+        ln.setAttribute("class", "06-usage-1-tick");
+        ln.setAttribute("x1", (540 + 318 * Math.cos(ta)).toFixed(2));
+        ln.setAttribute("y1", (900 + 318 * Math.sin(ta)).toFixed(2));
+        ln.setAttribute("x2", (540 + 336 * Math.cos(ta)).toFixed(2));
+        ln.setAttribute("y2", (900 + 336 * Math.sin(ta)).toFixed(2));
+        ticksG.appendChild(ln);
+        ticks.push(ln);
+        tl.fromTo(ln, { opacity: 0 }, { opacity: 0.9, duration: 0.14, ease: "power1.out" }, RING_T0 + ((RING_T1 - RING_T0) * j) / 12);
+      }
+
+      // tiny clock hand follows the sweep
+      tl.fromTo(hand, { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power1.out" }, RING_T0 - 0.15);
+      tl.fromTo(
+        hand,
+        { rotation: 0, svgOrigin: "540 900" },
+        { rotation: 360, svgOrigin: "540 900", duration: RING_T1 - RING_T0, ease: "none" },
+        RING_T0
+      );
+
+      // text fades by 9.9s; ticks + hand clear right after the ring closes
+      tl.fromTo([title, rule, step3], { opacity: 1 }, { opacity: 0, duration: 0.4, ease: "power1.in", immediateRender: false }, 9.5);
+      tl.fromTo(ticks, { opacity: 0.9 }, { opacity: 0, duration: 0.17, ease: "power1.in", immediateRender: false }, 9.92);
+      tl.fromTo(hand, { opacity: 1 }, { opacity: 0, duration: 0.17, ease: "power1.in", immediateRender: false }, 9.92);
+
+      // hard-lock the handoff pose
+      tl.set([title, rule, step1, step2, step3, can, hand].concat(ticks), { opacity: 0 }, 10.1);
+      tl.set(bolt, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 }, 10.1);
+      tl.set({}, {}, DUR);
+
+      window.__timelines["06-usage-1"] = tl;
+    })();
+  </script>
+</template>

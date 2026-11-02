@@ -1,0 +1,31 @@
+{
+  "_": "قالب خطة مونتاج. انسخه وعدّله، أو ابدأ من autocut.py الذي يولّد الأساس تلقائيًا. الصيغة الكاملة في references/edit-plan.md",
+
+  "input": "raw.mp4",
+  "aspect": "9:16",
+  "crop_mode": "blur",
+  "fps": 30,
+
+  "segments": [
+    {"start": 0.0, "end": 6.0, "speed": 1.08, "zoom": 1.0},
+    {"start": 8.5, "end": 15.0, "speed": 1.08, "zoom": 1.08}
+  ],
+
+  "color": {"contrast": 1.08, "saturation": 1.10, "brightness": 0.02},
+
+  "captions": [
+    {"start": 0.0, "end": 2.6, "text": "اكتب الهوك هنا — *كلمة مميزة*", "style": "hook"},
+    {"start": 2.7, "end": 5.6, "text": "الفكرة الأولى بكلمات قليلة", "style": "body"},
+    {"start": 5.7, "end": 8.6, "text": "الفكرة الثانية", "style": "body"},
+    {"start": 8.7, "end": 11.5, "text": "دعوة واحدة للفعل", "style": "cta"}
+  ],
+
+  "icons": [
+    {"start": 0.5, "end": 2.4, "emoji": "🔥", "pos": "top-right", "size": 0.16},
+    {"start": 8.9, "end": 11.3, "emoji": "🚀", "pos": "top-left", "size": 0.16}
+  ],
+
+  "music": null,
+  "audio": {"normalize": true, "target_lufs": -14},
+  "quality": {"crf": 18, "preset": "medium", "audio_bitrate": "192k"}
+}

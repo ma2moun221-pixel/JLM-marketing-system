@@ -1,0 +1,326 @@
+<template>
+  <style>
+    @font-face{font-family:"Albert Sans";font-weight:100 900;font-style:normal;font-display:block;src:url("assets/fonts/AlbertSans-Regular.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:700;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Bold.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:400;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Regular.ttf") format("truetype");}
+
+    #root {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: "Helvetica Neue LT Arabic", "Albert Sans", sans-serif;
+    }
+    #root [id="07-usage-2-ground"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+      background: #141516;
+    }
+    #root [id="07-usage-2-stage"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+      transform-origin: 540px 900px;
+    }
+    /* rotor: 1400x1400 box centred on (540, 900) */
+    #root [id="07-usage-2-rotor"] {
+      position: absolute;
+      left: -160px;
+      top: 200px;
+      width: 1400px;
+      height: 1400px;
+      transform-origin: 50% 50%;
+    }
+    /* CROP circle mask r 292, centre (540, 900) */
+    #root [id="07-usage-2-mask"] {
+      position: absolute;
+      left: 408px;
+      top: 408px;
+      width: 584px;
+      height: 584px;
+      border-radius: 50%;
+      overflow: hidden;
+    }
+    /* CROP at width 600 -> top-left (240, 595.45) on screen */
+    #root [id="07-usage-2-crop"] {
+      position: absolute;
+      left: -8px;
+      top: -12.545px;
+      width: 600px;
+      height: 609.09px;
+      transform-origin: 50% 50%;
+      display: block;
+    }
+    #root [id="07-usage-2-sheen"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 584px;
+      height: 584px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(250, 184, 23, 0.16) 0%,
+          rgba(250, 184, 23, 0.08) 44%,
+          rgba(255, 222, 130, 0.2) 56%,
+          rgba(250, 184, 23, 0.09) 70%,
+          rgba(250, 184, 23, 0.14) 100%
+        );
+    }
+    #root [id="07-usage-2-wrench"],
+    #root [id="07-usage-2-overlay"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: visible;
+    }
+    #root [id="07-usage-2-copy"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+    #root [id="07-usage-2-disc"] {
+      position: absolute;
+      right: 70px;
+      top: 241px;
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: #FAB817;
+      overflow: hidden;
+    }
+    #root [id="07-usage-2-num4"],
+    #root [id="07-usage-2-num5"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 78px;
+      height: 78px;
+      line-height: 78px;
+      text-align: center;
+      font-family: "Helvetica Neue LT Arabic", sans-serif;
+      font-weight: 700;
+      font-size: 44px;
+      color: #141516;
+    }
+    #root [id="07-usage-2-t4"],
+    #root [id="07-usage-2-t5"] {
+      position: absolute;
+      right: 172px;
+      top: 250px;
+      width: 838px;
+      margin: 0;
+      font-family: "Helvetica Neue LT Arabic", sans-serif;
+      font-weight: 400;
+      font-size: 42px;
+      line-height: 1.45;
+      color: #F1F0EC;
+      text-align: right;
+    }
+    #root [id="07-usage-2-band"] {
+      position: absolute;
+      left: -1200px;
+      top: -640px;
+      width: 2400px;
+      height: 3200px;
+      background: #252729;
+      transform-origin: 50% 50%;
+    }
+    #root [id="07-usage-2-band-edge"] {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      height: 3200px;
+      background: linear-gradient(to right, rgba(250, 184, 23, 0) 0%, rgba(250, 184, 23, 0.45) 55%, rgba(250, 184, 23, 0.95) 100%);
+    }
+  </style>
+
+  <div id="root" data-composition-id="07-usage-2" data-start="0" data-duration="7.73" data-width="1080" data-height="1920">
+    <!-- full-bleed ink ground -->
+    <div id="07-usage-2-ground" class="clip" data-start="0" data-duration="7.73" data-track-index="0"></div>
+
+    <!-- stage: socket wrench + bolt (circle spine at (540, 900)) -->
+    <div id="07-usage-2-stage" class="clip" data-start="0" data-duration="7.73" data-track-index="1">
+      <div id="07-usage-2-rotor">
+        <div id="07-usage-2-mask">
+          <img id="07-usage-2-crop" src="assets/label-bolt-nut.png" alt="" />
+          <div id="07-usage-2-sheen"></div>
+        </div>
+        <svg id="07-usage-2-wrench" width="1400" height="1400" viewBox="-700 -700 1400 1400" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="07-usage-2-handle-clip" clipPathUnits="userSpaceOnUse">
+              <rect id="07-usage-2-handle-clip-rect" x="300" y="-90" width="0" height="180"></rect>
+            </clipPath>
+          </defs>
+          <!-- wrench in local coords: handle along +x, rotated to lower-left (-35deg below horizontal) -->
+          <g transform="rotate(145)">
+            <g clip-path="url(#07-usage-2-handle-clip)">
+              <path id="07-usage-2-handle" d="M 330 -66 L 452 -40 L 580 -40 A 40 40 0 0 1 580 40 L 452 40 L 330 66 Z"
+                fill="#252729" stroke="#C0C4C7" stroke-width="4" stroke-linejoin="round"></path>
+              <g id="07-usage-2-grip" opacity="0">
+                <rect x="478" y="-13" width="112" height="26" rx="13" fill="none" stroke="#C0C4C7" stroke-width="2.5"></rect>
+                <circle cx="404" cy="0" r="13" fill="#141516" stroke="#C0C4C7" stroke-width="2.5"></circle>
+              </g>
+            </g>
+            <!-- socket head annulus r 312-362 -->
+            <path id="07-usage-2-head-fill" opacity="0" fill="#252729" fill-rule="evenodd"
+              d="M 362 0 A 362 362 0 1 0 -362 0 A 362 362 0 1 0 362 0 Z M 312 0 A 312 312 0 1 1 -312 0 A 312 312 0 1 1 312 0 Z"></path>
+            <g id="07-usage-2-knurl" opacity="0"></g>
+            <circle id="07-usage-2-head-outer" cx="0" cy="0" r="362" fill="none" stroke="#C0C4C7" stroke-width="4" stroke-linecap="butt"></circle>
+            <circle id="07-usage-2-head-inner" cx="0" cy="0" r="312" fill="none" stroke="#C0C4C7" stroke-width="2" stroke-linecap="butt"></circle>
+          </g>
+          <!-- the timer ring -> socket ring -->
+          <circle id="07-usage-2-ring" cx="0" cy="0" r="300" fill="none" stroke="#FAB817" stroke-width="8"></circle>
+          <g id="07-usage-2-notches" opacity="0"></g>
+        </svg>
+      </div>
+
+      <!-- static overlay: arc arrow + check (frame coords) -->
+      <svg id="07-usage-2-overlay" width="1080" height="1920" viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+        <path id="07-usage-2-arc" fill="none" stroke="#FAB817" stroke-width="7" stroke-linecap="butt"></path>
+        <polyline id="07-usage-2-arrowhead" fill="none" stroke="#FAB817" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" opacity="0"></polyline>
+        <g id="07-usage-2-check" opacity="0">
+          <circle cx="540" cy="1450" r="38" fill="#FAB817"></circle>
+          <path id="07-usage-2-check-mark" d="M 522 1451 L 535 1464 L 560 1437" fill="none" stroke="#141516" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"></path>
+        </g>
+      </svg>
+    </div>
+
+    <!-- step copy (user's copy, verbatim) -->
+    <div id="07-usage-2-copy" class="clip" data-start="0" data-duration="7.73" data-track-index="2">
+      <div id="07-usage-2-disc">
+        <div id="07-usage-2-num4" dir="rtl" lang="ar">٤</div>
+        <div id="07-usage-2-num5" dir="rtl" lang="ar">٥</div>
+      </div>
+      <p id="07-usage-2-t4" dir="rtl" lang="ar">استخدم الأدوات المناسبة لفك الأجزاء بعناية، وتجنب إتلاف المكونات المحيطة</p>
+      <p id="07-usage-2-t5" dir="rtl" lang="ar">قم بمسح أي زوائد من المنتج بعد فك الأجزاء</p>
+    </div>
+
+    <!-- charcoal cloth / wipe band (handoff_out) -->
+    <div id="07-usage-2-band-layer" class="clip" data-start="0" data-duration="7.73" data-track-index="3"
+      style="position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;">
+      <div id="07-usage-2-band"><div id="07-usage-2-band-edge"></div></div>
+    </div>
+  </div>
+
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script>
+    (function () {
+      var FID = "07-usage-2";
+      var NS = "http://www.w3.org/2000/svg";
+      function el(name) { return document.getElementById(FID + "-" + name); }
+      function deg(a) { return (a * Math.PI) / 180; }
+
+      // --- build deterministic SVG detail ---
+      var knurl = el("knurl");
+      for (var i = 0; i < 60; i++) {
+        var a = deg(i * 6);
+        var ln = document.createElementNS(NS, "line");
+        ln.setAttribute("x1", (346 * Math.cos(a)).toFixed(2));
+        ln.setAttribute("y1", (346 * Math.sin(a)).toFixed(2));
+        ln.setAttribute("x2", (358 * Math.cos(a)).toFixed(2));
+        ln.setAttribute("y2", (358 * Math.sin(a)).toFixed(2));
+        ln.setAttribute("stroke", "#C0C4C7");
+        ln.setAttribute("stroke-width", "2");
+        ln.setAttribute("stroke-opacity", "0.6");
+        knurl.appendChild(ln);
+      }
+      var notches = el("notches");
+      for (var j = 0; j < 12; j++) {
+        var b = deg(j * 30 + 15);
+        var nl = document.createElementNS(NS, "line");
+        nl.setAttribute("x1", (291 * Math.cos(b)).toFixed(2));
+        nl.setAttribute("y1", (291 * Math.sin(b)).toFixed(2));
+        nl.setAttribute("x2", (309 * Math.cos(b)).toFixed(2));
+        nl.setAttribute("y2", (309 * Math.sin(b)).toFixed(2));
+        nl.setAttribute("stroke", "#141516");
+        nl.setAttribute("stroke-width", "4");
+        notches.appendChild(nl);
+      }
+
+      // arc arrow r 410 around (540, 900), counter-clockwise from -35deg to -155deg
+      var R = 410, CX = 540, CY = 900, A0 = deg(-35), A1 = deg(-155);
+      var p0 = [CX + R * Math.cos(A0), CY + R * Math.sin(A0)];
+      var p1 = [CX + R * Math.cos(A1), CY + R * Math.sin(A1)];
+      var arc = el("arc");
+      arc.setAttribute("d", "M " + p0[0].toFixed(2) + " " + p0[1].toFixed(2) +
+        " A " + R + " " + R + " 0 0 0 " + p1[0].toFixed(2) + " " + p1[1].toFixed(2));
+      var ARC_LEN = R * deg(120);
+      arc.setAttribute("stroke-dasharray", ARC_LEN.toFixed(2) + " " + ARC_LEN.toFixed(2));
+      var dir = [Math.sin(A1), -Math.cos(A1)]; // CCW tangent
+      var nrm = [-dir[1], dir[0]];
+      var tip = [p1[0] + 8 * dir[0], p1[1] + 8 * dir[1]];
+      var base = [tip[0] - 30 * dir[0], tip[1] - 30 * dir[1]];
+      el("arrowhead").setAttribute("points",
+        (base[0] + 20 * nrm[0]).toFixed(2) + "," + (base[1] + 20 * nrm[1]).toFixed(2) + " " +
+        tip[0].toFixed(2) + "," + tip[1].toFixed(2) + " " +
+        (base[0] - 20 * nrm[0]).toFixed(2) + "," + (base[1] - 20 * nrm[1]).toFixed(2));
+
+      var OUT_LEN = 2 * Math.PI * 362, IN_LEN = 2 * Math.PI * 312;
+      el("head-outer").setAttribute("stroke-dasharray", OUT_LEN.toFixed(2) + " " + OUT_LEN.toFixed(2));
+      el("head-inner").setAttribute("stroke-dasharray", IN_LEN.toFixed(2) + " " + IN_LEN.toFixed(2));
+      var CHECK_LEN = 60;
+      el("check-mark").setAttribute("stroke-dasharray", CHECK_LEN + " " + CHECK_LEN);
+
+      // --- timeline ---
+      var tl = gsap.timeline({ paused: true });
+
+      // slow push-in around the spine centre (scale 1 at the handoff)
+      tl.fromTo(el("stage"), { scale: 1 }, { scale: 1.04, duration: 7.73, ease: "sine.inOut" }, 0);
+
+      // Scene 1 (0.0-2.7): timer ring thickens into the socket ring; wrench head + handle draw out
+      tl.fromTo(el("ring"), { attr: { "stroke-width": 8 } }, { attr: { "stroke-width": 20 }, duration: 0.75, ease: "power2.inOut" }, 0.15);
+      tl.fromTo(el("notches"), { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power2.out" }, 0.55);
+      tl.fromTo(el("head-outer"), { attr: { "stroke-dashoffset": OUT_LEN } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.9, ease: "power2.inOut" }, 0.4);
+      tl.fromTo(el("head-inner"), { attr: { "stroke-dashoffset": -IN_LEN } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.9, ease: "power2.inOut" }, 0.5);
+      tl.fromTo(el("head-fill"), { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0.75);
+      tl.fromTo(el("knurl"), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 1.0);
+      tl.fromTo(el("handle-clip-rect"), { attr: { width: 0 } }, { attr: { width: 330 }, duration: 1.1, ease: "power3.out" }, 1.0);
+      tl.fromTo(el("grip"), { opacity: 0 }, { opacity: 1, duration: 0.5, ease: "power2.out" }, 1.8);
+
+      // step 4 copy on "استخدم الأدوات المناسبة" (0.6)
+      tl.fromTo(el("disc"), { scale: 0.6, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.55, ease: "power3.out" }, 0.6);
+      tl.fromTo(el("num4"), { opacity: 1, y: 0 }, { opacity: 1, y: 0, duration: 0.01 }, 0);
+      tl.fromTo(el("num5"), { opacity: 0, y: 40 }, { opacity: 0, y: 40, duration: 0.01 }, 0);
+      tl.fromTo(el("t4"), { opacity: 0, y: 24, filter: "blur(6px)" }, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.7, ease: "power3.out" }, 0.7);
+      tl.fromTo(el("t5"), { opacity: 0, y: 24, filter: "blur(6px)" }, { opacity: 0, y: 24, filter: "blur(6px)", duration: 0.01 }, 0);
+
+      // Scene 2 (2.8-4.6): the turn - 120deg CCW in two ratchet strokes; bolt turns with it
+      tl.fromTo(el("rotor"), { rotation: 0 }, { rotation: -60, duration: 0.72, ease: "power2.inOut" }, 2.8);
+      tl.to(el("rotor"), { rotation: -120, duration: 0.75, ease: "power2.inOut" }, 3.72);
+      tl.fromTo(el("arc"), { attr: { "stroke-dashoffset": ARC_LEN } }, { attr: { "stroke-dashoffset": 0 }, duration: 1.6, ease: "power2.inOut" }, 2.85);
+      tl.fromTo(el("arrowhead"), { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" }, 4.3);
+      // part comes loose: the bolt drawing lifts slightly toward camera
+      tl.fromTo(el("crop"), { scale: 1 }, { scale: 1.06, duration: 0.7, ease: "power2.out" }, 4.25);
+      // check on "بعناية" (4.0)
+      tl.fromTo(el("check"), { opacity: 0, scale: 0.6, svgOrigin: "540 1450" }, { opacity: 1, scale: 1, svgOrigin: "540 1450", duration: 0.4, ease: "power3.out" }, 4.0);
+      tl.fromTo(el("check-mark"), { attr: { "stroke-dashoffset": CHECK_LEN } }, { attr: { "stroke-dashoffset": 0 }, duration: 0.35, ease: "power2.out" }, 4.12);
+
+      // Scene 3 (4.7-7.2): step 5 replaces the top text; arrow retires
+      tl.to(el("t4"), { opacity: 0, y: -22, filter: "blur(6px)", duration: 0.35, ease: "power2.in" }, 4.7);
+      tl.to(el("num4"), { opacity: 0, y: -40, duration: 0.35, ease: "power2.in" }, 4.7);
+      tl.to(el("num5"), { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, 4.95);
+      tl.to(el("t5"), { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }, 4.95);
+      tl.to([el("arc"), el("arrowhead")], { opacity: 0, duration: 0.45, ease: "power2.inOut" }, 4.8);
+
+      // charcoal cloth band enters from the left, wipes across the bolt (power1.in), then
+      // Scene 4 (6.9-7.73) continues at constant speed so it is still moving at the cut.
+      // band centre x: -1500 (off-screen) -> -560 -> 165 (covers x 0-1080 incl. the highlight from ~7.61s)
+      tl.fromTo(el("band"), { x: -1500, rotation: -14 }, { x: -560, rotation: -14, duration: 2.15, ease: "power1.in" }, 4.75);
+      tl.to(el("band"), { x: 165, rotation: -14, duration: 0.83, ease: "none" }, 6.9);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["07-usage-2"] = tl;
+    })();
+  </script>
+</template>
