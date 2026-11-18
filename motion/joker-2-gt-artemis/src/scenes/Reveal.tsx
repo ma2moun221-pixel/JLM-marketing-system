@@ -127,7 +127,7 @@ export const Reveal: React.FC = () => {
               translate: `0px ${ci(f, [30, 44], [170, 0], OUT)}px`,
             }}
           >
-            إصدار أرتميس
+            نسخة أرتميس
           </div>
         </div>
       </Interactive.Div>

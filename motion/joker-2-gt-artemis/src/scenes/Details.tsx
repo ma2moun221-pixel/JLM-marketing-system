@@ -48,15 +48,15 @@ export const UpperDetails: React.FC = () => {
 
       <Sequence from={12} durationInFrames={24} layout="none">
         <Reticle dur={24} lineTo={LABEL_TOP - 20} />
-        <Callout index="01" label="الجزء العلوي" tagline="قفص منحوت" top={LABEL_TOP} dur={24} />
+        <Callout index="01" label="وجه البوط" tagline="تفاصيل بتجنّن" top={LABEL_TOP} dur={24} />
       </Sequence>
       <Sequence from={40} durationInFrames={26} layout="none">
         <Reticle dur={26} lineTo={LABEL_TOP - 20} />
-        <Callout index="02" label="شعار الجوكر" tagline="توقيع النجم" top={LABEL_TOP} dur={26} />
+        <Callout index="02" label="شعار الجوكر" tagline="إمضة الجوكر" top={LABEL_TOP} dur={26} />
       </Sequence>
       <Sequence from={70} durationInFrames={20} layout="none">
         <Reticle dur={22} lineTo={LABEL_TOP - 20} />
-        <Callout index="03" label="النعل الأوسط" tagline="خطوط انسيابية" top={LABEL_TOP} dur={22} />
+        <Callout index="03" label="النعل من النص" tagline="خطوطه ناعمة" top={LABEL_TOP} dur={22} />
       </Sequence>
     </AbsoluteFill>
   );
@@ -107,11 +107,11 @@ export const TurnDetails: React.FC = () => {
 
       <Sequence from={20} durationInFrames={24} layout="none">
         <Reticle dur={24} lineTo={LABEL_TOP - 20} />
-        <Callout index="04" label="الكعب" tagline="بصمة الجوكر" top={LABEL_TOP} dur={24} />
+        <Callout index="04" label="الكعب" tagline="حتى من ورا مرتّب" size={106} top={LABEL_TOP} dur={24} />
       </Sequence>
       <Sequence from={64} durationInFrames={26} layout="none">
         <Reticle dur={28} lineTo={LABEL_TOP - 20} />
-        <Callout index="05" label="النعل الخارجي" tagline="نقشة متعرّجة" top={LABEL_TOP} dur={28} />
+        <Callout index="05" label="النعل من تحت" tagline="شوف هالنقشة" size={112} top={LABEL_TOP} dur={28} />
       </Sequence>
     </AbsoluteFill>
   );

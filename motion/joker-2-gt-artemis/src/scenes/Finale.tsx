@@ -188,7 +188,7 @@ export const Finale: React.FC = () => {
               scale: ci(t, [24, 34], [1.3, 1], OUT),
             }}
           >
-            متوفر الآن
+            صار متوفّر
           </div>
           <div style={{ height: 3, background: "white", width: ci(t, [24, 40], [0, 140], OUT) }} />
         </div>

@@ -37,7 +37,7 @@ export const Countdown: React.FC = () => {
             clipPath: `inset(0 0 0 ${ci(f, [2, 16], [100, 0])}%)`,
           }}
         >
-          المهمة: أرتميس
+          مهمّة أرتميس
         </span>
         <span style={{ fontFamily: MONO, fontSize: 32, color: "#ff5a5a", opacity: Math.floor(f / 6) % 2 ? 1 : 0.25 }}>
           ● REC
@@ -121,7 +121,7 @@ export const Countdown: React.FC = () => {
           opacity: ci(f, [4, 10, 44, 52], [0, 1, 1, 0]),
         }}
       >
-        استعدّ للانطلاق
+        جاهز؟ يلّا ننطلق
       </Interactive.Div>
 
       {/* Anamorphic streak into the flash */}

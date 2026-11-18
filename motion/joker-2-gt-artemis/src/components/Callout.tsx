@@ -6,12 +6,20 @@ import { CAIRO, ci, FOCUS, MONO, OUT } from "../theme";
  * Arabic detail label (RTL): number, line, small label, big tagline.
  * Use inside a <Sequence> so the frame is local; `dur` drives the exit.
  */
-export const Callout: React.FC<{ index: string; label: string; tagline: string; top: number; dur: number }> = ({
+export const Callout: React.FC<{
+  index: string;
+  label: string;
+  tagline: string;
+  top: number;
+  dur: number;
+  size?: number;
+}> = ({
   index,
   label,
   tagline,
   top,
   dur,
+  size = 132,
 }) => {
   const f = useCurrentFrame();
   const out = ci(f, [dur - 6, dur], [1, 0]);
@@ -43,7 +51,8 @@ export const Callout: React.FC<{ index: string; label: string; tagline: string; 
           style={{
             fontFamily: CAIRO,
             fontWeight: 900,
-            fontSize: 132,
+            fontSize: size,
+            whiteSpace: "nowrap",
             lineHeight: 1.35,
             color: "white",
             translate: `0px ${ci(f, [3, 15], [190, 0], OUT)}px`,
