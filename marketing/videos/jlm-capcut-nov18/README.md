@@ -24,10 +24,7 @@ The client asked for the clip as filmed: every shot kept at real speed and nothi
   - «مين ورا» pops in.
   - «JLM» slams in with a flash and a light shake, landing on the music drop.
   - «في فلسطين؟» comes in with a map pin.
-- **Transitions:**
-  - whip-slide with motion blur;
-  - zoom punch;
-  - light flash.
+- **Transitions:** none, at the client's request. The shots cut straight, as filmed.
 - **Zooms:** a 1.00 → 1.05 drift within each shot, plus punch-ins on key words.
 - **Captions:** one line, karaoke-style, at 76.5 % height.
 - **Icons:** round line icons gather in a row on the right, above the caption, one row per idea:

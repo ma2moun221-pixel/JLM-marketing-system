@@ -78,8 +78,9 @@ if FULL:                                    # the clip as filmed: same picture a
     SHOT_CUTS = [0.0, 3.5, 4.5, 5.5, 6.633, 8.0, 9.733, 11.1, 13.267, 15.733, 17.667]   # the clip's own cuts
     PRESENTER = {0, 10}
     URL_END = 15.733 - 0.02
-TRANS = {1: "zoom", 2: "whip", 3: "whip", 4: "flash", 5: "whip", 6: "zoom", 7: "whip", 8: "zoom", 9: "whip",
-         10: "zoom"}
+# transitions between shots (whip / zoom / flash) — removed at the client's request: straight cuts as filmed.
+# The earlier set was {1: zoom, 2: whip, 3: whip, 4: flash, 5: whip, 6: zoom, 7: whip, 8: zoom, 9: whip, 10: zoom}.
+TRANS = {}
 TW = 0.13                                                               # half-length of a transition
 
 # speech (source time), Whisper turbo checked segment by segment
