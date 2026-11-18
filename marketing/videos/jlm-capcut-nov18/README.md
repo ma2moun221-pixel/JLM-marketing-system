@@ -29,8 +29,14 @@ The client asked for the clip as filmed: every shot kept at real speed and nothi
   - zoom punch;
   - light flash.
 - **Zooms:** a 1.00 → 1.05 drift within each shot, plus punch-ins on key words.
-- **Captions:** one line, karaoke-style, at 76.5 % height. A round line icon draws itself at
-  the start of each caption: wrench, can, car, shop, cart, snowflake, bulb, tag, question.
+- **Captions:** one line, karaoke-style, at 76.5 % height.
+- **Icons:** round line icons gather in a row on the right, above the caption, one row per idea:
+  - wrench, can, car;
+  - shop, cart;
+  - snowflake, bulb, tag, question.
+
+  Each icon pops in on its word, draws itself in about 0.55 s and stays until the idea is over
+  (2 s or more on screen).
 - **jlmstore.com card:** a cart icon with a cursor click.
 - **End card (fullcard / tight):** over the blurred video. It shows the logo, Driving your journey,
   «اطلبها الآن من خلال» jlmstore.com and «مع توفر خدمة التوصيل».

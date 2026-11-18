@@ -336,20 +336,58 @@ class Captions:
             lay = self.layer((tuple((wd, tone) for wd, tone, _, _ in p["items"]), active))
             fade = min(1.0, (t - p["t0"]) / 0.08) * min(1.0, (p["t1"] - t) / 0.08)
             pop = 0.9 + 0.1 * back(min(1.0, (t - p["t0"]) / 0.18))
-            badge_w = (V.BADGE * self.BADGE_SC + 4) if p["icons"] else 0
-            cx = W / 2 - badge_w / 2
             cy = cap_y(p["t0"])
-            l2, lx, ly = R.warp_premul(lay, pop, cx, cy, (lay.shape[1] / 2, lay.shape[0] / 2))
+            l2, lx, ly = R.warp_premul(lay, pop, W / 2, cy, (lay.shape[1] / 2, lay.shape[0] / 2))
             R.over(f, l2, lx, ly, fade)
-            live = [(s, ic) for s, ic in p["icons"] if s <= t]
-            if live:
-                s, ic = live[-1]
-                lt = t - s
-                bl = V.badge_layer(ic, YEL, lt)
-                sc = (0.35 + 0.65 * back(lt / 0.32)) * self.BADGE_SC
-                bx = cx + (lay.shape[1] / 2 - 22) * pop + V.BADGE * self.BADGE_SC / 2
-                l3, x3, y3 = R.warp_premul(bl, sc, bx, cy, (bl.shape[1] / 2, bl.shape[0] / 2))
-                R.over(f, l3, x3, y3, min(1.0, lt / 0.08) * fade)
+
+
+# ------------------------------------------------------------ icon rows ---
+# Icons for one idea gather in a row (right-aligned, RTL order) above the caption: each pops in on its word,
+# draws itself in ≈ 0.55 s and stays until the idea is over (≥ 2 s on screen), then the row leaves together.
+ICON_GROUPS = [["خبراء", "بالمنتجات", "والسيارات"],
+               ["بمراكزنا", "jlmstore.com"],
+               ["الشتاء", "بالنصائح", "والعروض", "والأجوبة"]]
+
+
+class IconRows:
+    SC = 0.66                                   # badge ≈ 130 px
+    GAP = 14
+    SPEED = 1.6                                 # draw-on 1.6× faster than the stock badge
+
+    def __init__(self, caps):
+        self.rows = []
+        for gi, words in enumerate(ICON_GROUPS):
+            items = [(caps.at(w), ICON_AT[w]) for w in words]
+            last_end = [e for wd, s, e in caps.all if wd == words[-1]][0]
+            if gi + 1 < len(ICON_GROUPS):
+                nxt = caps.at(ICON_GROUPS[gi + 1][0])
+                t_end = min(nxt - 0.3, max(last_end + 1.3, items[-1][0] + 2.0))
+            else:
+                t_end = min(END_T, DUR) + 0.3
+            self.rows.append((items, t_end))
+
+    def row_y(self, t):
+        y = CAP_Y - 0.095 * H
+        if CTA_T is not None:
+            y -= (CAP_Y - cap_y(CTA_T)) * ease((t - CTA_T + 0.05) / 0.3)
+        return y
+
+    def draw(self, f, t):
+        d = V.BADGE * self.SC
+        for items, t_end in self.rows:
+            if not (items[0][0] <= t < t_end + 0.3):
+                continue
+            out = 1 - ease((t - t_end) / 0.25)
+            y = self.row_y(t)
+            for k, (ts, ic) in enumerate(items):
+                lt = t - ts
+                if lt < 0:
+                    continue
+                cx = W - 64 - d / 2 - k * (d + self.GAP)
+                bl = V.badge_layer(ic, YEL, lt * self.SPEED)
+                sc = (0.35 + 0.65 * back(lt / 0.3)) * self.SC * (0.85 + 0.15 * out)
+                l3, x3, y3 = R.warp_premul(bl, sc, cx, y, (bl.shape[1] / 2, bl.shape[0] / 2))
+                R.over(f, l3, x3, y3, min(1.0, lt / 0.08) * out)
 
 
 # ------------------------------------------------------------ kinetic hook ---
@@ -794,6 +832,9 @@ def main():
     print("END_T", round(END_T, 2), "DUR", round(DUR, 2), "cuts", [round(c, 2) for c in SHOT_CUTS])
     hook = Hook(caps)
     url = UrlCard(caps.at("jlmstore.com"), URL_END)
+    icons = IconRows(caps)
+    for items, te in icons.rows:
+        print("icons", [(round(s, 2), ic) for s, ic in items], "until", round(te, 2))
     bar = CtaBar(CTA_T) if CTA_T is not None else None
     logo = logo_layer(200)
     end = EndCard(END_T)
@@ -821,6 +862,7 @@ def main():
         if t < END_T + 0.4:
             hook.draw(f, t)
             caps.draw(f, t)
+            icons.draw(f, t)
             url.draw(f, t)
             if bar:
                 bar.draw(f, t)
