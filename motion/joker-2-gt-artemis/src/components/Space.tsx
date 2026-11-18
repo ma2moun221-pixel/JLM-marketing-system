@@ -46,30 +46,30 @@ const BOKEH = new Array(12).fill(0).map((_, i) => ({
 }));
 
 /** Distance travelled through the star tunnel by frame f. */
-const travel = (f: number) => f * 0.007 + Math.pow(ci(f, [26, 62], [0, 1], IN), 2) * 1.9;
+const travel = (f: number) => f * 0.007 + Math.pow(ci(f, [50, 92], [0, 1], IN), 2) * 1.9;
 
 /** Global deep-space backdrop: rotating nebula, planet, star tunnel, drifting stars, bokeh dust. */
 export const Space: React.FC = () => {
   const f = useCurrentFrame();
   const w = whip(f);
-  const intro = f < 62;
+  const intro = f < 92;
 
   // Planet placement per act
   let planet: React.CSSProperties = { display: "none" };
-  if (f >= 56 && f < 375) {
+  if (f >= 86 && f < 780) {
     planet = {
       width: 1500,
-      left: 960 - 750 + ci(f, [56, 375], [40, -40]),
-      top: -150 - 750 + ci(f, [56, 375], [-60, 20]),
+      left: 960 - 750 + ci(f, [86, 780], [60, -60]),
+      top: -150 - 750 + ci(f, [86, 780], [-60, 30]),
       rotate: `${200 + f * 0.03}deg`,
-      opacity: ci(f, [56, 72], [0, 1]),
+      opacity: ci(f, [86, 102], [0, 1]),
     };
-  } else if (f >= 375) {
+  } else if (f >= 780) {
     planet = {
       width: 2800,
       left: 540 - 1400,
-      top: 2440 - 1400 + ci(f, [375, 400], [500, 0], (t) => 1 - Math.pow(1 - t, 3)),
-      rotate: `${-12 + (f - 375) * 0.04}deg`,
+      top: 2440 - 1400 + ci(f, [780, 800], [500, 0], (t) => 1 - Math.pow(1 - t, 3)),
+      rotate: `${-12 + (f - 780) * 0.04}deg`,
     };
   }
 
@@ -84,9 +84,9 @@ export const Space: React.FC = () => {
           height: 2400,
           left: (W - 2400) / 2,
           top: (H - 2400) / 2,
-          rotate: `${f * 0.05 + w.rot * 0.6}deg`,
-          scale: (intro ? ci(f, [0, 62], [1.0, 1.5], IN) : ci(f, [62, 450], [1.08, 1.22])) * (1 + (w.zoom - 1) * 0.5),
-          opacity: intro ? ci(f, [0, 30, 62], [0.35, 0.45, 0.9]) : f >= 375 ? 0.75 : 0.9,
+          rotate: `${f * 0.03 + w.rot * 0.6}deg`,
+          scale: (intro ? ci(f, [0, 92], [1.0, 1.5], IN) : ci(f, [92, 900], [1.08, 1.3])) * (1 + (w.zoom - 1) * 0.5),
+          opacity: intro ? ci(f, [0, 45, 92], [0.35, 0.45, 0.9]) : f >= 780 ? 0.75 : 0.9,
           filter: w.blur > 0.5 ? `blur(${w.blur * 0.4}px)` : undefined,
         }}
       />

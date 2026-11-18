@@ -30,7 +30,7 @@ loadFont({
 export const FOCUS = { x: 540, y: 860 };
 
 /** Hard cuts that get a whip-spin transition. */
-export const CUTS = [150, 240, 330, 375];
+export const CUTS = [270, 525, 735, 780];
 
 export const W = 1080;
 export const H = 1920;

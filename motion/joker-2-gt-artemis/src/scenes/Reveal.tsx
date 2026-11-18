@@ -1,44 +1,76 @@
 import React from "react";
 import { AbsoluteFill, Interactive, useCurrentFrame } from "remotion";
-import { Orbit, Turntable, View } from "../components/Rig";
+import { Orbit } from "../components/Rig";
+import { ShoeItem, ShoeStage, turn } from "../components/Shoe3D";
 import { ANTON, CAIRO, ci, INOUT, MONO, OUT, shake } from "../theme";
 
 const CX = 540;
 const CY = 1150;
-const SPIN: View[] = [
-  { name: "lateral", width: 900 },
-  { name: "heels", width: 640 },
-  { name: "medial", width: 900 },
-  { name: "lateral", width: 900 },
-];
 
-/** Spiral flight path into the frame (0..24). */
+/** Spiral flight path into the frame (0..30). */
 const spiral = (f: number) => {
-  const e = ci(f, [0, 24], [0, 1], OUT);
+  const e = ci(f, [0, 30], [0, 1], OUT);
   const th = (1 - e) * Math.PI * 2.4;
   const r = (1 - e) * 950;
-  return {
-    x: Math.cos(th + 0.6) * r,
-    y: Math.sin(th + 0.6) * r * 0.8,
-    s: 0.15 + 0.85 * e,
-    rot: (1 - e) * 540 - 4,
-    e,
-  };
+  return { x: Math.cos(th + 0.6) * r, y: Math.sin(th + 0.6) * r * 0.8, s: 0.15 + 0.85 * e, rz: (1 - e) * 360, e };
 };
 
-/** 60–150 (90f): spiral entry, orbit rings, giant title, Arabic subtitle, full 540° turntable. */
+/** 90–270 (180f): spiral entry, 3D sway, orbit rings, title, then 3D turns to the heel and the other side. */
 export const Reveal: React.FC = () => {
   const f = useCurrentFrame();
   const sp = spiral(f);
-  const sk = shake(f, 22, 10, 16);
-  const spinAngle = ci(f, [56, 84], [0, 540], INOUT);
-  const spinVel = Math.abs(ci(f + 1, [56, 84], [0, 540], INOUT) - spinAngle);
-  const bob = Math.sin(f / 13) * 12;
-  const ringDraw = ci(f, [18, 38], [0, 1], OUT);
+  const sk = shake(f, 28, 10, 16);
+  const bob = Math.sin(f / 15) * 12;
+  const ringDraw = ci(f, [26, 50], [0, 1], OUT);
+  const sway = Math.sin((f - 30) / 20) * 30 * ci(f, [26, 46], [0, 1]);
+
+  const lateral: ShoeItem = {
+    name: "lateral",
+    width: 860 * sp.s,
+    x: CX + sp.x,
+    y: CY + sp.y + bob,
+    rx: 10 + Math.sin(f / 27) * 6,
+    ry: (1 - sp.e) * -90 + sway,
+    rz: sp.rz - 3,
+    sweep: ci(f, [40, 100], [-0.2, 1.3]),
+  };
+  const heels: ShoeItem = { name: "heels", width: 600, x: CX, y: CY + bob, rx: 8, ry: Math.sin(f / 14) * 14 };
+  const medial: ShoeItem = {
+    name: "medial",
+    width: 860,
+    x: CX,
+    y: CY + bob,
+    rx: 10,
+    ry: ci(f, [164, 180], [0, -14]),
+    rz: 3,
+    sweep: ci(f, [164, 180], [-0.2, 0.6]),
+  };
+
+  let items: ShoeItem[] = [lateral];
+  let blur = (1 - sp.e) * 8;
+  let flare = 0;
+  const t1 = ci(f, [120, 136], [0, 1], INOUT);
+  const t2 = ci(f, [148, 164], [0, 1], INOUT);
+  if (f >= 120 && f <= 136) {
+    const r = turn(t1, lateral, heels);
+    items = r.items;
+    blur = r.blur;
+    flare = r.flare;
+  } else if (f > 136 && f < 148) {
+    items = [heels];
+  } else if (f >= 148 && f <= 164) {
+    const r = turn(t2, heels, medial);
+    items = r.items;
+    blur = r.blur;
+    flare = r.flare;
+  } else if (f > 164) {
+    items = [medial];
+  }
+  items = items.map((it) => ({ ...it, flare }));
 
   const lines = [
-    { t: "JOKER", stroke: false, d: 14 },
-    { t: "2 GT", stroke: true, d: 18 },
+    { t: "JOKER", stroke: false, d: 20 },
+    { t: "2 GT", stroke: true, d: 26 },
   ];
 
   return (
@@ -56,7 +88,7 @@ export const Reveal: React.FC = () => {
                 color: l.stroke ? "transparent" : "rgba(255,255,255,0.14)",
                 WebkitTextStroke: l.stroke ? "3px rgba(200,220,255,0.95)" : "3px rgba(255,255,255,0.4)",
                 translate: `0px ${ci(f, [l.d, l.d + 14], [340, 0], OUT)}px`,
-                scale: ci(f, [0, 90], [1.0, 1.08]),
+                scale: ci(f, [0, 180], [1.0, 1.1]),
               }}
             >
               {l.t}
@@ -65,52 +97,27 @@ export const Reveal: React.FC = () => {
         ))}
       </AbsoluteFill>
 
-      <Orbit frame={f} layer="back" cx={CX} cy={CY + 40} rx={580} ry={130} tilt={-9} speed={0.07} draw={ringDraw} />
-      <Orbit frame={f} layer="back" cx={CX} cy={CY + 20} rx={500} ry={210} tilt={14} speed={-0.05} draw={ringDraw} seed={2} opacity={0.6} />
+      <Orbit frame={f} layer="back" cx={CX} cy={CY + 40} rx={580} ry={130} tilt={-9} speed={0.06} draw={ringDraw} />
+      <Orbit frame={f} layer="back" cx={CX} cy={CY + 20} rx={500} ry={210} tilt={14} speed={-0.045} draw={ringDraw} seed={2} opacity={0.6} />
 
-      {/* Ghost trail along the spiral */}
-      {f < 26
-        ? [6, 4, 2].map((k) => {
-            const g = spiral(f - k);
-            return (
-              <Turntable
-                key={k}
-                views={SPIN}
-                angle={0}
-                cx={CX + g.x}
-                cy={CY + g.y}
-                glow={0}
-                extra={{ scale: g.s, rotate: `${g.rot}deg`, opacity: 0.18 * (1 - sp.e) + 0.05, filter: "blur(6px)" }}
-              />
-            );
-          })
-        : null}
-
-      <Turntable
-        views={SPIN}
-        angle={spinAngle}
-        cx={CX + sp.x}
-        cy={CY + sp.y + bob}
-        blur={Math.min(14, spinVel * 0.5) + (1 - sp.e) * 10}
-        sweep={ci(f, [26, 54], [0, 1])}
-        extra={{ scale: sp.s * ci(f, [24, 90], [1, 1.06]), rotate: `${sp.rot + Math.sin(f / 17) * 1.5}deg` }}
+      <ShoeStage
+        items={items}
+        light={[-0.5 + 0.4 * Math.sin(f / 40), 0.6, 0.65]}
+        style={{ filter: blur > 0.3 ? `blur(${blur}px)` : undefined }}
       />
 
-      <Orbit frame={f} layer="front" cx={CX} cy={CY + 40} rx={580} ry={130} tilt={-9} speed={0.07} draw={ringDraw} />
-      <Orbit frame={f} layer="front" cx={CX} cy={CY + 20} rx={500} ry={210} tilt={14} speed={-0.05} draw={ringDraw} seed={2} opacity={0.6} />
+      <Orbit frame={f} layer="front" cx={CX} cy={CY + 40} rx={580} ry={130} tilt={-9} speed={0.06} draw={ringDraw} />
+      <Orbit frame={f} layer="front" cx={CX} cy={CY + 20} rx={500} ry={210} tilt={14} speed={-0.045} draw={ringDraw} seed={2} opacity={0.6} />
 
-      <Interactive.Div
-        name="Subtitle"
-        style={{ position: "absolute", bottom: 190, left: 0, right: 0, textAlign: "center" }}
-      >
+      <Interactive.Div name="Subtitle" style={{ position: "absolute", bottom: 170, left: 0, right: 0, textAlign: "center" }}>
         <div
           style={{
             fontFamily: MONO,
             fontWeight: 700,
             fontSize: 40,
             color: "#9cc4ff",
-            letterSpacing: ci(f, [26, 60], [40, 16], OUT),
-            opacity: ci(f, [26, 34], [0, 1]),
+            letterSpacing: ci(f, [34, 80], [40, 16], OUT),
+            opacity: ci(f, [34, 42], [0, 1]),
           }}
         >
           “ARTEMIS”
@@ -120,11 +127,11 @@ export const Reveal: React.FC = () => {
             style={{
               fontFamily: CAIRO,
               fontWeight: 900,
-              fontSize: 120,
+              fontSize: 124,
               lineHeight: 1.35,
               color: "white",
               direction: "rtl",
-              translate: `0px ${ci(f, [30, 44], [170, 0], OUT)}px`,
+              translate: `0px ${ci(f, [38, 52], [170, 0], OUT)}px`,
             }}
           >
             نسخة أرتميس

@@ -1,17 +1,17 @@
 import React from "react";
 import { AbsoluteFill, Img, Interactive, random, staticFile, useCurrentFrame } from "remotion";
-import { Orbit, Turntable, View } from "../components/Rig";
+import { Orbit } from "../components/Rig";
+import { ShoeStage } from "../components/Shoe3D";
 import { ANTON, CAIRO, ci, IN, INTER, OUT, shake } from "../theme";
 
-const HIT = 18; // local frame of the impact (abs 393 = 13.1s, synced to the boom)
+const HIT = 15; // local frame of the impact (abs 795 = 26.5s, synced to the boom)
 const CX = 540;
 const CY = 1110;
-const VIEWS: View[] = [{ name: "lateral", width: 880 }];
 
 const STREAKS = new Array(90).fill(0).map((_, i) => ({
   a: random(`fa${i}`) * Math.PI * 2,
   r0: 900 + random(`fr${i}`) * 900,
-  delay: random(`fd${i}`) * 8,
+  delay: random(`fd${i}`) * 6,
   len: 60 + random(`fl${i}`) * 200,
 }));
 
@@ -22,7 +22,7 @@ const SPARKS = new Array(80).fill(0).map((_, i) => ({
   life: 18 + random(`sl${i}`) * 30,
 }));
 
-/** 375–450 (75f): energy implodes, explodes, shoe orbits above the planet; Arabic end card. */
+/** 780–900 (120f): energy implodes, explodes, shoe orbits above the planet; Arabic end card. */
 export const Finale: React.FC = () => {
   const f = useCurrentFrame();
   const t = f - HIT;
@@ -31,7 +31,7 @@ export const Finale: React.FC = () => {
   const ringDraw = ci(t, [4, 26], [0, 1], OUT);
 
   return (
-    <AbsoluteFill style={{ translate: `${sk.x}px ${sk.y}px`, scale: ci(f, [HIT, 75], [1, 1.05]) }}>
+    <AbsoluteFill style={{ translate: `${sk.x}px ${sk.y}px`, scale: ci(f, [HIT, 120], [1, 1.05]) }}>
       {/* readability gradient over the planet */}
       <AbsoluteFill
         style={{ background: "linear-gradient(180deg, rgba(0,0,0,0) 72%, rgba(0,0,0,0.75) 100%)" }}
@@ -107,15 +107,22 @@ export const Finale: React.FC = () => {
       {t >= 0 ? (
         <>
           <Orbit frame={f} layer="back" cx={CX} cy={CY + 30} rx={560} ry={120} tilt={-8} speed={0.06} draw={ringDraw} />
-          <Turntable
-            views={VIEWS}
-            angle={Math.sin(t / 14) * 16 * ci(t, [8, 30], [0, 1])}
-            cx={CX}
-            cy={CY + Math.sin(t / 12) * 10}
-            blur={ci(t, [0, 10], [18, 0])}
-            sweep={ci(t, [12, 50], [0, 1])}
-            glow={ci(t, [0, 8, 30], [0.6, 0.35, 0.22])}
-            extra={{ scale: ci(t, [0, 14], [1.35, 1], OUT), rotate: `${ci(t, [0, 16], [-20, -3], OUT)}deg` }}
+          <ShoeStage
+            items={[
+              {
+                name: "lateral",
+                width: 860 * ci(t, [0, 14], [1.35, 1], OUT),
+                x: CX,
+                y: CY + Math.sin(t / 14) * 12,
+                rx: 10 + Math.sin(t / 30) * 5,
+                ry: ci(t, [0, 18], [-70, 0], OUT) + Math.sin(t / 22) * 22 * ci(t, [8, 30], [0, 1]),
+                rz: ci(t, [0, 16], [-15, -3], OUT),
+                sweep: ci(t, [12, 70], [-0.2, 1.3]),
+                flare: ci(t, [0, 10], [0.35, 0]),
+              },
+            ]}
+            light={[-0.5 + 0.5 * Math.sin(t / 35), 0.6, 0.65]}
+            style={{ filter: t < 10 ? `blur(${ci(t, [0, 10], [14, 0])}px)` : undefined }}
           />
           <Orbit frame={f} layer="front" cx={CX} cy={CY + 30} rx={560} ry={120} tilt={-8} speed={0.06} draw={ringDraw} />
         </>

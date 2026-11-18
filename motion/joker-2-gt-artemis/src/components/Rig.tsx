@@ -1,7 +1,5 @@
 import React from "react";
-import { AbsoluteFill } from "remotion";
-import { FOCUS, H, W } from "../theme";
-import { Shoe } from "./Shoe";
+import { H, W } from "../theme";
 
 export type ShoeName = "lateral" | "medial" | "sole" | "heels";
 export type View = { name: ShoeName; width: number };
@@ -21,51 +19,6 @@ export const pt = (v: View, x: number, y: number, cx = 540, cy = 960) => {
     x: cx - v.width / 2 + x * k,
     y: cy - (NATURAL[v.name].h * k) / 2 + y * k,
   };
-};
-
-/**
- * Fake-3D turntable from the real product photos: the visible view swaps every
- * 180° of `angle`, each view turning from edge-on (−90°) to face-on (0°) to edge-on (+90°).
- */
-export const Turntable: React.FC<{
-  views: View[];
-  angle: number;
-  axis?: "X" | "Y";
-  cx?: number;
-  cy?: number;
-  blur?: number;
-  sweep?: number;
-  glow?: number;
-  extra?: React.CSSProperties;
-}> = ({ views, angle, axis = "Y", cx = 540, cy = 960, blur = 0, sweep, glow, extra }) => {
-  const idx = Math.max(0, Math.min(views.length - 1, Math.round(angle / 180)));
-  const local = angle - idx * 180;
-  const v = views[idx];
-  const edge = Math.abs(local) / 90;
-  return (
-    <AbsoluteFill style={{ perspective: 1700 }}>
-      <div
-        style={{
-          position: "absolute",
-          left: cx,
-          top: cy,
-          translate: "-50% -50%",
-          transform: `rotate${axis}(${local}deg)`,
-          ...extra,
-        }}
-      >
-        <Shoe
-          name={v.name}
-          width={v.width}
-          sweep={sweep}
-          glow={glow}
-          style={{
-            filter: `brightness(${1 + edge * 0.5})${blur > 0.3 ? ` blur(${blur}px)` : ""}`,
-          }}
-        />
-      </div>
-    </AbsoluteFill>
-  );
 };
 
 /**
@@ -131,32 +84,5 @@ export const Orbit: React.FC<{
           ))}
       </g>
     </svg>
-  );
-};
-
-/**
- * Macro camera: scales by `s` around the image point P (screen coords at s=1)
- * and moves it to the FOCUS point. Renders a blurred pass plus a sharp pass
- * masked around P for a shallow depth-of-field look.
- */
-export const Camera: React.FC<{ P: { x: number; y: number }; s: number; rot?: number; children: React.ReactNode }> = ({
-  P,
-  s,
-  rot = 0,
-  children,
-}) => {
-  const blur = Math.max(0, s - 1.25) * 1.3;
-  const r = 330 / s;
-  const mask = `radial-gradient(circle ${r}px at ${P.x}px ${P.y}px, black 45%, transparent 100%)`;
-  return (
-    <AbsoluteFill
-      style={{
-        transform: `translate(${FOCUS.x - P.x}px, ${FOCUS.y - P.y}px) rotate(${rot}deg) scale(${s})`,
-        transformOrigin: `${P.x}px ${P.y}px`,
-      }}
-    >
-      <AbsoluteFill style={{ filter: blur > 0.2 ? `blur(${blur}px) brightness(0.85)` : undefined }}>{children}</AbsoluteFill>
-      {blur > 0.2 ? <AbsoluteFill style={{ maskImage: mask, WebkitMaskImage: mask }}>{children}</AbsoluteFill> : null}
-    </AbsoluteFill>
   );
 };

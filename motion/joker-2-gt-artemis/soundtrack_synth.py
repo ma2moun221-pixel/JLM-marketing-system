@@ -1,7 +1,7 @@
 import numpy as np
 from scipy import signal
 from scipy.io import wavfile
-SR=44100; DUR=15.0; N=int(SR*DUR)
+SR=44100; DUR=30.0; N=int(SR*DUR)
 L=np.zeros(N); R=np.zeros(N)
 rng=np.random.default_rng(7)
 def place(x,t,gain=1.0,pan=0.0):
@@ -62,49 +62,50 @@ for f in [55,82.4,110,130.8,164.8]:
     for d in [-0.3,0.3]:
         pad+=signal.sawtooth(2*np.pi*(f+d)*t)
 pad=lp(pad,600)/10
-padenv=np.interp(t,[0,1.8,2.0,12.4,12.5,14.2,15],[0.15,0.35,0.25,0.3,0.45,0.35,0])
+padenv=np.interp(t,[0,2.8,3.0,9.0,18.0,25.9,26.5,29.0,30],[0.15,0.35,0.25,0.3,0.3,0.32,0.45,0.35,0])
 L+=pad*padenv*0.6; R+=pad*padenv*0.6
-# countdown ticks + riser
-for i,tt in enumerate([0.2,0.7,1.2]): tick(tt); sub(tt,0.45,55)
-n=int(SR*1.9); tr=np.arange(n)/SR
-riser=bp(rng.normal(0,1,n),400,9000)*(tr/1.9)**3*0.6+signal.sawtooth(2*np.pi*(110+500*(tr/1.9)**2)*tr)*(tr/1.9)**3*0.08
+# countdown ticks + riser (frames 15/36/57, impact at 90)
+for tt in [0.5,1.2,1.9]: tick(tt); sub(tt,0.45,55)
+n=int(SR*2.9); tr=np.arange(n)/SR
+riser=bp(rng.normal(0,1,n),400,9000)*(tr/2.9)**3*0.6+signal.sawtooth(2*np.pi*(110+500*(tr/2.9)**2)*tr)*(tr/2.9)**3*0.08
 place(lp(riser,8000),0.1)
-whoosh(1.5,0.5,rev=True,g=0.7)
-# main impact at 2.0
-boom(2.0,1.0)
-# groove 2.5 -> 12.5 at 120bpm
+whoosh(2.45,0.55,rev=True,g=0.7)
+boom(3.0,1.0)
+# groove 3.0 -> 25.9 at 120bpm; lighter (no kick) under the detail holds' first beats is not needed
 beat=0.5
-for k in range(int((12.5-2.0)/beat)):
-    tb=2.0+k*beat
-    if tb>=2.5: place(kick(),tb,0.9)
-    if k%2==1: place(snare(),tb,0.55)
+for k in range(int((25.9-3.0)/beat)):
+    tb=3.0+k*beat
+    if tb>=3.5: place(kick(),tb,0.85)
+    if k%2==1: place(snare(),tb,0.5)
     for h in range(2):
-        place(hat(h==1 and k%2==1),tb+h*0.25,0.35,pan=0.3 if h else -0.3)
-    if k%2==0 and tb>=2.5: sub(tb,0.5,55 if (k//4)%2==0 else 49)
-# whip-spin cuts (frames/30)
-for fr in [150,240,330,375]:
+        place(hat(h==1 and k%2==1),tb+h*0.25,0.33,pan=0.3 if h else -0.3)
+    if k%2==0 and tb>=3.5: sub(tb,0.5,55 if (k//4)%2==0 else 49)
+# whip-spin cuts (frames 270, 525, 735, 780)
+for fr in [270,525,735,780]:
     whoosh(fr/30-0.25,0.45,g=0.6,pan=rng.uniform(-0.4,0.4)); place(kick(True),fr/30,0.6)
-# spiral entry + turntable spins
-whoosh(2.0,0.8,g=0.55,pan=-0.3)
-for t0,d in [(3.85,0.95),(8.0,0.42),(9.45,0.45)]:
-    whoosh(t0,d,g=0.6,pan=0.3); whoosh(t0+d*0.35,d*0.6,g=0.35,pan=-0.3)
-# detail camera locks
-for t0 in [5.4,6.33,7.33,8.67,10.13]:
-    tick(t0); sub(t0,0.35,73)
-# camera glides between details
-for t0 in [5.95,6.95]:
-    whoosh(t0,0.4,g=0.3)
-# implosion swell, then the hit
-whoosh(12.45,0.65,rev=True,g=0.9)
-boom(13.1,1.15)
-place(snare(),13.1,0.6)
-# final shimmer hit at logo
-n=int(SR*1.8); ts=np.arange(n)/SR
-sh=sum(np.sin(2*np.pi*f*ts) for f in [880,1318.5,1760,2637])*np.exp(-ts/0.6)*0.06
-place(sh,13.6)
+# spiral entry
+whoosh(3.0,0.9,g=0.55,pan=-0.3)
+# 3D turns: reveal (120-136, 148-164), heel (525-541), sole flip (629-647)
+for fr0,fr1 in [(210,226),(238,254),(525,541),(629,647)]:
+    t0=fr0/30; d=(fr1-fr0)/30+0.15
+    whoosh(t0,d,g=0.6,pan=0.3); whoosh(t0+d*0.3,d*0.7,g=0.35,pan=-0.3)
+# detail camera locks (frames 288, 366, 444, 557, 663)
+for fr in [288,366,444,557,663]:
+    tick(fr/30); sub(fr/30,0.35,73)
+# camera glides between details (348->366, 426->444)
+for fr in [348,426]:
+    whoosh(fr/30,0.6,g=0.3)
+# implosion swell, then the hit at 795
+whoosh(25.95,0.55,rev=True,g=0.9)
+boom(26.5,1.15)
+place(snare(),26.5,0.6)
+# final shimmer at logo
+n=int(SR*2.5); ts=np.arange(n)/SR
+sh=sum(np.sin(2*np.pi*f*ts) for f in [880,1318.5,1760,2637])*np.exp(-ts/0.8)*0.06
+place(sh,27.0)
 mix=np.stack([L,R],1)
 mix=hp(mix.T,25).T
-fade=np.ones(N); fn=int(SR*0.6); fade[-fn:]=np.linspace(1,0,fn)**2
+fade=np.ones(N); fn=int(SR*1.0); fade[-fn:]=np.linspace(1,0,fn)**2
 mix*=fade[:,None]
 mix=np.tanh(mix/np.max(np.abs(mix))*1.6)/np.tanh(1.6)*0.89
 wavfile.write("public/soundtrack.wav",SR,(mix*32767).astype(np.int16))
