@@ -50,6 +50,11 @@ ease = V.ease_io
 back = V.back
 
 # ---------------------------------------------------------------- the cut ---
+# --mode full22 (default): the client's clip untouched, 1:1 (every shot, real speed), CTA as a bottom bar, 22.0 s
+# --mode fullcard: the clip untouched + the usual CTA end card after it
+# --mode tight: pauses removed, b-roll re-cut on the beat (first version, 18.5 s)
+MODE = sys.argv[sys.argv.index("--mode") + 1] if "--mode" in sys.argv else "full22"
+FULL = MODE != "tight"
 # voice: source ranges kept (pauses removed) — played back to back
 AUD = [(1.55, 3.70), (4.90, 10.12), (12.32, 15.56), (16.95, 21.60)]
 AUD_OUT = list(np.cumsum([0] + [b - a for a, b in AUD]))           # 0, 2.15, 7.37, 10.61, 15.26
@@ -67,6 +72,12 @@ VID = [(0.00, 1.55),   # presenter walks in (synced)
 SHOT_CUTS = [v[0] for v in VID] + [AUD_OUT[3] + (17.667 - AUD[3][0])]   # + the clip's own cut to the presenter
 SHOT_CUTS = sorted(SHOT_CUTS)
 PRESENTER = {0, len(SHOT_CUTS) - 1}                                     # shot indices with a face to keep
+URL_END = VID[-1][0] - 0.02
+if FULL:                                    # the clip as filmed: same picture and sound timeline
+    AUD, AUD_OUT, VID = [(0.0, SRC_END)], [0.0], [(0.0, 0.0)]
+    SHOT_CUTS = [0.0, 3.5, 4.5, 5.5, 6.633, 8.0, 9.733, 11.1, 13.267, 15.733, 17.667]   # the clip's own cuts
+    PRESENTER = {0, 10}
+    URL_END = 15.733 - 0.02
 TRANS = {1: "zoom", 2: "whip", 3: "whip", 4: "flash", 5: "whip", 6: "zoom", 7: "whip", 8: "zoom", 9: "whip",
          10: "zoom"}
 TW = 0.13                                                               # half-length of a transition
@@ -111,8 +122,21 @@ def word_times(weight):
     return out
 
 
-END_T = src_to_out(SEGMENTS[-1][1]) + 0.12          # CTA card starts after «استفساراتكم»
-DUR = END_T + 3.4
+SPEECH_END = src_to_out(SEGMENTS[-1][1])
+CTA_T = None                                          # full22: CTA bar from the last sentence on
+if MODE == "tight":
+    END_T = SPEECH_END + 0.12                         # CTA card starts after «استفساراتكم»
+    DUR = END_T + 3.4
+elif MODE == "fullcard":
+    END_T = SPEECH_END + 0.12
+    DUR = END_T + 3.2
+else:
+    END_T, DUR, CTA_T = 99.0, 22.0, 19.45             # no end card: the CTA rides on the last shot
+
+
+def cap_y(t0):
+    """Caption height for a phrase starting at t0 (lifted above the CTA bar in full22)."""
+    return 0.700 * H if CTA_T is not None and t0 >= CTA_T else CAP_Y
 
 
 def is_ar(w):
@@ -282,8 +306,8 @@ class Captions:
         assert k == len(words), (k, len(words))
         for i, p in enumerate(self.phrases):
             p["t0"] = p["items"][0][2]
-            nxt = self.phrases[i + 1]["items"][0][2] if i + 1 < len(self.phrases) else END_T
-            p["t1"] = min(nxt, p["items"][-1][3] + 0.45)
+            nxt = self.phrases[i + 1]["items"][0][2] if i + 1 < len(self.phrases) else min(END_T, DUR)
+            p["t1"] = min(nxt, p["items"][-1][3] + (0.7 if i + 1 == len(PHRASES) and CTA_T else 0.45))
         self.all = [(wd, s, e) for p in self.phrases for wd, _, s, e in p["items"]]
 
     def at(self, word, nth=0):
@@ -314,7 +338,8 @@ class Captions:
             pop = 0.9 + 0.1 * back(min(1.0, (t - p["t0"]) / 0.18))
             badge_w = (V.BADGE * self.BADGE_SC + 4) if p["icons"] else 0
             cx = W / 2 - badge_w / 2
-            l2, lx, ly = R.warp_premul(lay, pop, cx, CAP_Y, (lay.shape[1] / 2, lay.shape[0] / 2))
+            cy = cap_y(p["t0"])
+            l2, lx, ly = R.warp_premul(lay, pop, cx, cy, (lay.shape[1] / 2, lay.shape[0] / 2))
             R.over(f, l2, lx, ly, fade)
             live = [(s, ic) for s, ic in p["icons"] if s <= t]
             if live:
@@ -323,7 +348,7 @@ class Captions:
                 bl = V.badge_layer(ic, YEL, lt)
                 sc = (0.35 + 0.65 * back(lt / 0.32)) * self.BADGE_SC
                 bx = cx + (lay.shape[1] / 2 - 22) * pop + V.BADGE * self.BADGE_SC / 2
-                l3, x3, y3 = R.warp_premul(bl, sc, bx, CAP_Y, (bl.shape[1] / 2, bl.shape[0] / 2))
+                l3, x3, y3 = R.warp_premul(bl, sc, bx, cy, (bl.shape[1] / 2, bl.shape[0] / 2))
                 R.over(f, l3, x3, y3, min(1.0, lt / 0.08) * fade)
 
 
@@ -335,7 +360,7 @@ class Hook:
         self.t_w = [caps.at("مين"), caps.at("ورا")]
         self.t_jlm = caps.at("JLM")
         self.t_low = caps.at("في")
-        self.t_out = caps.at("ورا", 1) - 0.18
+        self.t_out = SHOT_CUTS[1] + 0.3 if FULL else caps.at("ورا", 1) - 0.18
         self.words = [E.T.line([(w, WHT)], 86, bold=True, shadow=True, pad=18) for w in ("مين", "ورا")]
         self.jlm = with_shadow(R.latin_layer("JLM", 250, YEL, 900, 0.02), 14, 0.6, 8)
         self.low = E.T.line([("في", WHT), ("فلسطين؟", WHT)], 80, bold=True, shadow=True, pad=16)
@@ -490,6 +515,49 @@ class EndCard:
             R.over(f, self.deliv, x0 + tr.shape[1], y - self.deliv.shape[0] / 2 + 4, q)
 
 
+class CtaBar:
+    """full22: the usual CTA as a bottom bar on the last shot — «اطلبها الآن من خلال» + jlmstore.com pill,
+    then «مع توفر خدمة التوصيل» with the truck drawing itself, on a soft dark box (kept above the Reels UI)."""
+
+    def __init__(self, t0):
+        self.t0 = t0
+        self.cta = E.T.line([("اطلبها الآن", YEL), ("من خلال", WHT)], 52, bold=True, shadow=False, pad=8)
+        self.pill = V.url_pill(50)
+        self.deliv = E.T.line([("مع توفر", WHT), ("خدمة التوصيل", YEL)], 42, bold=True, shadow=False, pad=6)
+        self.tr = V.EndCard(t0)
+        self.row1 = self.cta.shape[1] + 14 + self.pill.shape[1]
+        self.box = V.soft_box(self.row1 + 40, 190, alpha=0.70)
+
+    def draw(self, f, t):
+        lt = t - self.t0
+        if lt < 0:
+            return
+        q = ease(lt / 0.3)
+        y1, y2 = 0.808 * H, 0.858 * H
+        R.over(f, self.box, (W - self.box.shape[1]) / 2, (y1 + y2) / 2 - self.box.shape[0] / 2 + 6, q)
+        x0 = (W - self.row1) / 2
+        q1 = ease((lt - 0.1) / 0.3)
+        R.over(f, self.cta, x0 + self.pill.shape[1] + 14, y1 - self.cta.shape[0] / 2 + 14 * (1 - q1), q1)
+        q2 = back((lt - 0.3) / 0.35, 1.2)
+        if q2 > 0:
+            pill = self.pill.copy()
+            sp = (lt - 0.8) / 0.6
+            if 0 < sp < 1:
+                xs = np.arange(pill.shape[1], dtype=np.float32)
+                band = np.exp(-((xs - (-80 + (pill.shape[1] + 160) * ease(sp))) / 40) ** 2)[None, :, None]
+                pill[..., :3] += band * pill[..., 3:4] * 0.45
+            lay, x, y = R.warp_premul(pill, 0.6 + 0.4 * q2, x0 + self.pill.shape[1] / 2, y1,
+                                      (pill.shape[1] / 2, pill.shape[0] / 2))
+            R.over(f, lay, x, y, min(1.0, q2))
+        q3 = ease((lt - 0.55) / 0.3)
+        if q3 > 0:
+            tr = self.tr.truck(ease((lt - 0.55) / 0.8), 100)
+            row = self.deliv.shape[1] + tr.shape[1]
+            xr = (W - row) / 2
+            R.over(f, tr, xr, y2 - tr.shape[0] / 2, q3)
+            R.over(f, self.deliv, xr + tr.shape[1], y2 - self.deliv.shape[0] / 2 + 3, q3)
+
+
 # ---------------------------------------------------------------- picture ---
 class Source:
     """Sequential reader per picture range (ffmpeg seeks to the range start)."""
@@ -623,7 +691,14 @@ def music(t_drop, end_t, dur):
     # hook: low boom at 0, riser into the drop on «JLM»
     add(buf, M.thump(), 0.0, 0.6)
     add(buf, M.pad(AM, t_drop + 0.2, 500, 1800), 0.0, 0.5)
-    add(buf, M.riser(t_drop), 0.0, 0.55)
+    add(buf, M.riser(t_drop), 0.0, 0.7)
+    # pre-drop build (the walk-in before the first words): plucked arpeggio + hats, rising
+    for i, tt in enumerate(grid(0.0, t_drop - 0.01, beat / 2)):
+        g = 0.18 + 0.22 * tt / t_drop
+        add(buf, M.pluck(AM[[0, 1, 2, 1][i % 4]] + 12), tt, g, pan=0.3 if i % 2 else -0.3)
+        add(buf, M.hat(), tt, 0.10 + 0.08 * tt / t_drop, pan=0.2)
+    for tt in grid(0.0, t_drop - 0.01, beat):
+        add(buf, M.kick(), tt, 0.25 + 0.2 * tt / t_drop)
     add(buf, M.impact(), t_drop, 0.75)
     riff = [(0, 76, 1), (1, 74, 0.5), (1.5, 72, 0.5), (2, 69, 1), (3, 72, 1), (4, 76, 1), (5, 79, 0.5), (5.5, 77, 0.5),
             (6, 76, 2)]
@@ -664,7 +739,7 @@ def mix(path, voice, t_drop, end_t, ticks, whooshes):
     sr = 48000
     n = len(voice)
     mus = music(t_drop, end_t, n / sr)
-    # side-chain: the music dips ≈ 9 dB under the voice, recovers in 0.3 s
+    # side-chain: the music dips ≈ 11 dB under the voice, recovers in 0.3 s
     hop = 480
     m = len(voice) // hop
     env = np.sqrt((voice[: m * hop].reshape(m, hop) ** 2).mean(1))
@@ -673,20 +748,22 @@ def mix(path, voice, t_drop, end_t, ticks, whooshes):
     for i in range(1, m):
         a = 0.5 if env[i] > sm[i - 1] else 0.035
         sm[i] = sm[i - 1] + a * (env[i] - sm[i - 1])
-    duck = np.repeat(1 - 0.64 * np.clip(sm * 1.4, 0, 1), hop)
+    duck = np.repeat(1 - 0.72 * np.clip(sm * 1.4, 0, 1), hop)
     duck = np.pad(duck, (0, n - len(duck)), mode="edge")
     out = np.zeros((n, 2))
     vpk = np.max(np.abs(voice)) + 1e-9
     out += (voice / vpk * 0.8)[:, None]
     tt = np.arange(n) / sr
-    lift = 1 + 0.9 * np.clip((tt - end_t) / 0.3, 0, 1) + 0.5 * (tt < t_drop)   # music forward on the hook and the CTA
-    out += mus * 0.42 * (duck * lift)[:, None]
+    lift = 1 + 0.9 * np.clip((tt - end_t) / 0.3, 0, 1) + 1.2 * (tt < t_drop)   # music forward on the hook and the CTA
+    out += mus * 0.55 * (duck * lift)[:, None]
 
     def place(sig, at, gain=1.0):
         i = int(at * sr)
         if i < 0:
             sig, i = sig[-i:], 0
         k = min(len(sig), n - i)
+        if k <= 0:
+            return
         out[i:i + k] += (sig[:k] * gain)[:, None]
 
     for at, f0 in ticks:
@@ -706,6 +783,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", required=True)
     ap.add_argument("--stills")
+    ap.add_argument("--mode", choices=["full22", "fullcard", "tight"], default="full22")
     a = ap.parse_args()
     out = ROOT / a.out
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -715,7 +793,8 @@ def main():
         print(f"{s:5.2f}-{e:5.2f} {wd}")
     print("END_T", round(END_T, 2), "DUR", round(DUR, 2), "cuts", [round(c, 2) for c in SHOT_CUTS])
     hook = Hook(caps)
-    url = UrlCard(caps.at("jlmstore.com"), VID[-1][0] - 0.02)
+    url = UrlCard(caps.at("jlmstore.com"), URL_END)
+    bar = CtaBar(CTA_T) if CTA_T is not None else None
     logo = logo_layer(200)
     end = EndCard(END_T)
     punch = [hook.land()] + [caps.at(w) for w in PUNCH_AT]
@@ -743,6 +822,8 @@ def main():
             hook.draw(f, t)
             caps.draw(f, t)
             url.draw(f, t)
+            if bar:
+                bar.draw(f, t)
             R.over(f, logo, 40, 100, ease((t - 0.2) / 0.4))
         end.draw(f, t)
         img = (np.clip(f, 0, 1) * 255 + 0.5).astype(np.uint8)
@@ -758,10 +839,11 @@ def main():
     vtmp = out.with_name(out.stem + "_voice.wav")
     voice = voice_track(vtmp)
     ticks = [(s + 0.04, 520.0) for p in caps.phrases for s, _ in p["icons"]]
-    ticks += [(url.t0 + 0.62, 900.0), (END_T + 1.2, 440.0), (END_T + 1.55, 440.0)]
-    wh = [SHOT_CUTS[i] for i, k in TRANS.items() if k in ("whip", "zoom")] + [END_T]
+    cta0 = CTA_T + 0.3 if CTA_T is not None else END_T + 1.0
+    ticks += [(url.t0 + 0.62, 900.0), (cta0 + 0.2, 440.0), (cta0 + 0.55, 440.0)]
+    wh = [SHOT_CUTS[i] for i, k in TRANS.items() if k in ("whip", "zoom")] + [min(END_T, CTA_T or 99)]
     mtmp = out.with_name(out.stem + "_mix.wav")
-    mix(mtmp, voice, hook.land(), END_T, ticks, wh)
+    mix(mtmp, voice, hook.land(), min(END_T, SPEECH_END + 0.12), ticks, wh)
     subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-i", str(tmp_v), "-i", str(mtmp), "-filter_complex",
                     "[1:a]volume=-3dB,alimiter=limit=0.63:attack=2:release=60:level=false,"
                     "loudnorm=I=-14:TP=-2.5:LRA=11,aresample=48000[a]",
