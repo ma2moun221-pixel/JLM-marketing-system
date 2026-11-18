@@ -81,12 +81,22 @@ for k in range(int((12.5-2.0)/beat)):
     for h in range(2):
         place(hat(h==1 and k%2==1),tb+h*0.25,0.35,pan=0.3 if h else -0.3)
     if k%2==0 and tb>=2.5: sub(tb,0.5,55 if (k//4)%2==0 else 49)
-# scene cut whooshes (frames/30)
-for fr in [150,225,285,330]:
-    whoosh(fr/30-0.25,0.45,g=0.55,pan=rng.uniform(-0.4,0.4)); place(kick(True),fr/30,0.6)
-# landing: reverse swell then big boom
-whoosh(11.9,0.6,rev=True,g=0.8)
-boom(13.1,1.15)   # landing frame ~393
+# whip-spin cuts (frames/30)
+for fr in [150,240,330,375]:
+    whoosh(fr/30-0.25,0.45,g=0.6,pan=rng.uniform(-0.4,0.4)); place(kick(True),fr/30,0.6)
+# spiral entry + turntable spins
+whoosh(2.0,0.8,g=0.55,pan=-0.3)
+for t0,d in [(3.85,0.95),(8.0,0.42),(9.45,0.45)]:
+    whoosh(t0,d,g=0.6,pan=0.3); whoosh(t0+d*0.35,d*0.6,g=0.35,pan=-0.3)
+# detail camera locks
+for t0 in [5.4,6.33,7.33,8.67,10.13]:
+    tick(t0); sub(t0,0.35,73)
+# camera glides between details
+for t0 in [5.95,6.95]:
+    whoosh(t0,0.4,g=0.3)
+# implosion swell, then the hit
+whoosh(12.45,0.65,rev=True,g=0.9)
+boom(13.1,1.15)
 place(snare(),13.1,0.6)
 # final shimmer hit at logo
 n=int(SR*1.8); ts=np.arange(n)/SR

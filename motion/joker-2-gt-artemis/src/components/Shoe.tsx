@@ -20,7 +20,7 @@ export const Shoe: React.FC<{
         style={{
           position: "absolute",
           inset: "-30%",
-          background: `radial-gradient(ellipse 50% 45% at 50% 55%, rgba(255,255,255,${glow}) 0%, rgba(255,255,255,0) 70%)`,
+          background: `radial-gradient(ellipse 50% 45% at 50% 55%, rgba(150,190,255,${glow}) 0%, rgba(150,190,255,0) 70%)`,
         }}
       />
       <Img

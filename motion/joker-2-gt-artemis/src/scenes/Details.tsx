@@ -1,79 +1,118 @@
 import React from "react";
-import { AbsoluteFill, useCurrentFrame } from "remotion";
-import { Brackets, Callout } from "../components/Callout";
+import { AbsoluteFill, Sequence, useCurrentFrame } from "remotion";
+import { Callout, Reticle } from "../components/Callout";
+import { Camera, pt, Turntable, View } from "../components/Rig";
 import { Shoe } from "../components/Shoe";
-import { ci, INOUT, OUT } from "../theme";
+import { ci, INOUT } from "../theme";
 
-/** 150–225 (75f): macro pan across the sculpted upper. */
-export const UpperDetail: React.FC = () => {
+const LAT: View = { name: "lateral", width: 900 };
+const HEELS: View = { name: "heels", width: 700 };
+const SOLE: View = { name: "sole", width: 920 };
+
+const CENTER = { x: 540, y: 960 };
+const CAGE = pt(LAT, 600, 200);
+const LOGO = pt(LAT, 483, 250);
+const PODS = pt(LAT, 492, 398);
+const EMBLEM = pt(HEELS, 182, 185);
+const HERRING = pt(SOLE, 150, 195);
+
+const LABEL_TOP = 1330;
+
+/** Smoothly interpolated camera path through keyframes. */
+const path = (f: number, frames: number[], pts: { x: number; y: number }[], scales: number[], rots: number[]) => ({
+  P: {
+    x: ci(f, frames, pts.map((p) => p.x), INOUT),
+    y: ci(f, frames, pts.map((p) => p.y), INOUT),
+  },
+  s: ci(f, frames, scales, INOUT),
+  rot: ci(f, frames, rots, INOUT),
+});
+
+/** 150–240 (90f): macro camera glides between three details of the upper. */
+export const UpperDetails: React.FC = () => {
   const f = useCurrentFrame();
-  // speed ramp: fast whip then slow drift
-  const x = ci(f, [0, 10, 75], [900, 380, -260], OUT);
+  const cam = path(
+    f,
+    [0, 12, 30, 40, 60, 70, 90],
+    [CENTER, CAGE, CAGE, LOGO, LOGO, PODS, PODS],
+    [1, 2.6, 2.8, 3.4, 3.6, 2.7, 2.9],
+    [0, -4, -2, 5, 6, -3, -1],
+  );
   return (
     <AbsoluteFill>
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", top: -260 }}>
-        <Shoe
-          name="medial"
-          width={2500}
-          glow={0.1}
-          sweep={ci(f, [10, 60], [0.05, 0.95])}
-          style={{
-            translate: `${x}px 0px`,
-            rotate: `${ci(f, [0, 75], [-4, 2])}deg`,
-            filter: `blur(${ci(f, [0, 8], [12, 0])}px)`,
-          }}
-        />
-      </AbsoluteFill>
-      <Brackets x={90} y={380} w={900} h={640} />
-      <Callout index="01" label="UPPER" tagline="PURE WHITE." top={1420} />
+      <Camera P={cam.P} s={cam.s} rot={cam.rot}>
+        <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+          <Shoe name="lateral" width={LAT.width} glow={0.12} sweep={ci(f, [0, 90], [0, 1])} />
+        </AbsoluteFill>
+      </Camera>
+
+      <Sequence from={12} durationInFrames={24} layout="none">
+        <Reticle dur={24} lineTo={LABEL_TOP - 20} />
+        <Callout index="01" label="الجزء العلوي" tagline="قفص منحوت" top={LABEL_TOP} dur={24} />
+      </Sequence>
+      <Sequence from={40} durationInFrames={26} layout="none">
+        <Reticle dur={26} lineTo={LABEL_TOP - 20} />
+        <Callout index="02" label="شعار الجوكر" tagline="توقيع النجم" top={LABEL_TOP} dur={26} />
+      </Sequence>
+      <Sequence from={70} durationInFrames={20} layout="none">
+        <Reticle dur={22} lineTo={LABEL_TOP - 20} />
+        <Callout index="03" label="النعل الأوسط" tagline="خطوط انسيابية" top={LABEL_TOP} dur={22} />
+      </Sequence>
     </AbsoluteFill>
   );
 };
 
-/** 225–285 (60f): outsole flips up out of the dark. */
-export const SoleDetail: React.FC = () => {
+/** 240–330 (90f): turntable to the heel, focus; flip to the outsole, focus. */
+export const TurnDetails: React.FC = () => {
   const f = useCurrentFrame();
-  const e = ci(f, [0, 16], [0, 1], OUT);
-  return (
-    <AbsoluteFill style={{ perspective: 1600 }}>
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", top: -140 }}>
-        <Shoe
-          name="sole"
-          width={1040}
-          glow={0.22}
-          sweep={ci(f, [12, 55], [0, 1])}
-          style={{
-            rotate: `${-14 + (1 - e) * -30 + ci(f, [16, 60], [0, 5])}deg`,
-            transform: `rotateX(${(1 - e) * 75}deg)`,
-            scale: ci(f, [0, 16, 60], [0.55, 1, 1.07], INOUT),
-            opacity: ci(f, [0, 4], [0, 1]),
-          }}
-        />
-      </AbsoluteFill>
-      <Callout index="02" label="OUTSOLE" tagline="ZERO GRAVITY." top={1300} />
-    </AbsoluteFill>
+  const cam = path(
+    f,
+    [0, 12, 20, 42, 48, 56, 64, 90],
+    [CENTER, CENTER, EMBLEM, EMBLEM, CENTER, CENTER, HERRING, HERRING],
+    [1, 1, 2.3, 2.5, 1, 1, 2.6, 2.85],
+    [0, 0, -3, 2, 0, 0, 4, 1],
   );
-};
+  const yAngle = ci(f, [0, 12], [0, 180], INOUT);
+  const yVel = Math.abs(ci(f + 1, [0, 12], [0, 180], INOUT) - yAngle);
+  const xAngle = ci(f, [44, 56], [0, 180], INOUT);
+  const xVel = Math.abs(ci(f + 1, [44, 56], [0, 180], INOUT) - xAngle);
 
-/** 285–330 (45f): heel pair rises into frame. */
-export const HeelDetail: React.FC = () => {
-  const f = useCurrentFrame();
   return (
     <AbsoluteFill>
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center", top: -120 }}>
-        <Shoe
-          name="heels"
-          width={860}
-          glow={0.25}
-          sweep={ci(f, [8, 40], [0, 1])}
-          style={{
-            translate: `0px ${ci(f, [0, 12], [520, 0], OUT)}px`,
-            scale: ci(f, [0, 12, 45], [0.7, 1, 1.12], OUT),
-            filter: `blur(${ci(f, [0, 8], [10, 0])}px)`,
-          }}
-        />
-      </AbsoluteFill>
-      <Callout index="03" label="HEEL" tagline="MOON READY." top={1300} />
+      <Camera P={cam.P} s={cam.s} rot={cam.rot}>
+        {f < 44 ? (
+          <Turntable
+            views={[LAT, HEELS]}
+            angle={yAngle}
+            cx={CENTER.x}
+            cy={CENTER.y}
+            blur={Math.min(14, yVel * 0.6)}
+            sweep={ci(f, [14, 42], [0, 1])}
+            glow={0.15}
+          />
+        ) : (
+          <Turntable
+            views={[HEELS, SOLE]}
+            axis="X"
+            angle={xAngle}
+            cx={CENTER.x}
+            cy={CENTER.y}
+            blur={Math.min(14, xVel * 0.6)}
+            sweep={ci(f, [58, 90], [0, 1])}
+            glow={0.15}
+            extra={{ rotate: `${ci(f, [44, 90], [0, -6])}deg` }}
+          />
+        )}
+      </Camera>
+
+      <Sequence from={20} durationInFrames={24} layout="none">
+        <Reticle dur={24} lineTo={LABEL_TOP - 20} />
+        <Callout index="04" label="الكعب" tagline="بصمة الجوكر" top={LABEL_TOP} dur={24} />
+      </Sequence>
+      <Sequence from={64} durationInFrames={26} layout="none">
+        <Reticle dur={28} lineTo={LABEL_TOP - 20} />
+        <Callout index="05" label="النعل الخارجي" tagline="نقشة متعرّجة" top={LABEL_TOP} dur={28} />
+      </Sequence>
     </AbsoluteFill>
   );
 };

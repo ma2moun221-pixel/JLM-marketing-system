@@ -11,6 +11,27 @@ loadFont({ family: INTER, url: staticFile("fonts/inter800.woff2"), weight: "800"
 loadFont({ family: MONO, url: staticFile("fonts/mono400.woff2"), weight: "400" });
 loadFont({ family: MONO, url: staticFile("fonts/mono700.woff2"), weight: "700" });
 
+// Cairo (variable 200–1000) for all Arabic copy.
+export const CAIRO = "Cairo";
+loadFont({
+  family: CAIRO,
+  url: staticFile("fonts/cairo-arabic.woff2"),
+  weight: "200 1000",
+  unicodeRange: "U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC",
+});
+loadFont({
+  family: CAIRO,
+  url: staticFile("fonts/cairo-latin.woff2"),
+  weight: "200 1000",
+  unicodeRange: "U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD",
+});
+
+/** Screen point the detail camera locks onto. */
+export const FOCUS = { x: 540, y: 860 };
+
+/** Hard cuts that get a whip-spin transition. */
+export const CUTS = [150, 240, 330, 375];
+
 export const W = 1080;
 export const H = 1920;
 export const FPS = 30;

@@ -1,57 +1,53 @@
 import React from "react";
 import { Interactive, useCurrentFrame } from "remotion";
-import { ANTON, ci, MONO, OUT } from "../theme";
+import { CAIRO, ci, FOCUS, MONO, OUT } from "../theme";
 
-/** Numbered HUD label + big tagline that wipes up from a mask. */
-export const Callout: React.FC<{ index: string; label: string; tagline: string; top: number }> = ({
+/**
+ * Arabic detail label (RTL): number, line, small label, big tagline.
+ * Use inside a <Sequence> so the frame is local; `dur` drives the exit.
+ */
+export const Callout: React.FC<{ index: string; label: string; tagline: string; top: number; dur: number }> = ({
   index,
   label,
   tagline,
   top,
+  dur,
 }) => {
   const f = useCurrentFrame();
+  const out = ci(f, [dur - 6, dur], [1, 0]);
   return (
-    <Interactive.Div name="Callout" style={{ position: "absolute", left: 90, right: 90, top }}>
+    <Interactive.Div
+      name="Callout"
+      style={{ position: "absolute", left: 90, right: 90, top, direction: "rtl", opacity: out }}
+    >
       <div style={{ display: "flex", alignItems: "center", gap: 22 }}>
-        <div
-          style={{
-            fontFamily: MONO,
-            fontWeight: 700,
-            fontSize: 40,
-            color: "white",
-            opacity: ci(f, [2, 8], [0, 1]),
-          }}
-        >
+        <div style={{ fontFamily: MONO, fontWeight: 700, fontSize: 42, color: "#9cc4ff", opacity: ci(f, [0, 5], [0, 1]) }}>
           {index}
         </div>
+        <div style={{ height: 2, background: "white", width: ci(f, [1, 12], [0, 200], OUT) }} />
         <div
           style={{
-            height: 2,
-            background: "white",
-            width: ci(f, [3, 16], [0, 220], OUT),
-          }}
-        />
-        <div
-          style={{
-            fontFamily: MONO,
-            fontSize: 38,
-            letterSpacing: 8,
-            color: "rgba(255,255,255,0.85)",
-            opacity: ci(f, [8, 14], [0, 1]),
+            fontFamily: CAIRO,
+            fontWeight: 600,
+            fontSize: 46,
+            color: "rgba(255,255,255,0.9)",
+            opacity: ci(f, [5, 11], [0, 1]),
+            translate: `${ci(f, [5, 14], [-30, 0], OUT)}px 0px`,
           }}
         >
           {label}
         </div>
       </div>
-      <div style={{ overflow: "hidden", marginTop: 12, paddingTop: 6 }}>
+      <div style={{ overflow: "hidden", marginTop: 4 }}>
         <div
           style={{
-            fontFamily: ANTON,
-            fontSize: 150,
-            lineHeight: 1.02,
+            fontFamily: CAIRO,
+            fontWeight: 900,
+            fontSize: 132,
+            lineHeight: 1.35,
             color: "white",
-            letterSpacing: 2,
-            translate: `0px ${ci(f, [4, 16], [170, 0], OUT)}px`,
+            translate: `0px ${ci(f, [3, 15], [190, 0], OUT)}px`,
+            textShadow: "0 6px 40px rgba(0,0,0,0.6)",
           }}
         >
           {tagline}
@@ -61,29 +57,50 @@ export const Callout: React.FC<{ index: string; label: string; tagline: string; 
   );
 };
 
-/** Four corner brackets framing the focus area. */
-export const Brackets: React.FC<{ x: number; y: number; w: number; h: number }> = ({ x, y, w, h }) => {
+/** Rotating HUD reticle on the camera focus point, with a leader line down to the label. */
+export const Reticle: React.FC<{ lineTo?: number; dur: number }> = ({ lineTo, dur }) => {
   const f = useCurrentFrame();
-  const grow = ci(f, [0, 10], [1.25, 1], OUT);
-  const o = ci(f, [0, 6], [0, 0.9]);
-  const L = 60;
-  const st = (r: number): React.CSSProperties => ({
-    position: "absolute",
-    width: L,
-    height: L,
-    borderColor: "white",
-    borderStyle: "solid",
-    borderWidth: 0,
-    rotate: `${r}deg`,
-    borderTopWidth: 3,
-    borderLeftWidth: 3,
-  });
+  const R = 175;
+  const pop = ci(f, [0, 9], [1.6, 1], OUT);
+  const o = ci(f, [0, 4, dur - 5, dur], [0, 1, 1, 0]);
+  const ticks = new Array(36).fill(0);
   return (
-    <div style={{ position: "absolute", left: x, top: y, width: w, height: h, scale: grow, opacity: o }}>
-      <div style={{ ...st(0), left: 0, top: 0 }} />
-      <div style={{ ...st(90), right: 0, top: 0 }} />
-      <div style={{ ...st(180), right: 0, bottom: 0 }} />
-      <div style={{ ...st(270), left: 0, bottom: 0 }} />
-    </div>
+    <svg width={1080} height={1920} style={{ position: "absolute", inset: 0, opacity: o, overflow: "visible" }}>
+      <g transform={`translate(${FOCUS.x} ${FOCUS.y}) scale(${pop})`}>
+        <g transform={`rotate(${f * 3})`}>
+          <circle r={R} fill="none" stroke="white" strokeWidth={2} strokeDasharray="60 20" opacity={0.9} />
+          {ticks.map((_, i) => (
+            <line
+              key={i}
+              x1={0}
+              y1={-R - 10}
+              x2={0}
+              y2={-R - (i % 3 === 0 ? 30 : 18)}
+              stroke="white"
+              strokeWidth={2}
+              opacity={0.6}
+              transform={`rotate(${i * 10})`}
+            />
+          ))}
+        </g>
+        <g transform={`rotate(${-f * 5})`}>
+          <circle r={R * 0.72} fill="none" stroke="#9cc4ff" strokeWidth={2} strokeDasharray="4 12" />
+        </g>
+        {[0, 90, 180, 270].map((a) => (
+          <line key={a} x1={0} y1={-26} x2={0} y2={-56} stroke="white" strokeWidth={3} transform={`rotate(${a})`} />
+        ))}
+      </g>
+      {lineTo ? (
+        <line
+          x1={FOCUS.x}
+          y1={FOCUS.y + R * pop + 34}
+          x2={FOCUS.x}
+          y2={ci(f, [3, 14], [FOCUS.y + R + 34, lineTo], OUT)}
+          stroke="white"
+          strokeWidth={2}
+          opacity={0.8}
+        />
+      ) : null}
+    </svg>
   );
 };
