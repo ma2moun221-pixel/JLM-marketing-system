@@ -1,0 +1,296 @@
+<template>
+<style>
+@font-face{font-family:"Albert Sans";font-weight:100 900;font-display:block;src:url("assets/fonts/AlbertSans-Regular.ttf") format("truetype");}
+@font-face{font-family:"HNA";font-weight:700;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Bold.ttf") format("truetype");}
+@font-face{font-family:"HNA";font-weight:400;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Regular.ttf") format("truetype");}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:1080px;height:1920px;overflow:hidden;background:#000;}
+#story-root{position:absolute;left:0;top:0;width:1080px;height:1920px;overflow:hidden;background:#1B1D1F;}
+.full{position:absolute;left:0;top:0;width:1080px;height:1920px;}
+.scene{position:absolute;left:0;top:0;width:1080px;height:1920px;visibility:hidden;}
+.ar{font-family:"HNA";font-weight:700;color:#F1F0EC;direction:rtl;text-align:center;position:absolute;left:0;width:1080px;}
+.reg{font-weight:400;}
+.y{color:#FAB817;} .r{color:#E8452E;} .s{color:#C0C4C7;}
+.lat{font-family:"Albert Sans";font-weight:700;direction:ltr;unicode-bidi:isolate;}
+.mono{font-family:"Albert Sans";font-weight:600;letter-spacing:.18em;color:#8C9094;font-size:22px;position:absolute;direction:ltr;}
+svg{position:absolute;left:0;top:0;overflow:visible;}
+/* blueprint grid */
+#grid{left:-200px;top:-200px;width:1480px;height:2320px;
+ background-image:linear-gradient(rgba(192,196,199,.11) 2px,transparent 2px),linear-gradient(90deg,rgba(192,196,199,.11) 2px,transparent 2px),
+ linear-gradient(rgba(192,196,199,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(192,196,199,.045) 1px,transparent 1px);
+ background-size:200px 200px,200px 200px,40px 40px,40px 40px;}
+#vig{background:radial-gradient(900px 1300px at 50% 46%,rgba(27,29,31,0) 40%,rgba(12,13,14,.82) 100%);}
+.ln{fill:none;stroke:#C0C4C7;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;}
+.thin{stroke-width:1.6;opacity:.7;}
+.dash{stroke-dasharray:10 10;}
+.seal{fill:none;stroke-width:4;}
+.tag{display:inline-block;padding:8px 24px 12px;border:2px solid #FAB817;border-radius:8px;font-size:34px;color:#FAB817;background:rgba(27,29,31,.85);}
+.call{position:absolute;font-family:"HNA";font-weight:700;font-size:38px;direction:rtl;white-space:nowrap;padding:6px 18px 10px;border-radius:6px;background:rgba(27,29,31,.92);}
+.call.bad{color:#F06A55;border:2px solid #E8452E;}
+.call.ok{color:#FAB817;border:2px solid #FAB817;}
+.step{position:absolute;left:80px;width:920px;height:250px;border:2px dashed rgba(192,196,199,.45);border-radius:14px;background:rgba(27,29,31,.7);}
+.step .num{position:absolute;right:26px;top:26px;width:70px;height:70px;border-radius:35px;background:#FAB817;color:#252729;font-family:"Albert Sans";font-weight:800;font-size:40px;display:flex;align-items:center;justify-content:center;}
+.step .t1{position:absolute;right:120px;top:40px;width:560px;font-family:"HNA";font-weight:700;font-size:44px;color:#F1F0EC;direction:rtl;text-align:right;line-height:1.3;}
+.step .t2{position:absolute;right:120px;top:150px;width:560px;font-family:"HNA";font-weight:400;font-size:32px;color:#C0C4C7;direction:rtl;text-align:right;}
+.step svg{left:40px;top:25px;}
+#pill{position:absolute;left:300px;top:1395px;width:480px;height:96px;border-radius:48px;background:#FAB817;color:#252729;font-family:"Albert Sans";font-weight:800;font-size:54px;display:flex;align-items:center;justify-content:center;}
+#truck path,#truck circle{fill:none;stroke:#FAB817;stroke-width:4;stroke-linecap:round;stroke-linejoin:round;}
+</style>
+<div id="story-root" data-composition-id="story" data-width="1080" data-height="1920">
+ <div id="stage" class="clip full" data-start="0" data-duration="20" data-track-index="1">
+
+  <div id="grid" class="full"></div>
+  <div id="vig" class="full"></div>
+
+  <!-- drawing frame: corner brackets, figure label, logo -->
+  <svg width="1080" height="1920" viewBox="0 0 1080 1920" id="frame">
+   <path class="ln thin" d="M40 120 V40 H120 M960 40 H1040 V120 M1040 1800 V1880 H960 M120 1880 H40 V1800"></path>
+  </svg>
+  <div class="mono" id="fig" style="left:64px;top:132px">FIG. 01 — ATF</div>
+  <img id="logo" src="assets/gen/logo.png" alt="" style="position:absolute;right:64px;top:112px;width:200px" />
+
+  <!-- 1 · HOOK: the selector slips, a drop falls -->
+  <div id="s1" class="scene">
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <rect class="ln" id="gate" x="430" y="440" width="220" height="600" rx="40" pathLength="1" stroke-dasharray="1 1"></rect>
+    <rect id="hi" x="452" y="866" width="176" height="100" rx="20" fill="rgba(232,69,46,.22)" stroke="#E8452E" stroke-width="3"></rect>
+    <g font-family="Albert Sans" font-weight="800" font-size="72" fill="#C0C4C7" text-anchor="middle">
+     <text x="540" y="545">P</text><text x="540" y="685">R</text><text x="540" y="815">N</text><text x="540" y="942">D</text>
+    </g>
+    <path class="ln" d="M500 1040 V1080 H580 V1040" pathLength="1"></path>
+    <g id="d1"><path d="M540 1086 C540 1086 522 1112 522 1124 A18 18 0 0 0 558 1124 C558 1112 540 1086 540 1086 Z" fill="#E8452E"></path></g>
+    <ellipse id="pud" cx="540" cy="1250" rx="80" ry="14" fill="rgba(232,69,46,.55)"></ellipse>
+   </svg>
+   <div class="ar reg s h1" style="top:1300px;font-size:52px">ناقل الحركة الأوتوماتيكي</div>
+   <div class="ar h1" style="top:1380px;font-size:104px"><span class="r">يسرّب</span> زيت؟</div>
+   <div class="ar reg s h1" style="top:1575px;font-size:42px">انزلاق بين الغيارات واستهلاك للزيت</div>
+  </div>
+
+  <!-- 2 + 5 · the gearbox schematic (problem, then result) -->
+  <div id="gbx" class="full" style="visibility:hidden">
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <path class="ln draw" pathLength="1" stroke-dasharray="1 1" d="M90 640 H520 L560 680 H900 Q940 680 940 720 V1000 Q940 1040 900 1040 H560 L520 1080 H90 Z"></path>
+    <path class="ln thin dash" d="M30 860 H1050"></path>
+    <circle class="ln draw" pathLength="1" stroke-dasharray="1 1" cx="300" cy="860" r="172"></circle>
+    <circle class="ln thin" cx="300" cy="860" r="112"></circle>
+    <g id="tc"><g class="ln thin">
+     <path d="M300 748 V688 M300 972 V1032 M188 860 H128 M412 860 H472 M221 781 L179 739 M379 939 L421 981 M221 939 L179 981 M379 781 L421 739"></path></g>
+     <circle class="ln" cx="300" cy="860" r="34"></circle></g>
+    <circle class="ln draw" pathLength="1" stroke-dasharray="1 1" cx="740" cy="860" r="150"></circle>
+    <circle class="ln thin" cx="740" cy="860" r="140"></circle>
+    <g id="carrier">
+     <circle class="ln" cx="740" cy="768" r="50"></circle><circle class="ln" cx="820" cy="906" r="50"></circle><circle class="ln" cx="660" cy="906" r="50"></circle>
+     <circle cx="740" cy="768" r="7" fill="#C0C4C7"></circle><circle cx="820" cy="906" r="7" fill="#C0C4C7"></circle><circle cx="660" cy="906" r="7" fill="#C0C4C7"></circle>
+    </g>
+    <g id="sun"><circle class="ln" cx="740" cy="860" r="38"></circle><path class="ln thin" d="M740 826 V894 M706 860 H774"></path></g>
+    <path class="ln draw" pathLength="1" stroke-dasharray="1 1" d="M300 1080 V1130 Q300 1150 320 1150 H780 Q800 1150 800 1130 V1040"></path>
+    <ellipse class="seal" cx="90" cy="860" rx="12" ry="30" stroke="#E8452E"></ellipse>
+    <ellipse class="seal" cx="940" cy="860" rx="12" ry="30" stroke="#E8452E"></ellipse>
+    <ellipse class="seal" cx="550" cy="1150" rx="34" ry="10" stroke="#E8452E"></ellipse>
+    <g class="lead bad"><path class="ln" stroke="#E8452E" d="M90 830 L170 600" pathLength="1" stroke-dasharray="1 1"></path>
+     <path class="ln" stroke="#E8452E" d="M760 710 L840 600" pathLength="1" stroke-dasharray="1 1"></path>
+     <path class="ln" stroke="#E8452E" d="M550 1165 L550 1250" pathLength="1" stroke-dasharray="1 1"></path></g>
+    <g class="drop"><path d="M90 896 C90 896 76 916 76 926 A14 14 0 0 0 104 926 C104 916 90 896 90 896 Z" fill="#E8452E"></path></g>
+    <g class="drop"><path d="M940 896 C940 896 926 916 926 926 A14 14 0 0 0 954 926 C954 916 940 896 940 896 Z" fill="#E8452E"></path></g>
+    <g class="drop"><path d="M600 1166 C600 1166 586 1186 586 1196 A14 14 0 0 0 614 1196 C614 1186 600 1166 600 1166 Z" fill="#E8452E"></path></g>
+   </svg>
+   <div class="call bad c1" style="left:70px;top:540px">تسرّب الزيت</div>
+   <div class="call bad c2" style="left:720px;top:540px">انزلاق الغيارات</div>
+   <div class="call bad c3" style="left:420px;top:1250px">استهلاك الزيت</div>
+   <div class="call ok k1" style="left:60px;top:540px">يمنع التسرّب ✓</div>
+   <div class="call ok k2" style="left:720px;top:540px">تبديل سلس ✓</div>
+   <div class="call ok k3" style="left:340px;top:1250px">يمنع استهلاك الزيت ✓</div>
+  </div>
+  <div id="s2" class="scene">
+   <div class="ar p2" style="top:300px"><span class="tag">المشكلة</span></div>
+   <div class="ar p2" style="top:1400px;font-size:60px">تسرّب، انزلاق، <span class="r">واستهلاك للزيت</span></div>
+   <div class="ar reg s p2" style="top:1490px;font-size:40px">في نواقل الحركة الأوتوماتيكية التقليدية</div>
+  </div>
+
+  <!-- 3 · PRODUCT: the scan line turns the sketch into the real can -->
+  <div id="s3" class="scene">
+   <div class="ar p3" style="top:300px"><span class="tag">الحل من JLM</span></div>
+   <svg width="1080" height="1920" viewBox="0 0 1080 1920">
+    <path class="ln thin dim" d="M330 470 V1430 M318 470 H342 M318 1430 H342 M750 470 V1430 M738 470 H762 M738 1430 H762" pathLength="1" stroke-dasharray="1 1"></path>
+   </svg>
+   <img id="sk" src="assets/gen/can_sketch.png" alt="" style="position:absolute;left:397px;top:470px;width:286px;height:958px" />
+   <img id="can" src="assets/gen/can.png" alt="" style="position:absolute;left:397px;top:470px;width:286px;height:958px;clip-path:inset(0 0 100% 0)" />
+   <div id="scan" style="position:absolute;left:300px;top:470px;width:480px;height:4px;background:#FAB817;box-shadow:0 0 24px 6px rgba(250,184,23,.55);opacity:0"></div>
+   <div class="ar p3n" style="top:1480px;font-size:62px">مانع تسرّب زيت الجير</div>
+   <div class="ar p3n" style="top:1570px;font-size:40px"><span class="lat y">ATF Stop Leak &amp; Conditioner</span></div>
+  </div>
+
+  <!-- 4 · HOW TO USE -->
+  <div id="s4" class="scene">
+   <div class="ar" id="h4" style="top:300px"><span class="tag">طريقة الاستعمال</span></div>
+   <div class="step" id="st1" style="top:470px"><div class="num">1</div>
+    <div class="t1">رجّ العلبة جيداً</div><div class="t2">قبل الاستخدام</div>
+    <svg width="200" height="200" viewBox="0 0 200 200"><g id="shake"><rect class="ln" x="72" y="40" width="56" height="130" rx="10"></rect><rect class="ln" x="84" y="22" width="32" height="18" rx="4"></rect></g>
+     <path class="ln thin" d="M40 70 Q28 100 40 130 M160 70 Q172 100 160 130 M24 60 Q8 100 24 140 M176 60 Q192 100 176 140"></path></svg>
+   </div>
+   <div class="step" id="st2" style="top:770px"><div class="num">2</div>
+    <div class="t1">أضفه إلى سائل ناقل الحركة الأوتوماتيكي</div>
+    <svg width="200" height="200" viewBox="0 0 200 200"><g transform="rotate(-50 70 70)"><rect class="ln" x="45" y="20" width="50" height="110" rx="9"></rect></g>
+     <path class="ln" d="M110 120 H190 L160 160 V190 H140 V160 Z"></path>
+     <g id="pour"><path d="M120 92 C120 92 112 104 112 110 A8 8 0 0 0 128 110 C128 104 120 92 120 92 Z" fill="#FAB817"></path></g></svg>
+   </div>
+   <div class="step" id="st3" style="top:1070px"><div class="num">3</div>
+    <div class="t1">قُد السيارة لمدة <span class="lat y">15</span> دقيقة</div><div class="t2">للحصول على النتيجة المثالية</div>
+    <svg width="200" height="200" viewBox="0 0 200 200"><circle cx="100" cy="100" r="76" fill="none" stroke="rgba(192,196,199,.25)" stroke-width="10"></circle>
+     <circle id="ring" cx="100" cy="100" r="76" fill="none" stroke="#FAB817" stroke-width="10" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" transform="rotate(-90 100 100)"></circle>
+     <text id="cnt" x="100" y="118" text-anchor="middle" font-family="Albert Sans" font-weight="800" font-size="54" fill="#F1F0EC">0</text></svg>
+   </div>
+  </div>
+
+  <!-- 5 · RESULT -->
+  <div id="s5" class="scene">
+   <div class="ar p5" style="top:300px"><span class="tag">النتيجة</span></div>
+   <div class="ar p5" style="top:1390px;font-size:58px">تبديل <span class="y">سلس وهادئ</span> بين الغيارات</div>
+   <div class="ar p5" style="top:1480px;font-size:46px;font-weight:400">ويطيل <span class="y">عمر ناقل الحركة</span></div>
+   <div class="ar reg s p5" style="top:1580px;font-size:32px">*غير مناسب لنواقل الحركة <span class="lat">CVT</span> و <span class="lat">DSG</span></div>
+  </div>
+
+  <!-- 6 · CTA -->
+  <div id="s6" class="scene">
+   <img id="can6" src="assets/gen/can.png" alt="" style="position:absolute;left:452px;top:430px;width:176px;height:590px" />
+   <div class="ar" id="n6" style="top:1060px;font-size:48px">مانع تسرّب زيت الجير من <span class="lat y">JLM</span></div>
+   <div class="ar" id="a6" style="top:1200px;font-size:66px"><span class="y">اطلبه الآن</span> من خلال</div>
+   <div id="pill" dir="ltr">jlmstore.com</div>
+   <div class="ar" id="d6" style="top:1530px;font-size:48px;display:flex;justify-content:center;align-items:center;gap:18px;direction:rtl">
+    <span>مع توفّر <span class="y">خدمة التوصيل</span></span>
+    <svg id="truck" viewBox="0 0 100 52" width="90" height="47" style="position:relative"><path pathLength="1" d="M34 38 V8 H82 V38 Z"></path><path pathLength="1" d="M34 16 H20 L8 29 V38 H34"></path><circle pathLength="1" cx="21" cy="42" r="6.5"></circle><circle pathLength="1" cx="68" cy="42" r="6.5"></circle></svg>
+   </div>
+  </div>
+ </div>
+</div>
+<script src="assets/vendor/gsap.min.js"></script>
+<script>
+(function(){
+ var tl = gsap.timeline({paused:true});
+ function txt(sel, at, st){ tl.fromTo(sel,{opacity:0,y:30,filter:"blur(10px)"},{opacity:1,y:0,filter:"blur(0px)",duration:.55,ease:"power3.out",stagger:st||0},at); }
+ function out(sel, at){ tl.to(sel,{opacity:0,y:-20,filter:"blur(8px)",duration:.3,ease:"power2.in"},at); }
+ function draw(sel, at, d, st){ tl.fromTo(sel,{attr:{"stroke-dashoffset":1}},{attr:{"stroke-dashoffset":0},duration:d||.8,ease:"power2.inOut",stagger:st||0},at); }
+ function fig(n, at){ tl.set("#fig",{textContent:"FIG. 0" + n + " — ATF"},at); tl.fromTo("#fig",{opacity:0},{opacity:1,duration:.3,immediateRender:false},at); }
+
+ // the grid drifts all the way through (a slow camera over the drawing board)
+ tl.fromTo("#grid",{x:0,y:0},{x:-80,y:-120,duration:20,ease:"none"},0);
+ tl.fromTo("#frame",{opacity:0},{opacity:1,duration:.6},0);
+ tl.fromTo("#logo",{opacity:0,y:-14},{opacity:1,y:0,duration:.6,ease:"power3.out"},.2);
+ fig(1, .2);
+
+ // ---------- 1 · HOOK (0 – 3.2) ----------
+ tl.set("#s1",{autoAlpha:1},0);
+ draw("#gate",.1,.7);
+ tl.fromTo("#s1 text",{opacity:0},{opacity:1,duration:.4,stagger:.08},.3);
+ tl.fromTo("#hi",{opacity:0},{opacity:1,duration:.2},.6);
+ // slipping: the highlight jumps D ↔ N and shakes
+ tl.to("#hi",{y:-128,duration:.12,ease:"power2.out",yoyo:true,repeat:3},1.0);
+ tl.to("#hi",{x:6,duration:.05,yoyo:true,repeat:7},1.6);
+ tl.fromTo("#d1",{y:0,opacity:0},{opacity:1,duration:.15},.9);
+ tl.to("#d1",{y:120,duration:.55,ease:"power2.in"},1.05);
+ tl.set("#d1",{opacity:0},1.6);
+ tl.fromTo("#pud",{scale:0,opacity:0,svgOrigin:"540 1250"},{scale:1,opacity:1,svgOrigin:"540 1250",duration:.5,ease:"power2.out"},1.6);
+ tl.fromTo("#d1",{y:0},{y:120,opacity:1,duration:.55,ease:"power2.in",immediateRender:false},2.0);
+ tl.set("#d1",{opacity:0},2.55);
+ txt(".h1",.5,.18);
+ out("#s1 .h1",2.9);
+ tl.to("#s1 svg",{opacity:0,duration:.3},2.9);
+ tl.set("#s1",{autoAlpha:0},3.2);
+
+ // ---------- 2 · PROBLEM (3.2 – 6.8) ----------
+ fig(2, 3.2);
+ tl.set("#gbx,#s2",{autoAlpha:1},3.2);
+ tl.set(".k1,.k2,.k3",{opacity:0},0);
+ tl.set(".c1,.c2,.c3,.lead,.drop",{opacity:0},0);
+ draw("#gbx .draw",3.2,.9,.1);
+ tl.fromTo("#gbx .ln.thin,#tc,#carrier,#sun,.seal",{opacity:0},{opacity:1,duration:.5},3.4);
+ // gears turn all through scenes 2 and 5 (jerky in 2: the box slips)
+ tl.fromTo("#tc",{rotation:0,svgOrigin:"300 860"},{rotation:720,svgOrigin:"300 860",duration:14,ease:"none"},3.2);
+ tl.fromTo("#sun",{rotation:0,svgOrigin:"740 860"},{rotation:900,svgOrigin:"740 860",duration:14,ease:"none"},3.2);
+ tl.fromTo("#carrier",{rotation:0,svgOrigin:"740 860"},{rotation:300,svgOrigin:"740 860",duration:14,ease:"none"},3.2);
+ tl.to("#carrier",{x:4,duration:.06,yoyo:true,repeat:9},4.6);
+ tl.to(".seal",{opacity:.35,duration:.25,yoyo:true,repeat:9,stagger:.1},4.0);
+ txt(".p2",3.5,.15);
+ tl.set(".lead",{opacity:1},4.0);
+ draw(".lead path",4.0,.35,.4);
+ tl.fromTo(".c1",{opacity:0,scale:.8},{opacity:1,scale:1,duration:.3,ease:"back.out(2)"},4.25);
+ tl.fromTo(".c2",{opacity:0,scale:.8},{opacity:1,scale:1,duration:.3,ease:"back.out(2)"},4.65);
+ tl.fromTo(".c3",{opacity:0,scale:.8},{opacity:1,scale:1,duration:.3,ease:"back.out(2)"},5.05);
+ gsap.utils.toArray(".drop").forEach(function(d, i){
+  for (var k = 0; k < 3; k++) {
+   var at = 4.3 + i * .35 + k * .75;
+   tl.fromTo(d,{y:0,opacity:0},{y:0,opacity:1,duration:.1,immediateRender:false},at);
+   tl.to(d,{y:110,duration:.45,ease:"power2.in"},at + .1);
+   tl.set(d,{opacity:0,y:0},at + .56);
+  }
+ });
+ out(".p2",6.5);
+ tl.to(".c1,.c2,.c3,.lead",{opacity:0,duration:.3},6.5);
+ tl.to("#gbx",{opacity:0,duration:.3},6.5);
+ tl.set("#s2,#gbx",{autoAlpha:0},6.8);
+
+ // ---------- 3 · PRODUCT SCAN (6.8 – 10.4) ----------
+ fig(3, 6.8);
+ tl.set("#s3",{autoAlpha:1},6.8);
+ txt(".p3",6.85);
+ tl.fromTo("#sk",{opacity:0,scale:.94,transformOrigin:"50% 60%"},{opacity:1,scale:1,duration:.5,ease:"power2.out"},6.9);
+ draw(".dim",7.0,.6);
+ tl.fromTo("#scan",{opacity:0,y:0},{opacity:1,duration:.15},7.45);
+ tl.to("#scan",{y:958,duration:1.4,ease:"power1.inOut"},7.5);
+ tl.fromTo("#can",{clipPath:"inset(0 0 100% 0)"},{clipPath:"inset(0 0 0% 0)",duration:1.4,ease:"power1.inOut"},7.5);
+ tl.fromTo("#sk",{clipPath:"inset(0% 0 0 0)"},{clipPath:"inset(100% 0 0 0)",duration:1.4,ease:"power1.inOut",immediateRender:false},7.5);
+ tl.to("#scan",{opacity:0,duration:.2},8.9);
+ tl.to(".dim",{opacity:0,duration:.4},9.0);
+ txt(".p3n",8.6,.15);
+ tl.fromTo("#can",{y:0},{y:-10,duration:1.4,ease:"sine.inOut"},9.0);
+ out("#s3 .ar",10.1);
+ tl.to("#can",{opacity:0,scale:.9,duration:.3},10.1);
+ tl.set("#s3",{autoAlpha:0},10.4);
+
+ // ---------- 4 · HOW TO USE (10.4 – 14.6) ----------
+ fig(4, 10.4);
+ tl.set("#s4",{autoAlpha:1},10.4);
+ txt("#h4",10.45);
+ [["#st1",10.6],["#st2",11.85],["#st3",13.0]].forEach(function(s){
+  tl.fromTo(s[0],{opacity:0,x:-60},{opacity:1,x:0,duration:.45,ease:"power3.out"},s[1]);
+ });
+ tl.fromTo("#shake",{rotation:-12,svgOrigin:"100 105"},{rotation:12,svgOrigin:"100 105",duration:.12,ease:"sine.inOut",yoyo:true,repeat:9},10.9);
+ tl.fromTo("#pour",{y:0,opacity:1},{y:40,opacity:0,duration:.45,ease:"power2.in",repeat:2,repeatDelay:.05},12.2);
+ draw("#ring",13.2,1.1);
+ var c = {v:0};
+ tl.fromTo(c,{v:0},{v:15,duration:1.1,ease:"power2.inOut",onUpdate:function(){ document.getElementById("cnt").textContent = Math.round(c.v); }},13.2);
+ out("#s4 .step,#h4",14.3);
+ tl.set("#s4",{autoAlpha:0},14.6);
+
+ // ---------- 5 · RESULT (14.6 – 17.2) ----------
+ fig(5, 14.6);
+ tl.set("#gbx,#s5",{autoAlpha:1},14.6);
+ tl.fromTo("#gbx",{opacity:0},{opacity:1,duration:.35},14.6);
+ tl.set(".drop",{opacity:0},14.6);
+ tl.set(".seal",{opacity:1},14.6);
+ tl.fromTo(".seal",{stroke:"#E8452E"},{stroke:"#FAB817",duration:.5,stagger:.15,immediateRender:false},14.8);
+ tl.fromTo(".k1",{opacity:0,scale:.8},{opacity:1,scale:1,duration:.3,ease:"back.out(2)"},15.0);
+ tl.fromTo(".k2",{opacity:0,scale:.8},{opacity:1,scale:1,duration:.3,ease:"back.out(2)"},15.3);
+ tl.fromTo(".k3",{opacity:0,scale:.8},{opacity:1,scale:1,duration:.3,ease:"back.out(2)"},15.6);
+ txt(".p5",14.75,.2);
+ out(".p5",16.9);
+ tl.to("#gbx",{opacity:0,duration:.3},16.9);
+ tl.set("#s5,#gbx",{autoAlpha:0},17.2);
+
+ // ---------- 6 · CTA (17.2 – 20) ----------
+ fig(6, 17.2);
+ tl.set("#s6",{autoAlpha:1},17.2);
+ tl.to("#logo",{x:-376,y:160,scale:2,transformOrigin:"50% 50%",duration:.6,ease:"power3.inOut"},17.2);   // to the centre, twice the size
+ tl.fromTo("#can6",{opacity:0,y:40,scale:.9},{opacity:1,y:0,scale:1,duration:.6,ease:"power3.out"},17.35);
+ txt("#n6",17.55);
+ txt("#a6",17.8);
+ tl.fromTo("#pill",{opacity:0,scale:.6},{opacity:1,scale:1,duration:.5,ease:"back.out(1.8)"},18.1);
+ txt("#d6",18.45);
+ draw("#truck path, #truck circle",18.5,.6,.08);
+ tl.to("#can6",{y:-10,duration:1.4,ease:"sine.inOut"},18.4);
+
+ window.__timelines = window.__timelines || {};
+ window.__timelines["story"] = tl;
+})();
+</script>
+</template>

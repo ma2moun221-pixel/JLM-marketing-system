@@ -1,0 +1,53 @@
+# JLM Penetrating Oil — فيديو موشن جرافيك (HyperFrames)
+
+**الملف النهائي:** `renders/jlm_penetrating_oil.mp4`. المدة 71.3 ث، ‏1080×1920، ‏30fps. الصوت ‎-14.0 LUFS، والذروة ‎-2.3 dBFS.
+
+**النسخة 4 (الحالية):** بدون تعليق صوتي — موسيقى مؤلفة للفيديو (`scripts/music.py`، 112 BPM: انترو هادئ ← توتر في الهوك ← drop عند كشف المنتج ← إيقاع كامل ← ارتفاع وضربة على الـ CTA) مع إبقاء كل المؤثرات. الصوت ‎-14.2 LUFS، والذروة ‎-2.7 dBFS. التطبيع النهائي: `volume=-3dB,alimiter=limit=0.63,loudnorm=I=-14:TP=-2.5`.
+
+**النسخة 3:** كلام أسرع (≈ 1.45× من القراءة الأولى) وصوت أنعم وألطف، بلا تخفيض للنبرة ولا صدى. 
+
+**النسخة 2:** تعليق صوتي جديد بصوت خبير ميكانيكي (نص بأسلوب الورشة، وصوت أعمق وأدفأ)، وطبقة مؤثرات تشد المشاهد: whoosh على كل قطع، riser قبل كل كشف، ضربة ناعمة عند ظهور المنتج، ding على كل خطوة، صوت المفتاح والطقطقة، وتكّات المؤقت.
+
+## ما بُني
+
+| # | المشهد | الانتقال إلى المشهد التالي |
+|---|---|---|
+| 1 | **انترو:** حلقة JLM الصفراء ترسم نفسها، ثم الشعار | iris: الحلقة تصبح عدسة |
+| 2 | **الهوك:** برغي صدئ داخل العدسة، ومفتاح يعلق | match cut: الرسم هو نفسه المطبوع على العبوة |
+| 3 | **المنتج:** الكاميرا تبتعد بشكل حلزوني وتكشف العبوة (cut-out)، والفوائد تدور حولها | zoom-through: الدخول في قطرة MoS2 الزرقاء |
+| 4 | **الشرح المتحرك:** مقطع داخل البرغي؛ الزيت يتغلغل، الصدأ يذوب، الرطوبة تخرج، طبقة حماية | match cut: رأس البرغي سداسي يدور |
+| 5 | **لمن:** السداسي يصبح محورًا تدور حوله الفئات والاستخدامات | wipe أصفر |
+| 6 | **طريقة الاستخدام 1:** رجّ ← رش ← مؤقت دائري | match cut: المؤقت يصبح حلقة المفتاح |
+| 7 | **طريقة الاستخدام 2:** فكّ البرغي، ثم مسح الزوائد | wipe بالقماشة |
+| 8 | **CTA:** العبوة في حلقة JLM، وjlmstore.com، وخدمة التوصيل | — |
+
+- **الصوت:**
+  - فويس أوفر عربي محلي (Piper ar_JO عبر sherpa-onnx).
+  - موسيقى ومؤثرات مولّدة بالكود، والمؤثرات هادئة.
+- **النص على الشاشة:** نص المنتج الذي أرسله العميل حرفيًا.
+- **الهوية:** خطوط JLM وألوانها وشعارها.
+
+## إعادة البناء
+
+```bash
+python3 scripts/voice.py <piper-ar_JO-kareem-medium dir>   # الفويس أوفر + audio_meta.json
+python3 scripts/sound.py                                     # الموسيقى والمؤثرات
+npx hyperframes@0.8.161 check
+npx hyperframes@0.8.161 render --quality high --output renders/video.mp4
+```
+ثم طبّع الصوت بـ ffmpeg (loudnorm I=-14).
+
+**ملاحظة:** GSAP محلي في `assets/vendor/`، لأن الـ CDN محجوب في بيئة العمل.
+
+## 40 s cut-down (`renders/jlm_penetrating_oil_40s.mp4`)
+
+`python3 scripts/cutdown.py` re-times the 71 s v4 film to exactly 40 s. Nothing is cut out.
+
+- **Speed ramps:** holds play faster, about ×1.2–3.2 (benefit chips, mechanism steps, audience hub, usage steps).
+- **Match cuts and wipes** stay near 1×.
+- **Speed changes** are eased over 0.3 s, and fast stretches are frame-blended.
+- **CTA:** complete from about 37 s, held to the end.
+- **Audio:**
+  - the music is re-arranged on the remapped cut points (`music.build()`);
+  - all 56 SFX cues go through the same time map;
+  - −13.4 LUFS, peak −2.4 dBFS.

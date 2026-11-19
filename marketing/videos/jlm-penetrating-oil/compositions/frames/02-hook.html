@@ -1,0 +1,332 @@
+<template>
+  <script src="assets/vendor/gsap.min.js"></script>
+  <style>
+    @font-face{font-family:"Albert Sans";font-weight:100 900;font-style:normal;font-display:block;src:url("assets/fonts/AlbertSans-Regular.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:700;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Bold.ttf") format("truetype");}
+    @font-face{font-family:"Helvetica Neue LT Arabic";font-weight:400;font-style:normal;font-display:block;src:url("assets/fonts/HelveticaNeueLTArabic-Regular.ttf") format("truetype");}
+
+    #root {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+      overflow: hidden;
+      font-family: "Helvetica Neue LT Arabic", "Albert Sans", sans-serif;
+    }
+    [data-hk="layer"] {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+    #f02-hook-bg { background: #141516; }
+
+    /* ---- lens: CROP inside circle C ---- */
+    #f02-hook-lens {
+      clip-path: circle(0px at 540px 900px);
+      pointer-events: none;
+    }
+    #f02-hook-crop {
+      position: absolute;
+      left: 70px;
+      top: 422.85px;
+      width: 940px;
+      height: 954.3px;
+      transform-origin: 50% 50%;
+    }
+    #f02-hook-crop img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 940px;
+      height: 954.3px;
+      display: block;
+    }
+    #f02-hook-tint {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 940px;
+      height: 954.3px;
+      mix-blend-mode: multiply;
+      background:
+        radial-gradient(ellipse 330px 300px at 581px 405px, rgba(138, 75, 34, 0.55), rgba(138, 75, 34, 0) 100%),
+        radial-gradient(ellipse 260px 260px at 200px 290px, rgba(138, 75, 34, 0.5), rgba(138, 75, 34, 0) 100%),
+        rgba(181, 101, 42, 0.5);
+    }
+    #f02-hook-rustsvg,
+    #f02-hook-cracksvg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 940px;
+      height: 954.3px;
+      overflow: visible;
+    }
+
+    /* ---- wrench ---- */
+    #f02-hook-wrench-orbit {
+      transform-origin: 540px 900px;
+    }
+    #f02-hook-wrench-pos {
+      position: absolute;
+      left: 651px;
+      top: 829px;
+      width: 0;
+      height: 0;
+    }
+    #f02-hook-wrench-rot {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 0;
+      height: 0;
+      transform-origin: 0 0;
+    }
+    #f02-hook-wrench-rot svg {
+      position: absolute;
+      left: -85.8px;
+      top: -85.8px;
+      width: 483.6px;
+      height: 171.6px;
+      overflow: visible;
+    }
+
+    /* ---- ring C ---- */
+    #f02-hook-ring svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1080px;
+      height: 1920px;
+    }
+
+    /* ---- type ---- */
+    [data-hk="line"] {
+      position: absolute;
+      left: 60px;
+      width: 960px;
+      text-align: center;
+      white-space: nowrap;
+      font-family: "Helvetica Neue LT Arabic", sans-serif;
+      font-weight: 700;
+    }
+    [data-hk="w"] {
+      display: inline-block;
+    }
+    #f02-hook-l1 {
+      top: 240px;
+      height: 120px;
+      line-height: 120px;
+      font-size: 78px;
+      color: #F1F0EC;
+    }
+    #f02-hook-l1 [data-hk="rust"] { color: #B5652A; }
+    #f02-hook-l2 {
+      top: 1410px;
+      height: 100px;
+      line-height: 100px;
+      font-size: 56px;
+      color: #C0C4C7;
+    }
+    #f02-hook-l3 {
+      top: 1400px;
+      height: 120px;
+      line-height: 120px;
+      font-size: 72px;
+      color: #FAB817;
+    }
+  </style>
+
+  <div id="root" data-composition-id="02-hook" data-start="0" data-duration="5.16" data-width="1080" data-height="1920">
+    <!-- track 0: full-bleed ink ground -->
+    <div id="f02-hook-bg" data-hk="layer" class="clip" data-start="0" data-duration="5.16" data-track-index="0"></div>
+
+    <!-- track 1: the lens (CROP masked by circle C) -->
+    <div id="f02-hook-lens" data-hk="layer" class="clip" data-start="0" data-duration="5.16" data-track-index="1">
+      <div id="f02-hook-crop">
+        <img src="assets/label-bolt-nut.png" alt="" />
+        <div id="f02-hook-tint"></div>
+        <svg id="f02-hook-rustsvg" viewBox="0 0 660 670" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="f02-hook-specks"></g>
+        </svg>
+        <svg id="f02-hook-cracksvg" viewBox="0 0 660 670" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <g id="f02-hook-crack" opacity="0">
+            <polyline points="184,452 200,444 196,436 214,431 211,423 229,419 233,410 248,408 252,399 268,395" fill="none" stroke="#FAB817" stroke-width="10" stroke-linejoin="round" stroke-linecap="round" opacity="0.5" />
+            <polyline points="184,452 200,444 196,436 214,431 211,423 229,419 233,410 248,408 252,399 268,395" fill="none" stroke="#F1F0EC" stroke-width="4" stroke-linejoin="round" stroke-linecap="round" />
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- track 2: the wrench (line-art ring spanner) -->
+    <div id="f02-hook-wrench-orbit" data-hk="layer" class="clip" data-start="0" data-duration="5.16" data-track-index="2">
+      <div id="f02-hook-wrench-pos">
+        <div id="f02-hook-wrench-rot">
+          <svg viewBox="-110 -110 620 220" xmlns="http://www.w3.org/2000/svg">
+            <!-- combination spanner: ring end (on the nut) + open-jaw end -->
+            <!-- outline pass (half of each stroke is hidden by the fill pass) -->
+            <g fill="none" stroke="#C0C4C7" stroke-width="13" stroke-linejoin="round">
+              <path d="M 70 -34 L 392 -27 L 392 27 L 70 34 Z" />
+              <circle cx="0" cy="0" r="88" />
+              <path d="M 482.8 -24 L 418 -24 A 24 24 0 0 0 418 24 L 482.8 24 A 58 58 0 1 1 482.8 -24 Z" />
+            </g>
+            <!-- fill pass: union body, hex opening cut out of the ring end -->
+            <g fill="#26282B">
+              <path d="M 70 -34 L 392 -27 L 392 27 L 70 34 Z" />
+              <path fill-rule="evenodd" d="M 88 0 A 88 88 0 1 0 -88 0 A 88 88 0 1 0 88 0 Z M 60 0 L 30 51.96 L -30 51.96 L -60 0 L -30 -51.96 L 30 -51.96 Z" />
+              <path d="M 482.8 -24 L 418 -24 A 24 24 0 0 0 418 24 L 482.8 24 A 58 58 0 1 1 482.8 -24 Z" />
+            </g>
+            <!-- hex opening outline + handle groove -->
+            <path d="M 60 0 L 30 51.96 L -30 51.96 L -60 0 L -30 -51.96 L 30 -51.96 Z" fill="none" stroke="#C0C4C7" stroke-width="6" stroke-linejoin="round" />
+            <path d="M 120 0 L 345 0" fill="none" stroke="#C0C4C7" stroke-width="4" stroke-linecap="round" opacity="0.5" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- track 3: ring C — centre (540,900), r 470, stroke 8 #FAB817 -->
+    <div id="f02-hook-ring" data-hk="layer" class="clip" data-start="0" data-duration="5.16" data-track-index="3">
+      <svg viewBox="0 0 1080 1920" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="540" cy="900" r="470" fill="none" stroke="#FAB817" stroke-width="8" />
+      </svg>
+    </div>
+
+    <!-- track 4: type -->
+    <div id="f02-hook-type" data-hk="layer" class="clip" data-start="0" data-duration="5.16" data-track-index="4">
+      <div id="f02-hook-l1" data-hk="line" dir="rtl" lang="ar"><span data-hk="w">برغي</span> <span data-hk="w">عالق</span> <span data-hk="w">بسبب</span> <span data-hk="w"><span data-hk="rust">الصدأ؟</span></span></div>
+      <div id="f02-hook-l2" data-hk="line" dir="rtl" lang="ar"><span data-hk="w">قبل</span> <span data-hk="w">أن</span> <span data-hk="w">تكسره…</span></div>
+      <div id="f02-hook-l3" data-hk="line" dir="rtl" lang="ar"><span data-hk="w">هناك</span> <span data-hk="w">حلّ</span> <span data-hk="w">أذكى</span></div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var ID = "02-hook";
+      var root = document.querySelector('[data-composition-id="' + ID + '"]');
+      var $ = function (id) { return root.querySelector('[id="f' + ID + "-" + id + '"]'); };
+      var SVGNS = "http://www.w3.org/2000/svg";
+
+      var lens = $("lens");
+      var crop = $("crop");
+      var tint = $("tint");
+      var rustSvg = $("rustsvg");
+      var specks = $("specks");
+      var crack = $("crack");
+      var wOrbit = $("wrench-orbit");
+      var wRot = $("wrench-rot");
+      var l1 = $("l1"), l2 = $("l2"), l3 = $("l3");
+      var w1 = l1.querySelectorAll('[data-hk="w"]');
+      var w2 = l2.querySelectorAll('[data-hk="w"]');
+      var w3 = l3.querySelectorAll('[data-hk="w"]');
+
+      // ---- seeded rust specks (crop-native coords, 660x670) ----
+      var seed = 20240502;
+      function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+      function inPoly(x, y, poly) {
+        var inside = false;
+        for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+          var xi = poly[i][0], yi = poly[i][1], xj = poly[j][0], yj = poly[j][1];
+          if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) inside = !inside;
+        }
+        return inside;
+      }
+      var NUT = [[367, 122], [492, 155], [565, 265], [472, 407], [350, 372], [272, 260]];
+      var HEAD = [[25, 157], [124, 90], [231, 115], [250, 250], [110, 315], [50, 300]];
+      var COLS = ["#8A4B22", "#B5652A", "#7A3F1B", "#B5652A"];
+      function scatter(poly, n, bx, by, bw, bh) {
+        var made = 0, guard = 0;
+        while (made < n && guard < 4000) {
+          guard++;
+          var x = bx + rnd() * bw, y = by + rnd() * bh;
+          if (!inPoly(x, y, poly)) continue;
+          var r = 1.6 + Math.pow(rnd(), 2.2) * 7.5;
+          var e = document.createElementNS(SVGNS, "ellipse");
+          e.setAttribute("cx", x.toFixed(1));
+          e.setAttribute("cy", y.toFixed(1));
+          e.setAttribute("rx", r.toFixed(2));
+          e.setAttribute("ry", (r * (0.55 + rnd() * 0.5)).toFixed(2));
+          e.setAttribute("transform", "rotate(" + (rnd() * 180).toFixed(0) + " " + x.toFixed(1) + " " + y.toFixed(1) + ")");
+          e.setAttribute("fill", COLS[Math.floor(rnd() * COLS.length)]);
+          e.setAttribute("opacity", (0.55 + rnd() * 0.4).toFixed(2));
+          specks.appendChild(e);
+          made++;
+        }
+      }
+      scatter(NUT, 46, 272, 122, 293, 285);
+      scatter(HEAD, 34, 25, 90, 225, 225);
+      // a few heavier crust blobs along the top edges
+      scatter([[367, 122], [492, 155], [520, 200], [380, 165]], 10, 367, 122, 153, 78);
+      scatter([[124, 90], [231, 115], [240, 160], [130, 135]], 8, 124, 90, 116, 70);
+
+      // ---- radial dissolve from the nut outward (crop-container px) ----
+      var NUT_X = 408 * (940 / 660), NUT_Y = 285 * (954.3 / 670);
+      var dis = { r: -140 };
+      function applyDissolve() {
+        var m = "radial-gradient(circle at " + NUT_X.toFixed(1) + "px " + NUT_Y.toFixed(1) + "px, rgba(0,0,0,0) " + dis.r.toFixed(1) + "px, #000 " + (dis.r + 140).toFixed(1) + "px)";
+        tint.style.webkitMaskImage = m; tint.style.maskImage = m;
+        rustSvg.style.webkitMaskImage = m; rustSvg.style.maskImage = m;
+      }
+      applyDissolve();
+
+
+      var tl = gsap.timeline({ paused: true });
+
+      // Scene 1 (0.0–0.7): iris in + spiral counter-rotation
+      tl.fromTo(lens, { clipPath: "circle(0px at 540px 900px)" },
+        { clipPath: "circle(470px at 540px 900px)", duration: 0.7, ease: "power2.out" }, 0);
+      tl.fromTo(crop, { rotation: -12 }, { rotation: 0, duration: 0.7, ease: "power2.out" }, 0);
+
+      // Scene 2 (0.2–2.3): question line, per word on VO cues
+      var inWord = function (el, t, dur, fromScale) {
+        tl.fromTo(el, { opacity: 0, y: 26, scale: fromScale || 1, filter: "blur(10px)" },
+          { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", duration: dur || 0.45, ease: "power3.out" }, t);
+      };
+      inWord(w1[0], 0.2);
+      inWord(w1[1], 0.62);
+      inWord(w1[2], 1.08);
+      inWord(w1[3], 1.6, 0.55, 1.18);
+      // rust specks pulse brighter once on "الصدأ"
+      tl.fromTo(specks, { filter: "brightness(1) saturate(1)" },
+        { filter: "brightness(1.75) saturate(1.35)", duration: 0.18, ease: "power2.out" }, 1.6);
+      tl.to(specks, { filter: "brightness(1) saturate(1)", duration: 0.5, ease: "power2.inOut" }, 1.78);
+
+      // Scene 3 (2.4–3.4): wrench arcs onto the nut, strains, shakes; crack flash
+      tl.fromTo(wOrbit, { rotation: 72, opacity: 0 }, { rotation: 0, opacity: 1, duration: 0.42, ease: "power3.out" }, 2.4);
+      tl.fromTo(wRot, { rotation: 55 }, { rotation: 65, duration: 0.2, ease: "power1.inOut" }, 2.8);
+      tl.to(wRot, { rotation: 55, duration: 0.07, ease: "power2.in" }, 3.0);
+      var jit = [57.4, 52.6, 57.0, 53.0, 56.4, 53.6];
+      for (var j = 0; j < jit.length; j++) {
+        tl.to(wRot, { rotation: jit[j], duration: 0.045, ease: "sine.inOut" }, 3.07 + j * 0.045);
+      }
+      tl.to(wRot, { rotation: 55, duration: 0.05, ease: "sine.out" }, 3.07 + jit.length * 0.045);
+      // crack flash on the bolt shank at "تكسره"
+      tl.fromTo(crack, { opacity: 0 }, { opacity: 1, duration: 0.04, ease: "none" }, 3.0);
+      tl.to(crack, { opacity: 0, duration: 0.32, ease: "power2.in" }, 3.1);
+      // lower line «قبل أن تكسره…»
+      inWord(w2[0], 2.4, 0.4);
+      inWord(w2[1], 2.7, 0.35);
+      inWord(w2[2], 3.0, 0.4);
+
+      // Scene 4 (3.5–4.5): wrench arcs away; line swaps to «هناك حلّ أذكى»; rust dissolves
+      tl.to(wOrbit, { rotation: -62, opacity: 0, duration: 0.45, ease: "power2.in" }, 3.5);
+      tl.to(l2, { opacity: 0, y: -14, filter: "blur(8px)", duration: 0.16, ease: "power2.in" }, 3.36);
+      inWord(w3[0], 3.5, 0.42);
+      inWord(w3[1], 3.9, 0.42);
+      inWord(w3[2], 4.2, 0.5, 1.22);
+      tl.fromTo(dis, { r: -140 }, { r: 1050, duration: 0.5, ease: "power1.in", onUpdate: applyDissolve }, 3.9);
+      tl.set([tint, rustSvg], { opacity: 0 }, 4.4);
+
+      // Scene 5 (4.5–5.16): texts clear; clean CROP + ring C hold (handoff_out)
+      tl.to([l1, l3], { opacity: 0, filter: "blur(6px)", duration: 0.4, ease: "power2.inOut" }, 4.6);
+      tl.set([l1, l2, l3, wOrbit, crack], { opacity: 0 }, 5.0);
+      tl.set(crop, { rotation: 0 }, 5.0);
+      tl.set({}, {}, 5.16);
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines[ID] = tl;
+    })();
+  </script>
+</template>
