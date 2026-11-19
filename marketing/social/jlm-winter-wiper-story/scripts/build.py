@@ -143,10 +143,10 @@ html,body{{width:{W}px;height:{H}px;overflow:hidden;background:#252729}}
 .ar{{font-family:HNA;direction:rtl}}
 .lat{{font-family:Albert;font-weight:800;direction:ltr;unicode-bidi:isolate}}
 #logo{{position:absolute;right:66px;top:170px;width:220px}}
-#h1{{position:absolute;right:66px;top:300px;font-family:HNA;font-weight:700;font-size:150px;line-height:1;color:#252729;direction:rtl}}
-#h2{{position:absolute;right:66px;top:470px;background:#FAB817;padding:8px 34px 24px;font-family:HNA;font-weight:700;font-size:118px;
+#h1{{position:absolute;right:66px;top:285px;font-family:HNA;font-weight:700;font-size:150px;line-height:1;color:#252729;direction:rtl}}
+#h2{{position:absolute;right:66px;top:500px;background:#FAB817;padding:8px 34px 24px;font-family:HNA;font-weight:700;font-size:118px;
      line-height:1.05;color:#252729;direction:rtl;box-shadow:0 14px 34px rgba(37,39,41,.22)}}
-#sub{{position:absolute;right:68px;top:648px;font-size:40px;color:#252729;font-weight:400}}
+#sub{{position:absolute;right:68px;top:690px;font-size:40px;color:#252729;font-weight:400}}
 #sub b{{font-family:Albert;font-weight:800}}
 .prod{{position:absolute;transform:translateX(-50%);filter:drop-shadow(0 18px 22px rgba(0,0,0,.55))}}
 .refl{{transform:translateX(-50%) scaleY(-1);opacity:.16;filter:blur(2px);
