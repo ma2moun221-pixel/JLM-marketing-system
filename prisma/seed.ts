@@ -1060,6 +1060,11 @@ const PROMPT_TEMPLATES: { title: string; mode: string; prompt: string }[] = [
     mode: "viral",
     prompt: "أعطني فكرة محتوى قابلة للانتشار عن [الموقف/المشكلة] لجمهور [الجمهور] على [المنصة]، باستخدام نوع من الأنواع القابلة للانتشار (مثل Memes أو Before and after أو Phone call Mockup أو News mockup)، مع 5 Hooks.",
   },
+  {
+    title: "اقتراح أنواع وستايلات مونتاج لفيديو",
+    mode: "edit-director",
+    prompt: "هذا فيديو/سكربت عن [الموضوع] مدته [المدة] لمنصة [المنصة]: [الصق السكربت أو صف الفيديو]. اقترح نوع المحتوى الأنسب وستايلات المونتاج لكل جزء (الخطاف، الوسط، الختام) ليصبح أجمل وأقوى.",
+  },
 ];
 
 async function seedPromptTemplates() {
