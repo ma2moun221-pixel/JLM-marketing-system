@@ -1045,13 +1045,38 @@ const PROMPT_TEMPLATES: { title: string; mode: string; prompt: string }[] = [
     mode: "whatsapp",
     prompt: "اكتب ردًا احترافيًا لعميل سأل عن سعر [اسم المنتج] ومدى توفره، مع دعوة لطيفة لإتمام الطلب.",
   },
+  {
+    title: "خطة محتوى شهرية حسب القمع وأنواع المحتوى",
+    mode: "monthly-plan",
+    prompt: "ابنِ خطة محتوى لشهر [الشهر] من [عدد] منشورًا لمنصات [فيسبوك/إنستغرام/تيك توك] عن [المنتج/الفئة]. وزّع المنشورات على TOFU/MOFU/BOFU، واختر لكل منشور نوعًا من مكتبة أنواع المحتوى (28 نوعًا)، مع منشور هادف ومنشور قابل للانتشار كل أسبوع على الأقل.",
+  },
+  {
+    title: "محتوى هادف (قيمة أولًا)",
+    mode: "purposeful",
+    prompt: "اكتب محتوى هادفًا عن [المشكلة/السؤال] لجمهور [ميكانيكيين/محلات/أصحاب سيارات] بصيغة [Reel/Carousel/Post]، باستخدام نوع مناسب من الأنواع الهادفة (مثل Educational أو How to أو FAQs أو Expert Explainer).",
+  },
+  {
+    title: "فكرة Viral مرتبطة بـ JLM",
+    mode: "viral",
+    prompt: "أعطني فكرة محتوى قابلة للانتشار عن [الموقف/المشكلة] لجمهور [الجمهور] على [المنصة]، باستخدام نوع من الأنواع القابلة للانتشار (مثل Memes أو Before and after أو Phone call Mockup أو News mockup)، مع 5 Hooks.",
+  },
+  {
+    title: "اقتراح أنواع وستايلات مونتاج لفيديو",
+    mode: "edit-director",
+    prompt: "هذا فيديو/سكربت عن [الموضوع] مدته [المدة] لمنصة [المنصة]: [الصق السكربت أو صف الفيديو]. اقترح نوع المحتوى الأنسب وستايلات المونتاج لكل جزء (الخطاف، الوسط، الختام) ليصبح أجمل وأقوى.",
+  },
 ];
 
 async function seedPromptTemplates() {
-  const count = await prisma.promptTemplate.count();
-  if (count > 0) return;
-  await prisma.promptTemplate.createMany({ data: PROMPT_TEMPLATES });
-  console.log(`Seeded ${PROMPT_TEMPLATES.length} prompt templates.`);
+  // Insert only templates whose title is missing, so new built-in templates
+  // reach databases that were seeded earlier without duplicating old ones or
+  // touching templates the user added or edited.
+  const existing = await prisma.promptTemplate.findMany({ select: { title: true } });
+  const have = new Set(existing.map((t) => t.title));
+  const missing = PROMPT_TEMPLATES.filter((t) => !have.has(t.title));
+  if (!missing.length) return;
+  await prisma.promptTemplate.createMany({ data: missing });
+  console.log(`Seeded ${missing.length} prompt templates.`);
 }
 
 async function main() {
