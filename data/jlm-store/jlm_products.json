@@ -1,0 +1,1348 @@
+{
+ "observed": "2026-11-24",
+ "currency": "ILS",
+ "count": 63,
+ "products": [
+  {
+   "code": "J04601",
+   "store_sku": "J04601",
+   "name_en": "JLM Underbody Coating",
+   "name_ar": "طلاء حماية أسفل الهيكل",
+   "size": "1000 ml",
+   "price_ils": 70.0,
+   "in_stock": true,
+   "categories": [],
+   "url": "https://jlmstore.com/products/طلاء-حماية-أسفل-الهيكل-jlm-underbody-coating-j04601",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04601_Underbody_Coating.png"
+   ],
+   "summary_ar": "طلاء قائم على راتنجات ومطاط صناعي، حماية طويلة الأمد ضد الحصى والصدأ للأجزاء السفلية من الهيكل.",
+   "published": "2026-09-13",
+   "data_note": "غير مضاف لأي تصنيف",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04814",
+   "store_sku": "J04814",
+   "name_en": "JLM Radiator Clean & Flush MAX",
+   "name_ar": "منظف رادياتير قوي MAX",
+   "size": "250 ml",
+   "price_ils": 69.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/منظف-رادياتير-قوي-max-jlm-radiator-clean-amp-flush-max-j04814",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04814_Radiator_Clean_Flush_MAX.png"
+   ],
+   "summary_ar": "منظف احترافي لنظام التبريد بالكامل: يزيل الترسبات والصدأ والجير والزيوت، يعيد كفاءة نقل الحرارة ويمنع ارتفاع حرارة المحرك. غير رغوي وخالٍ من الأحماض، لكل الرادياتيرات بنزين وديزل.",
+   "published": "2026-09-13",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J06020",
+   "store_sku": "J06020",
+   "name_en": "JLM Ceramic Grease",
+   "name_ar": "معجون سيراميك للفرامل",
+   "size": "20 ml",
+   "price_ils": 105.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات العناية بالمركبة"
+   ],
+   "url": "https://jlmstore.com/products/معجون-سيراميك-للفرامل-jlm-ceramic-grease-j06020",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J06020_Ceramic_Grease_Brake_Paste.png"
+   ],
+   "summary_ar": "معجون تجميع سيراميكي خالٍ من المعادن يتحمل من -40 إلى +1400 درجة مئوية، يمنع صرير الفرامل وتجمّد الأجزاء.",
+   "published": "2026-09-13",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J08040",
+   "store_sku": "J08040",
+   "name_en": "JLM Instant Shine",
+   "name_ar": "بخاخ لمعان فوري",
+   "size": "750 ml",
+   "price_ils": 85.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات العناية بالمركبة"
+   ],
+   "url": "https://jlmstore.com/products/بخاخ-لمعان-فوري-jlm-instant-shine-j08040",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J08040_Instant_Shine.png"
+   ],
+   "summary_ar": "بخاخ لمعان فوري خالٍ من المذيبات، لمعان بلا خطوط بين مرات الغسيل، يزيل الغبار الخفيف وبصمات الأصابع دون التأثير على الشمع أو الطلاءات الواقية.",
+   "published": "2026-09-13",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J08060",
+   "store_sku": "J08060",
+   "name_en": "JLM Tyre Shine",
+   "name_ar": "ملمع الإطارات",
+   "size": "750 ml",
+   "price_ils": 65.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات العناية بالمركبة"
+   ],
+   "url": "https://jlmstore.com/products/ملمع-الإطارات-jlm-tyre-shine-j08060",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J08060_Tyre_Shine.png"
+   ],
+   "summary_ar": "يجدد لون الإطارات والمطاط الباهت للأسود العميق، حماية من الشمس والعوامل الجوية، لمسة طبيعية غير لزجة.",
+   "published": "2026-09-13",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J08070",
+   "store_sku": "J08070",
+   "name_en": "JLM Screen RainGuard",
+   "name_ar": "طارد مطر للزجاج الأمامي",
+   "size": "100 ml",
+   "price_ils": 45.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات العناية بالمركبة"
+   ],
+   "url": "https://jlmstore.com/products/طارد-مطر-للزجاج-الأمامي-jlm-screen-rainguard-j08070",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J08070_Screen_RainGuard.png"
+   ],
+   "summary_ar": "يُسكب في خزان سائل غسيل الزجاج؛ ينظف الزجاج ويمنحه طبقة طاردة للماء فتنزلق قطرات المطر لرؤية أوضح. آمن على الزجاج والبلاستيك والمساحات.",
+   "published": "2026-09-13",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "JA05W3008013005",
+   "store_sku": "JA05W3008013005",
+   "name_en": "JLM EnduraDrive C3 5W-30",
+   "name_ar": "زيت محرك EnduraDrive C3 5W-30",
+   "size": "5000 ml",
+   "price_ils": 215.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/زيت-محرك-jlm-enduradrive-c3-5w-30",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-EnduraDrive-C3-5W-30.png"
+   ],
+   "summary_ar": "زيت تخليقي بالكامل بمواصفة C3 (منخفض SAPS)، لمحركات البنزين والديزل الحديثة المتوافقة مع DPF والمحولات الحفازة.",
+   "published": "2026-09-13",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "JA05W3009014005",
+   "store_sku": "JA05W3009014005",
+   "name_en": "JLM EcoFlow A5 5W-30",
+   "name_ar": "زيت محرك EcoFlow A5 5W-30 لسيارات Amarok",
+   "size": "5000 ml",
+   "price_ils": 180.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/زيت-محرك-jlm-ecoflow-a5-5w-30-لسيارات-amarok",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-EcoFlow-A5-5W-30.png"
+   ],
+   "summary_ar": "زيت تخليقي بالكامل بمواصفة A5/B5 منخفض الاحتكاك، للمركبات التي توصي بهذه المواصفة مثل VW Amarok؛ يحسن كفاءة استهلاك الوقود.",
+   "published": "2026-09-13",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "JA05W4008013005",
+   "store_sku": "JA05W4008013005",
+   "name_en": "JLM ApexDrive 5W-40",
+   "name_ar": "زيت محرك ApexDrive 5W-40",
+   "size": "5000 ml",
+   "price_ils": 180.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/زيت-محرك-jlm-apexdrive-5w-40",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/PLACEHOLDER_needs-confirmation_JA05W3008013005_EnduraDrive_C3_5W-30.png"
+   ],
+   "summary_ar": "زيت تخليقي بالكامل بلزوجة 5W-40، حماية شاملة لمحركات البنزين والديزل.",
+   "published": "2026-09-13",
+   "data_note": "صورة المنتج مؤقتة (صورة EnduraDrive) وتحتاج استبدال",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J03145",
+   "store_sku": "J03145",
+   "name_en": "JLM Petrol Performance Fuel System Cleaner",
+   "name_ar": "منظف أداء نظام وقود البنزين",
+   "size": "250 ml",
+   "price_ils": 65.0,
+   "in_stock": true,
+   "categories": [],
+   "url": "https://jlmstore.com/products/منظف-أداء-نظام-وقود-البنزين-jlm-petrol-performance-fuel-system-cleaner-j03145",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03145_Petrol_Performance_Fuel_System_Cleaner.png"
+   ],
+   "summary_ar": "منظف مقوّى لنظام وقود البنزين: يزيل الرواسب الكربونية من البخاخات والصمامات وغرفة الاحتراق ويستعيد قوة المحرك واستجابة الدواسة؛ للمركبات ذات الأميال العالية. كل 5000 كم.",
+   "published": "2026-09-13",
+   "data_note": "غير مضاف لأي تصنيف",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02315",
+   "store_sku": "J02315",
+   "name_en": "JLM Cetane Booster",
+   "name_ar": "معزز السيتان لوقود الديزل",
+   "size": "250 ml",
+   "price_ils": 45.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/معزز-السيتان-لوقود-الديزل-jlm-cetane-booster-j02315",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02315_Cetane_Booster.png"
+   ],
+   "summary_ar": "يرفع رقم السيتان حتى 5 نقاط ويحسن احتراق الديزل لأداء أنعم وقوة أكبر خاصة في البرد والرحلات الطويلة. علبة لكل 40-60 لتر.",
+   "published": "2026-09-13",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02224",
+   "store_sku": "J02224",
+   "name_en": "JLM DPF & GPF Cleaning Foam",
+   "name_ar": "رغوة تنظيف فلتر الديزل والبنزين",
+   "size": "500 ml",
+   "price_ils": 100.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محرك البنزين",
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/رغوة-تنظيف-فلتر-الديزل-والبنزين-jlm-dpf-amp-gpf-cleaning-foam-j02224",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02224_DPF_GPF_Cleaning_Foam.png"
+   ],
+   "summary_ar": "رغوة تلتصق داخل فلتر DPF/GPF لفترة أطول فتنظف أعمق من البخاخ العادي J02220. للورش المتخصصة.",
+   "published": "2026-09-13",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J00225PR",
+   "store_sku": "J00225PR",
+   "name_en": "JLM Microfiber Cleaning Cloth",
+   "name_ar": "منشفة مايكروفايبر",
+   "size": "40x40 cm",
+   "price_ils": 15.0,
+   "in_stock": true,
+   "categories": [],
+   "url": "https://jlmstore.com/products/منشفة-مايكروفايبر-jlm-microfiber-cleaning-cloth-j00225pr",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/ChatGPTImageAug16_2026_03_18_26PM.png"
+   ],
+   "summary_ar": "منشفة مايكروفايبر 40×40 سم لتنظيف وتلميع الأسطح الخارجية والداخلية دون خدوش، قابلة للغسل وإعادة الاستخدام.",
+   "published": "2026-09-13",
+   "data_note": "غير مضاف لأي تصنيف؛ الصورة مولدة بالذكاء الاصطناعي حسب اسم الملف",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02290",
+   "store_sku": "J02290",
+   "name_en": "JLM Intake Cleaner",
+   "name_ar": "منظف نظام سحب الهواء",
+   "size": "",
+   "price_ils": 85.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/منظف-نظام-سحب-الهواء-jlm-intake-cleaner",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02290.webp"
+   ],
+   "summary_ar": "يذيب رواسب الكربون وبقايا الزيت من نظام سحب الهواء في محركات الديزل والبنزين.",
+   "published": "2025-09-14",
+   "data_note": "الحجم غير مذكور",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04240",
+   "store_sku": "J04240",
+   "name_en": "JLM Contact Spray",
+   "name_ar": "بخاخ تنظيف وتشحيم الأجزاء الإلكترونية",
+   "size": "",
+   "price_ils": 50.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/بخاخ-تنظيف-وتشحيم-الأجزاء-الإلكترونية-jlm-contact-spray",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04240.webp"
+   ],
+   "summary_ar": "ينظف ويشحم الموصلات والمقابس والمفاتيح وأقطاب البطارية ويحسن التوصيل الكهربائي.",
+   "published": "2025-09-14",
+   "data_note": "الحجم غير مذكور",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04230",
+   "store_sku": "J04230",
+   "name_en": "JLM Penetrating Oil",
+   "name_ar": "بخاخ عالي الأداء لمعالجة الصدأ والتآكل",
+   "size": "",
+   "price_ils": 55.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/بخاخ-عالي-الأداء-لمعالجة-الصدأ-والتآكل-jlm-penetrating-oil",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04230.webp"
+   ],
+   "summary_ar": "بخاخ اختراق يفك البراغي والصواميل الصدئة والأجزاء الملتصقة مع تزييت وحماية.",
+   "published": "2025-09-14",
+   "data_note": "الحجم غير مذكور",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04250",
+   "store_sku": "J04250",
+   "name_en": "JLM Motor Start",
+   "name_ar": "منتج المساعدة على بدء تشغيل المحرك",
+   "size": "",
+   "price_ils": 45.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/منتج-المساعدة-على-بدأ-تشغيل-المحرك-jlm-motor-start",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04250.webp"
+   ],
+   "summary_ar": "يُرش في فلتر الهواء ليساعد المحرك الذي يدور ولا يشتغل؛ بنزين وديزل، مركبات ودراجات ومولدات وآلات زراعية.",
+   "published": "2025-09-14",
+   "data_note": "الحجم غير مذكور",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02220",
+   "store_sku": "J02220",
+   "name_en": "JLM Diesel DPF Spray",
+   "name_ar": "بخاخ منظف فلتر جزيئات الديزل",
+   "size": "",
+   "price_ils": 60.0,
+   "in_stock": false,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/بخاخ-منظف-فلتر-جزيئات-الديزل-jlm-diesel-dpf-spray-j02220",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02220_f94bd94c-6a82-4f04-ba60-878f911a6d6b.webp"
+   ],
+   "summary_ar": "ينظف فلتر DPF دون فكه، سريع وبتكلفة معقولة، مثالي للورش.",
+   "published": "2025-05-17",
+   "data_note": "غير متوفر بالمخزون",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J08012",
+   "store_sku": "",
+   "name_en": "JLM Air Refresh Tropical Peach",
+   "name_ar": "معطر الهواء برائحة الخوخ الاستوائي",
+   "size": "150 ml",
+   "price_ils": 35.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات العناية بالمركبة"
+   ],
+   "url": "https://jlmstore.com/products/معطر-الهواء-برائحة-الخوخ-الإستوائي-jlm-air-refresh-tropical-peach-scent-j08012",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Air-Refresh-Tropical-Peach-Scent.png"
+   ],
+   "summary_ar": "يقضي على الروائح الكريهة داخل المركبة (حيوانات، أطعمة، سوائل منسكبة) بدل إخفائها، ويترك رائحة عطرة. يعمل عبر المكيف بوضع التدوير 15 دقيقة.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J08011",
+   "store_sku": "",
+   "name_en": "JLM Air Refresh Apple",
+   "name_ar": "معطر الهواء برائحة التفاح",
+   "size": "150 ml",
+   "price_ils": 35.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات العناية بالمركبة"
+   ],
+   "url": "https://jlmstore.com/products/معطر-الهواء-برائحة-التفاح-jlm-air-refresh-apple-scent-j08011",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Air-Refresh-Apple-Scent_375ccf5a-a3d0-4ab0-81c6-4c60bba073a7.png"
+   ],
+   "summary_ar": "يقضي على الروائح الكريهة داخل المركبة بدل إخفائها ويترك رائحة تفاح. عبر المكيف بوضع التدوير 15 دقيقة.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04100",
+   "store_sku": "",
+   "name_en": "JLM Brake & Parts Cleaner",
+   "name_ar": "منظف المكابح وملحقاته",
+   "size": "500 ml",
+   "price_ils": 25.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/تنظيف-البريكات-والكلاتشات-وملاحقاتهم-jlm-brake-parts-cleaner-j04100",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/500ml_J04100_JLM_Brake_Cleaner_2025.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04100_Brake_Cleaner_application_1025_square.jpg",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/brake-cleaner.png"
+   ],
+   "summary_ar": "ينظف الفرامل والكلاتشات والدرامات والوسادات من غبار المكابح والزيوت والأوساخ.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J07020",
+   "store_sku": "",
+   "name_en": "JLM Automatic Transmission Flush",
+   "name_ar": "منظف مخلفات سائل ناقل الحركة القديم",
+   "size": "500 ml",
+   "price_ils": 95.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/منتج-لإزالة-مخلفات-سائل-ناقل-الحركة-القديم-jlm-automatic-transmission-flush-j07020",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Automatic-Transmission-Flush.png"
+   ],
+   "summary_ar": "يزيل بقايا سائل ناقل الحركة القديم قبل التبديل، فيعمل الجير أبرد وتحصل الكلاتشات والتروس على حماية أكبر من التآكل.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J06070",
+   "store_sku": "",
+   "name_en": "JLM Hydraulic Valve Lifter Treatment",
+   "name_ar": "معالج رافعات الصمامات الهيدروليكية (التاكيهات)",
+   "size": "250 ml",
+   "price_ils": 50.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/مادة-مضافة-لتحسين-أداء-ووظيفة-رافعات-الصمامات-الهيدروليكية-في-المحرك-jlm-hydrolic-valve-lifter-treatment-j06070",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Hydrolic-Valve-Lifter-Treatment.png"
+   ],
+   "summary_ar": "إضافة للزيت تذيب الرواسب داخل رافعات الصمامات الهيدروليكية فتقل الطقطقة والضوضاء ويتحسن الأداء.",
+   "published": "2024-03-31",
+   "data_note": "الاسم في المتجر مكتوب Hydrolic (خطأ إملائي)",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J06065",
+   "store_sku": "",
+   "name_en": "JLM Ceramic Engine Protector",
+   "name_ar": "حماية سيراميك للمحرك",
+   "size": "250 ml",
+   "price_ils": 80.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/منتج-لتعزيز-تشحيم-وحماية-محرك-المركبة-jlm-ceramic-engine-protector-j06065",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Ceramic-Engine-Protector.png"
+   ],
+   "summary_ar": "جزيئات سيراميك نانوية تشكل طبقة مقاومة للحرارة على أجزاء المحرك الداخلية، تقلل الاحتكاك والتآكل والضوضاء وتحمي عند التشغيل.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04836",
+   "store_sku": "",
+   "name_en": "JLM Engine Oil Flush Heavy Duty",
+   "name_ar": "منظف دورة زيت المحرك للمركبات الثقيلة",
+   "size": "1000 ml",
+   "price_ils": 130.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/منظف-دورة-زيت-المحرك-للمركبات-الثقيلة-jlm-engine-oil-flush-heavy-duty-j04836",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Engine-Oil-Flush-Heavy-Duty.png"
+   ],
+   "summary_ar": "لتنظيف الرواسب والصمغ من محركات الشاحنات والآلات الثقيلة قبل تغيير الزيت.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J06010",
+   "store_sku": "",
+   "name_en": "JLM Turbo Pre Lube",
+   "name_ar": "تشحيم التيربو المسبق",
+   "size": "20 ml",
+   "price_ils": 35.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/منتج-تشحيم-التيربو-المسبق-jlm-turbo-pre-lube-j06010",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Turbo-Pre-Lube.png"
+   ],
+   "summary_ar": "يحمي التيربو الجديد أو المجمّع عند أول تشغيل ويمنع التآكل المبكر لأجزائه الداخلية.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J08025",
+   "store_sku": "",
+   "name_en": "JLM Airconditioning Foam",
+   "name_ar": "رغوة تنظيف نظام التكييف",
+   "size": "500 ml",
+   "price_ils": 60.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/رغوة-تنظيف-نظام-تكييف-الهواء-jlm-airconditioning-foam-j08025",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J08025.png"
+   ],
+   "summary_ar": "رغوة تخترق فتحات وقنوات المكيف وتزيل الأوساخ والعفن والبكتيريا، تحسن جودة الهواء وتمنع الروائح.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04800",
+   "store_sku": "",
+   "name_en": "JLM Cavity Wax",
+   "name_ar": "حماية المناطق المكشوفة من الصدأ",
+   "size": "500 ml",
+   "price_ils": 50.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/منتج-حماية-المناطق-المكشوفة-للصدأ-والتآكل-jlm-cavity-wax-j04800",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Cavity-Wax.png"
+   ],
+   "summary_ar": "يحمي المناطق المكشوفة في الهيكل من الصدأ والتآكل بعد القص واللحام.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04210",
+   "store_sku": "",
+   "name_en": "JLM Injector Loosener",
+   "name_ar": "مزيل التآكل من البخاخات وشمعات الاحتراق",
+   "size": "400 ml",
+   "price_ils": 40.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/مزيل-التآكل-والأوساخ-من-البخاخات-وشمعات-الاحتراق-jlm-injector-loosener-j04210",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/Diesel-emission-J02370.png"
+   ],
+   "summary_ar": "يزيل التآكل والأوساخ والصمغ من البخاخات والفوهات والبواجي، ويفك البراغي والصواميل الصدئة.",
+   "published": "2024-03-31",
+   "data_note": "الصورة المرفوعة تخص J02370 وليست هذا المنتج",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04200",
+   "store_sku": "",
+   "name_en": "JLM Multispray",
+   "name_ar": "بخاخ متعدد الاستخدامات",
+   "size": "400 ml",
+   "price_ils": 45.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/منتج-لتزييت-وحماية-وتنظيف-جميع-أنواع-الأجزاء-المعدنية-والبلاستيكية-jlm-multispray-j04200",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04200_Multi_Spray_2025.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04200_Multi_Spray_application_2_1025_square.jpg"
+   ],
+   "summary_ar": "يزيّت ويحمي وينظف المعادن والبلاستيك، يطرد الرطوبة ويتغلغل بين الأجزاء العالقة ويزيل الزيت والشحم والقطران ويترك طبقة واقية.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J03130",
+   "store_sku": "",
+   "name_en": "JLM Petrol Injector Cleaner",
+   "name_ar": "منظف بخاخ البنزين",
+   "size": "250 ml",
+   "price_ils": 45.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محرك البنزين"
+   ],
+   "url": "https://jlmstore.com/products/منظف-بخاخ-البنزين-petrol-injector-cleaner-j03130",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03130_Petrol_Injector_Cleaner.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03130_Petrol_Injector_Cleaner_application_3_1025_square.jpg",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03130_Petrol_Injector_Cleaner_application_1_0925_square.jpg"
+   ],
+   "summary_ar": "ينظف نظام الحقن وسحب الهواء في كل محركات البنزين، يحسن القوة والأداء ويقلل غازات العادم.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02385",
+   "store_sku": "",
+   "name_en": "JLM AdBlue Plus",
+   "name_ar": "مكمل نظام AdBlue",
+   "size": "250 ml",
+   "price_ils": 80.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/مكمل-نظام-adblue-jlm-adblue-plus-j02385",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02385.png"
+   ],
+   "summary_ar": "ينظف ويمنع تكوّن البلورات في نظام AdBlue ويحافظ على عمل نظام SCR، ويقلل الرغوة في البرد.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J03190",
+   "store_sku": "",
+   "name_en": "JLM Direct Injection Valve Cleaner",
+   "name_ar": "بخاخ إزالة رواسب الكربون من صمامات السحب",
+   "size": "500 ml",
+   "price_ils": 60.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/بخاخ-لإزالة-رواسب-الكربون-في-نظام-سحب-الهواء-jlm-diesel-direct-injection-valve-cleaner-j03190",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Diesel-Direct-Injection-Valve-Cleaner.png"
+   ],
+   "summary_ar": "يزيل رواسب الكربون المتصلبة في نظام سحب الهواء، مناسب خصوصاً لمحركات الحقن المباشر GDI/TSI؛ لكل محركات البنزين والديزل والهايبرد والغاز.",
+   "published": "2024-03-31",
+   "data_note": "الاسم يقول Diesel لكنه للبنزين المباشر أيضاً؛ مصنف تحت الديزل فقط",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02710",
+   "store_sku": "",
+   "name_en": "JLM Diesel Air Intake & EGR Cleaner",
+   "name_ar": "منظف سحب الهواء وصمام EGR",
+   "size": "500 ml",
+   "price_ils": 60.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محرك البنزين",
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/منظف-الأوساخ-في-مدخل-نظام-سحب-الهواء-jlm-diesel-air-intake-egr-cleaner-j02710",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02710_JLM_EGR_Cleaner_DUO_2025.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02710_Diesel_Petrol_EGR_Cleaner_mood_1_square.jpg",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02710before.jpg",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02710after.jpg"
+   ],
+   "summary_ar": "يزيل الأوساخ العنيدة من مدخل السحب ونظام العادم وEGR ويعالج دورة المحرك غير المنتظمة.",
+   "published": "2024-03-31",
+   "data_note": "يملك صور قبل/بعد",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02380",
+   "store_sku": "",
+   "name_en": "JLM Diesel Turbo Cleaner",
+   "name_ar": "منظف التيربو",
+   "size": "500 ml",
+   "price_ils": 70.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/منظف-التيربو-jlm-diesel-turbo-cleaner-j02380",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02380_Diesel_Turbo_Cleaner_1.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02380_Diesel_Turbo_Cleaner_application_1025_square.jpg"
+   ],
+   "summary_ar": "يزيل الأوساخ والسخام المتراكم داخل التيربو، اقتصادي وسهل الاستخدام ويطيل عمر التيربو.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02370",
+   "store_sku": "",
+   "name_en": "JLM Diesel Emission Reduction Treatment",
+   "name_ar": "معزز أداء محرك الديزل (تقليل الانبعاثات)",
+   "size": "250 ml",
+   "price_ils": 55.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/سائل-لتقليل-الانبعاثات-الضارة-في-محركات-الديزل-diesel-emission-reduction-treatment-j02370",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02370_Pre-test_Emission_Fixer.png"
+   ],
+   "summary_ar": "مخصص لمحركات الديزل، يستهدف نظام الوقود والاحتراق والعادم.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02365",
+   "store_sku": "",
+   "name_en": "JLM Extreme Clean Heavy Duty",
+   "name_ar": "منظف الديزل للمركبات الثقيلة",
+   "size": "1000 ml",
+   "price_ils": 180.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/منظف-الديزل-للمركبات-الثقيلة-jlm-extreme-clean-heavy-duty-j02365",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02365-DIESEL-EXTREME-CLEAN-HEAVY-DUTY.png"
+   ],
+   "summary_ar": "منظف ومعزز لوقود الشاحنات والآلات الثقيلة: ينظف الحقن والصمامات وغرفة الاحتراق، يرفع السيتان حتى 5 نقاط ويزيّت مضخة الوقود.",
+   "published": "2024-03-31",
+   "data_note": "SKU فارغ في المتجر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02325",
+   "store_sku": "",
+   "name_en": "JLM Diesel Fuel Injection System Cleaner (Heavy)",
+   "name_ar": "منظف نظام الوقود للشاحنات والآلات الثقيلة",
+   "size": "",
+   "price_ils": 115.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/منظف-نظام-الوقود-في-الشاحنات-والآلات-الثقيلة-jlm-diesel-fuel-injection-system-cleaner-j02325",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Diesel-Fuel-Injection-System-Cleaner.png"
+   ],
+   "summary_ar": "ينظف نظام الوقود كاملاً للشاحنات والآلات الثقيلة بما فيه الصمامات والبخاخات، ويقلل السخام في DPF ويحسن الاستهلاك.",
+   "published": "2024-03-31",
+   "data_note": "الحجم غير مذكور",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02285",
+   "store_sku": "",
+   "name_en": "JLM Diesel Intake Extreme Clean Fluid Pack",
+   "name_ar": "حزمة سوائل تنظيف سحب الهواء",
+   "size": "350 ml (500 ml غير متوفر)",
+   "price_ils": 270.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/منظف-الأوساخ-في-مدخل-نظام-سحب-الهواء-jlm-diesel-intake-extreme-clean-fluid-pack-j02285",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Diesel-Intake-Extreme-Clean-Fluid-Pack.png"
+   ],
+   "summary_ar": "علاج من منتجين يُستخدم مع أدوات J02280 لتنظيف مدخل السحب وغرفة الاحتراق وصمامات السحب وأطراف الحاقن وفراشات التيربو.",
+   "published": "2024-03-31",
+   "data_note": "منتج ورش",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02280",
+   "store_sku": "",
+   "name_en": "JLM Diesel Intake Extreme Clean Toolkit",
+   "name_ar": "أدوات تنظيف نظام الهواء",
+   "size": "",
+   "price_ils": 1530.0,
+   "in_stock": false,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/أدوات-تنظيف-نظام-الهواء-jlm-diesel-intake-extreme-clean-toolkit-j02280",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/1efa70b4d656a372f727d9a80a0ec78e.png"
+   ],
+   "summary_ar": "أدوات لاستخدام سوائل تنظيف سحب الهواء للمحرك المتسخ: السحب، الاحتراق، الصمامات، الحقن والتيربو.",
+   "published": "2024-03-31",
+   "data_note": "معدات ورش؛ غير متوفر",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02250",
+   "store_sku": "",
+   "name_en": "JLM Diesel DPF Cleaning Toolkit",
+   "name_ar": "أدوات تنظيف فلتر جسيمات الديزل",
+   "size": "",
+   "price_ils": 1000.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/أدوات-تنظيف-فلتر-جسيمات-الديزل-jlm-diesel-dpf-cleaning-toolkit-j02250",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Diesel-DPF-Cleaning-Toolkit.png"
+   ],
+   "summary_ar": "ينظف فلتر DPF المتسخ جداً دون فكه ويوفر تكلفة الاستبدال.",
+   "published": "2024-03-31",
+   "data_note": "معدات ورش",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02230",
+   "store_sku": "",
+   "name_en": "JLM Diesel DPF Cleaning & Flush Fluidpack",
+   "name_ar": "حزمة سوائل تنظيف فلتر DPF",
+   "size": "1500 ml",
+   "price_ils": 280.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/حزمة-منظف-جسيمات-الديزل-jlm-diesel-dpf-cleaning-flush-fluidpack-j02230",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Diesel-DPF-Cleaning-_-Flush-Fluidpack.png"
+   ],
+   "summary_ar": "ينظف فلتر DPF المتسخ جداً دون فكه ويوفر تكلفة الاستبدال.",
+   "published": "2024-03-31",
+   "data_note": "منتج ورش",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J01250",
+   "store_sku": "",
+   "name_en": "JLM Valve Saver Fluid",
+   "name_ar": "منظف وحامي الصمامات",
+   "size": "1000 ml",
+   "price_ils": 135.0,
+   "in_stock": false,
+   "categories": [],
+   "url": "https://jlmstore.com/products/منظف-الصمامات-jlm-valve-saver-fluid-j01250",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM-Valve-Saver-Fluid.png"
+   ],
+   "summary_ar": "يحمي وينظف صمامات السحب والعادم ومقاعدها لمركبات الغاز والبنزين، مهم للمركبات القديمة.",
+   "published": "2024-03-31",
+   "data_note": "غير متوفر؛ غير مضاف لأي تصنيف",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J08010",
+   "store_sku": "",
+   "name_en": "JLM Air Refresh Orange Blossom",
+   "name_ar": "معطر الهواء برائحة زهر البرتقال",
+   "size": "150 ml",
+   "price_ils": 35.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات العناية بالمركبة"
+   ],
+   "url": "https://jlmstore.com/products/معطر-الهواء-برائحة-زهور-البرتقال-air-refresh-j08010",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J08010airrefresh.png"
+   ],
+   "summary_ar": "يقضي على الروائح الكريهة داخل المركبة بدل إخفائها ويترك رائحة زهر البرتقال. عبر المكيف بوضع التدوير 15 دقيقة.",
+   "published": "2024-03-05",
+   "data_note": "منتج مميز في الصفحة الرئيسية",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J07010",
+   "store_sku": "",
+   "name_en": "JLM ATF Stop Leak & Conditioner",
+   "name_ar": "مانع تسرب زيت الجير",
+   "size": "300 ml",
+   "price_ils": 45.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/مانع-تسرب-زيت-الجير-atf-stop-leak-conditioner-j07010",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J07010ATF.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/376244288_321691613771717_8038862689243933299_n.jpg"
+   ],
+   "summary_ar": "يمنع الانزلاق والتسرب في نواقل الحركة الأوتوماتيكية التقليدية لتبديل أنعم وأهدأ وعمر أطول.",
+   "published": "2024-03-05",
+   "data_note": "منتج مميز في الصفحة الرئيسية",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J06055",
+   "store_sku": "",
+   "name_en": "JLM Oil Stop Leak",
+   "name_ar": "معالج تسريب زيت المحرك",
+   "size": "250 ml",
+   "price_ils": 45.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/معالج-تسريب-زيت-المحرك-oil-stop-leak-j06055",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J06055_Engine_Oil_Stop_Leak.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J06055_Engine_Oil_Stop_Leak_application_1025_square.jpg",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/Engine_Oil_Stop_Leak_sq.png"
+   ],
+   "summary_ar": "يمنع تسرب الزيت بمعالجة السدادات (الجوانات)، ويقلل ضوضاء المحرك واستهلاك الزيت. بنزين وديزل وهايبرد وغاز.",
+   "published": "2024-03-05",
+   "data_note": "منتج مميز في الصفحة الرئيسية",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J06050",
+   "store_sku": "",
+   "name_en": "JLM Bortec Oil Additive",
+   "name_ar": "مكمل زيت المحرك Bortec",
+   "size": "250 ml",
+   "price_ils": 75.4,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/مكمل-زيت-المحرك-bortec-oil-additive-j06050",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/250ml_J06050_Bortec_Oil_Additive_2025.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J06050_Bortec_application_0826_SQ.jpg",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J06050_Bortec_mood_2_0826_SQ_51423d91-7b72-4b1b-985b-f63e8268824c.png"
+   ],
+   "summary_ar": "مخفض احتكاك قائم على إستر البورون الخالي من الرماد ومضاد أكسدة، يشكل طبقة نيتريد البورون الواقية تحت الضغط والحرارة.",
+   "published": "2024-03-05",
+   "data_note": "السعر 75.40 (غير مُقرّب)",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04835",
+   "store_sku": "",
+   "name_en": "JLM Engine Oil Flush",
+   "name_ar": "منظف دورة زيت المحرك",
+   "size": "250 ml",
+   "price_ils": 40.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت"
+   ],
+   "url": "https://jlmstore.com/products/منظف-دورة-زيت-المحرك-engine-oil-flush-j04835",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04835_Engine_Oil_Flush.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04835_Engine_Oil_Flush_mood_application_1_square.jpg",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04835_Engine_Oil_Flush_application_2_1025_square.jpg"
+   ],
+   "summary_ar": "ينظف المحرك من أوساخ الزيت القديم بسرعة قبل تغيير الزيت، يحسن الأداء. ديزل وبنزين وهايبرد.",
+   "published": "2024-03-05",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04831",
+   "store_sku": "",
+   "name_en": "JLM Stop Smoke",
+   "name_ar": "سائل تقليل دخان العادم",
+   "size": "250 ml",
+   "price_ils": 55.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الزيوت",
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/سائل-تقليل-دخان-العادم-stop-smoke-j04831",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04831.png"
+   ],
+   "summary_ar": "يقلل دخان العادم الأزرق/الرمادي وتآكل المحرك واستهلاك الزيت، للمحركات القديمة؛ بنزين وديزل وغاز.",
+   "published": "2024-03-05",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04813",
+   "store_sku": "",
+   "name_en": "JLM Radiator Clean & Flush",
+   "name_ar": "منظف نظام التبريد والرادياتير",
+   "size": "250 ml",
+   "price_ils": 60.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/منظف-نظام-التبريد-والراديايتر-radiator-clean-flush-j04813",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04813cleanandflush.png"
+   ],
+   "summary_ar": "يزيل الصدأ وأكسيد الحديد والجير من نظام التبريد والرادياتير وممرات المحرك.",
+   "published": "2024-03-05",
+   "data_note": "منتج مميز في الصفحة الرئيسية",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J04811",
+   "store_sku": "",
+   "name_en": "JLM Radiator Stop Leak",
+   "name_ar": "معالج تسريب ماء التبريد",
+   "size": "250 ml",
+   "price_ils": 50.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات الصيانة"
+   ],
+   "url": "https://jlmstore.com/products/معالج-تسريب-ماء-التبريد-radiator-sealer-conditioner-j04811",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04811_Radiator_Stop_Leak.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04811_Radiator_Stop_Leak_application_3_1025_square.jpg",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J04811_Radiator_Stop_Leak_mood_3_1025_square.jpg"
+   ],
+   "summary_ar": "يغلق الثقوب الصغيرة في الرادياتير والبرابيج والتدفئة ومضخة الماء وينعش الجوانات. لا يصلح القطع التالفة.",
+   "published": "2024-03-05",
+   "data_note": "منتج مميز في الصفحة الرئيسية",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J03170",
+   "store_sku": "",
+   "name_en": "JLM Petrol GDI Injector Cleaner",
+   "name_ar": "منظف بخاخ البنزين GDI",
+   "size": "250 ml",
+   "price_ils": 60.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محرك البنزين"
+   ],
+   "url": "https://jlmstore.com/products/منظف-بخاخ-البنزين-petrol-gdi-injector-cleaner-j03170",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03170-JLM-Petrol-GDI.png"
+   ],
+   "summary_ar": "مخصص لمحركات الحقن المباشر GDI/TSI/FSI/TFSI؛ ينظف رواسب الحاقن ويمنع تراكمها مستقبلاً.",
+   "published": "2024-03-05",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J03160",
+   "store_sku": "",
+   "name_en": "JLM Petrol GPF Cleaner",
+   "name_ar": "منظف فلتر جزيئات البنزين GPF",
+   "size": "250 ml",
+   "price_ils": 65.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محرك البنزين"
+   ],
+   "url": "https://jlmstore.com/products/منظف-نظام-فلتر-الأوكزوست-لمحركات-البنزين-petrol-gpf-cleaner-j03160",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03160_GPF_Cleaner_2025.png"
+   ],
+   "summary_ar": "يحسن حرق السخام في فلتر GPF بمحركات البنزين الحديثة وينظف البخاخات وغرفة الاحتراق.",
+   "published": "2024-03-05",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J03155",
+   "store_sku": "",
+   "name_en": "JLM Petrol Extreme Clean",
+   "name_ar": "منظف البنزين القوي",
+   "size": "500 ml",
+   "price_ils": 75.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محرك البنزين"
+   ],
+   "url": "https://jlmstore.com/products/منظف-البنزين-petrol-extreme-clean-j03155",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/JLM_Petrol_Extreme_Clean_J03155.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03155_Extreme_Clean_application_4_1025_square.jpg",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03155_Petrol_Extreme_Clean_mood_application_1_square.jpg"
+   ],
+   "summary_ar": "للمحركات التي تعاني مشاكل شديدة من ملوثات صلبة في نظام الوقود؛ إضافات عالية التركيز تكفي خزاناً واحداً.",
+   "published": "2024-03-05",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J03150",
+   "store_sku": "",
+   "name_en": "JLM Petrol Emission Reduction Treatment",
+   "name_ar": "معزز أداء محرك البنزين (تقليل الانبعاثات)",
+   "size": "250 ml",
+   "price_ils": 55.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محرك البنزين"
+   ],
+   "url": "https://jlmstore.com/products/سائل-لتقليل-الانبعاثات-الضارة-في-محركات-البنزين-petrol-emission-reduction-treatment",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03150_PreTest_Emission_Fixer_1.png"
+   ],
+   "summary_ar": "ينظف نظام الوقود والاحتراق والعادم، يرفع كفاءة المحرك ويقلل الاستهلاك.",
+   "published": "2024-03-05",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02360",
+   "store_sku": "",
+   "name_en": "JLM Diesel Extreme Clean",
+   "name_ar": "منظف الديزل القوي",
+   "size": "1000 ml",
+   "price_ils": 130.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/منظف-الديزل-diesel-extreme-clean",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02360_JLM_Diesel_Extreme_Clean_2025.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02360_Diesel_Extreme_Clean_application_1025_square.jpg"
+   ],
+   "summary_ar": "إضافة قوية تنظف التيربو ونظام الوقود والعادم مع DPF.",
+   "published": "2024-03-05",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02330",
+   "store_sku": "",
+   "name_en": "JLM Diesel Rapid Fuel System Clean",
+   "name_ar": "منظف نظام الوقود السريع",
+   "size": "500 ml",
+   "price_ils": 65.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/منظف-نظام-الوقود-السريع-diesel-rapid-fuel-system-clean",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/RapidJ02330.png"
+   ],
+   "summary_ar": "منظف شديد التركيز يُستخدم مباشرة في فلتر الوقود، للمحترفين في الورش.",
+   "published": "2024-03-05",
+   "data_note": "منتج ورش",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02320",
+   "store_sku": "",
+   "name_en": "JLM Diesel Injector Cleaner",
+   "name_ar": "منظف بخاخ الديزل",
+   "size": "250 ml",
+   "price_ils": 45.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/منظف-بخاخ-الديزل-diesel-injector-cleaner",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02320_Diesel_Injector_Cleaner.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02320_Diesel_Injector_Cleaner_application_1025_square.jpg"
+   ],
+   "summary_ar": "ينظف نظام الوقود كاملاً مع الصمامات والبخاخات، يقلل السخام في DPF ويحسن الاستهلاك.",
+   "published": "2024-03-05",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J03195",
+   "store_sku": "",
+   "name_en": "JLM Petrol Hybrid Treatment",
+   "name_ar": "معالجة البنزين للمحركات الهجينة",
+   "size": "250 ml",
+   "price_ils": 60.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محرك البنزين"
+   ],
+   "url": "https://jlmstore.com/products/jlm-petrol-hybrid-treatment-j03195-معالجة-البنزين-الهجين",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03195_24ef7fdf-6a8d-41c9-b865-f5ddbf65adb5.png"
+   ],
+   "summary_ar": "إضافة وقائية تنظف تراكمات الزيت والأوساخ في محركات الهايبرد وتعالج رواسب الحاقن الناتجة عن التشغيل/الإيقاف المتكرر، مع تشحيم إضافي لمضخات الوقود.",
+   "published": "2024-02-07",
+   "data_note": "منتج مميز في الصفحة الرئيسية",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02260",
+   "store_sku": "",
+   "name_en": "JLM Diesel DPF Refill Fluid",
+   "name_ar": "سائل إعادة تعبئة DPF",
+   "size": "1000 ml",
+   "price_ils": 175.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/jlm-diesel-dpf-refill-fluid-j02260-سائل-إعادة-تعبئة-dpf",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02260_Diesel_DPF_Refill_Fluid.png"
+   ],
+   "summary_ar": "سائل تنشيط لأنظمة DPF ذات خزان الإضافة (سيتروين، فيات، فورد، لانسيا، مازدا، ميني، بيجو، فولفو).",
+   "published": "2024-02-07",
+   "data_note": "",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02210",
+   "store_sku": "",
+   "name_en": "JLM Diesel DPF Cleaner",
+   "name_ar": "منظف فلتر جزيئات الديزل (الفخارة)",
+   "size": "375 ml",
+   "price_ils": 100.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/jlm-diesel-dpf-cleaner-j02210-منظف-فلتر-جزيئات-الديزل-الفخارة",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02210_DPF_Cleaner.png"
+   ],
+   "summary_ar": "ينظف الفخارة بسرعة دون الحاجة للسير بسرعات عالية ومسافات طويلة؛ تركيز عالٍ من المواد الفعالة.",
+   "published": "2024-02-07",
+   "data_note": "منتج مميز في الصفحة الرئيسية",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J02200",
+   "store_sku": "10",
+   "name_en": "JLM Diesel DPF ReGen Plus",
+   "name_ar": "منظف فلتر الجزيئات لمحركات الديزل (ReGen Plus)",
+   "size": "250 ml",
+   "price_ils": 45.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محركات الديزل"
+   ],
+   "url": "https://jlmstore.com/products/منظف-الكتاليست-لمحركات-الديزل-j02370",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02200_DPF_Regen_Plus.png",
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J02200_Diesel_ReGen_Plus_application_1025_square.jpg"
+   ],
+   "summary_ar": "إضافة للوقود تدعم تجديد DPF: أكسدة أكمل للسخام وتقليل الاستهلاك مع الاستخدام المنتظم.",
+   "published": "2023-12-19",
+   "data_note": "رابط المنتج (handle) يحمل J02370 خطأً؛ SKU في المتجر = 10",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  },
+  {
+   "code": "J03165",
+   "store_sku": "10",
+   "name_en": "JLM Octane Booster",
+   "name_ar": "محسن الوقود - معزز رقم الأوكتان",
+   "size": "250 ml",
+   "price_ils": 40.0,
+   "in_stock": true,
+   "categories": [
+    "منتجات محرك البنزين"
+   ],
+   "url": "https://jlmstore.com/products/محسن-الوقود-معزز-رقم-الاوكتان-j03165",
+   "images": [
+    "https://cdn.shopify.com/s/files/1/0639/7509/6504/files/J03165_Petrol_Octane_Booster.png"
+   ],
+   "summary_ar": "يرفع الأوكتان 2-4 نقاط، ينظف ويبرد ويشحم، يحسن الأداء ويحمي مقاعد الصمامات. علبة لكل 40-60 لتر بنزين.",
+   "published": "2023-12-19",
+   "data_note": "SKU في المتجر = 10 (خطأ)",
+   "observed": "2026-11-24",
+   "source": "jlmstore.com /products.json"
+  }
+ ]
+}
